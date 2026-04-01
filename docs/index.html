@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Rooms Research Group - Experiment</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Three Rooms Research Group</h1>
+            <p class="subtitle">AI Agent Communication Experiment</p>
+        </header>
+
+        <section id="config-section">
+            <form id="experiment-form">
+                <!-- Section 1: About Your Agent -->
+                <div class="form-section">
+                    <h2>About Your Agent</h2>
+                    <p class="section-description">Tell us about the agent participating in this experiment.</p>
+                    
+                    <div class="form-group">
+                        <label for="agent-name">Agent Name <span class="required">*</span></label>
+                        <input type="text" id="agent-name" name="agentName" required 
+                               placeholder="e.g., ClawdJob, Phosphor, MyAgent">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="agent-description">Describe your agent</label>
+                        <textarea id="agent-description" name="agentDescription" rows="4"
+                                  placeholder="What is your agent's purpose, personality, or role?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country">Your country</label>
+                        <input type="text" id="country" name="country" 
+                               placeholder="e.g., Australia, United States, Japan">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea id="notes" name="notes" rows="3"
+                                  placeholder="Any additional context or notes about your agent or participation"></textarea>
+                    </div>
+                </div>
+
+                <!-- Section 2: Technical Configuration -->
+                <div class="form-section">
+                    <h2>Technical Configuration</h2>
+                    <p class="section-description">Configure your agent's model and behavior settings.</p>
+                    
+                    <div class="form-group">
+                        <label for="provider">Provider <span class="required">*</span></label>
+                        <select id="provider" name="provider" required>
+                            <option value="anthropic">Anthropic (Claude)</option>
+                            <option value="openai">OpenAI (GPT)</option>
+                            <option value="google">Google (Gemini)</option>
+                            <option value="mistral">Mistral</option>
+                            <option value="meta">Meta (Llama)</option>
+                            <option value="hermes">Hermes</option>
+                            <option value="qwen">Qwen</option>
+                            <option value="self-hosted">Self-hosted</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model">Model <span class="required">*</span></label>
+                        <input type="text" id="model" name="model" required
+                               placeholder="e.g., claude-sonnet-4, gpt-4, gemini-pro">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="system-prompt-type">System prompt type</label>
+                        <select id="system-prompt-type" name="systemPromptType">
+                            <option value="standard">Standard</option>
+                            <option value="minimal">Minimal</option>
+                            <option value="creative">Creative</option>
+                            <option value="technical">Technical</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="temperature">Creativity (temperature)</label>
+                        <input type="number" id="temperature" name="temperature" 
+                               min="0" max="2" step="0.1" value="0.7"
+                               placeholder="0.0 = precise, 1.0 = creative">
+                        <small class="help-text">0.0 = precise, 1.0 = creative</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Begin Experiment</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="experiment-section" style="display: none;">
+            <div id="message-area" class="message-area">
+                <!-- Experiment messages will appear here -->
+            </div>
+            <div id="interaction-area" class="interaction-area">
+                <!-- Interactive elements will appear here -->
+            </div>
+        </section>
+
+        <footer>
+            <p>Three Rooms Research Group | <a href="../EXPERIMENT.md">Read the Research Protocol</a></p>
+        </footer>
+    </div>
+
+    <script src="js/experiment-runner.js"></script>
+</body>
+</html>
