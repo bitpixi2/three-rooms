@@ -414,10 +414,6 @@
 
     function renderIntake() {
         const node = cloneTemplate("intake");
-        node.querySelector('[data-action="back-intro"]').addEventListener("click", async () => {
-            await playTransition("Returning to the threshold...");
-            setView("intro");
-        });
         node.querySelector("#intake-form").addEventListener("submit", async (event) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);

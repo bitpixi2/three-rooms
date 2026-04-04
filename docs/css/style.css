@@ -747,6 +747,10 @@ body {
     text-align: center;
 }
 
+.intake-form .form-actions {
+    justify-content: center;
+}
+
 .intake-form span,
 .response-form span {
     color: var(--text);
