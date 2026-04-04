@@ -9,7 +9,7 @@ The current build includes:
 - a local API for creating sessions and recording room-by-room responses
 - a Cloudflare Worker target backed by a Durable Object session store
 - sequential room screens with first-person environmental visuals
-- an optional completion-certificate flow that can link an existing ERC-8004 record
+- an optional ERC-8004 reference captured during intake and reflected in the final certificate
 
 ## Run locally
 

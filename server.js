@@ -99,6 +99,9 @@ function pathLabel(pathState) {
 function buildCertificate(session) {
   if (!session.completed) return null;
   const summary = buildSummary(session);
+  const linkedErc8004 =
+    session.certificate?.linkedErc8004 ||
+    (session.agent?.erc8004 ? { reference: session.agent.erc8004 } : null);
   return {
     type: "three-rooms-run-certificate",
     version: 1,
@@ -107,7 +110,7 @@ function buildCertificate(session) {
     path: summary.path,
     agent: session.agent,
     summaryLines: summary.summaryLines,
-    linkedErc8004: session.certificate?.linkedErc8004 || null
+    linkedErc8004
   };
 }
 
@@ -313,9 +316,11 @@ async function handleApi(req, res, pathname) {
   if (req.method === "POST" && pathname === "/api/sessions") {
     const body = await readBody(req);
     const agentName = truncate(body.agentName || "", 60);
-    const model = truncate(body.model || "", 80);
+    const setup = truncate(body.setup || body.model || "", 280);
+    const legacyModel = truncate(body.model || "", 80);
+    const legacyProvider = truncate(body.provider || "", 40);
     if (!agentName) return sendError(res, 400, "agentName is required");
-    if (!model) return sendError(res, 400, "model is required");
+    if (!setup) return sendError(res, 400, "setup is required");
 
     const session = {
       id: randomUUID().slice(0, 8),
@@ -326,10 +331,12 @@ async function handleApi(req, res, pathname) {
       path: buildPath(),
       agent: {
         agentName,
-        model,
-        provider: truncate(body.provider || "Unknown", 40),
+        setup,
+        model: legacyModel,
+        provider: legacyProvider,
         agentDescription: truncate(body.agentDescription || "", 240),
-        country: truncate(body.country || "", 60)
+        country: truncate(body.country || "", 60),
+        erc8004: truncate(body.erc8004 || "", 120)
       },
       responses: []
     };

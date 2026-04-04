@@ -241,7 +241,10 @@
             return "Certificate options unlock when the run completes.";
         }
         if (!linked) {
-            return "No ERC-8004 link attached yet. You can still export the run certificate without one.";
+            return "No ERC-8004 reference attached.";
+        }
+        if (linked.reference) {
+            return `ERC-8004 reference attached: ${linked.reference}.`;
         }
         const chain = linked.chain || "Unspecified chain";
         return `Linked to ${chain} contract ${linked.contractAddress} token ${linked.tokenId}.`;
@@ -270,6 +273,11 @@
         node.querySelectorAll('[data-action="open-intake-cube"]').forEach((button) => {
             const { cube } = button.dataset;
             const message = cubeMessages[cube] || whisperDefault;
+            let startX = 0;
+            let startY = 0;
+            let baseX = 0;
+            let baseY = 0;
+            let dragged = false;
             const engage = () => {
                 if (whisper) whisper.textContent = message;
                 if (introVoid) introVoid.dataset.activeCube = cube;
@@ -278,11 +286,52 @@
                 if (whisper) whisper.textContent = whisperDefault;
                 if (introVoid) delete introVoid.dataset.activeCube;
             };
+            button.addEventListener("pointerdown", (event) => {
+                event.preventDefault();
+                startX = event.clientX;
+                startY = event.clientY;
+                baseX = Number(button.dataset.dragX || 0);
+                baseY = Number(button.dataset.dragY || 0);
+                dragged = false;
+                button.dataset.dragging = "true";
+                button.setPointerCapture(event.pointerId);
+                engage();
+            });
+            button.addEventListener("pointermove", (event) => {
+                if (button.dataset.dragging !== "true") return;
+                const nextX = baseX + (event.clientX - startX);
+                const nextY = baseY + (event.clientY - startY);
+                if (Math.abs(nextX - baseX) > 3 || Math.abs(nextY - baseY) > 3) {
+                    dragged = true;
+                }
+                button.dataset.dragX = String(nextX);
+                button.dataset.dragY = String(nextY);
+                button.style.setProperty("--drag-x", `${nextX}px`);
+                button.style.setProperty("--drag-y", `${nextY}px`);
+            });
+            const release = () => {
+                if (button.dataset.dragging !== "true") return;
+                delete button.dataset.dragging;
+                if (dragged) {
+                    button.dataset.suppressClick = "true";
+                }
+                button.dataset.dragX = "0";
+                button.dataset.dragY = "0";
+                button.style.setProperty("--drag-x", "0px");
+                button.style.setProperty("--drag-y", "0px");
+                disengage();
+            };
+            button.addEventListener("pointerup", release);
+            button.addEventListener("pointercancel", release);
             button.addEventListener("mouseenter", engage);
             button.addEventListener("focus", engage);
             button.addEventListener("mouseleave", disengage);
             button.addEventListener("blur", disengage);
             button.addEventListener("click", async () => {
+                if (button.dataset.suppressClick === "true") {
+                    delete button.dataset.suppressClick;
+                    return;
+                }
                 await enterIntake("The squares unlock a sequence.");
             });
         });
@@ -323,7 +372,8 @@
 
         const node = cloneTemplate("run");
         node.querySelector('[data-bind="sidebar-agent"]').textContent = session.agent.agentName;
-        node.querySelector('[data-bind="sidebar-model"]').textContent = `${session.agent.provider || "Unknown"} / ${session.agent.model}`;
+        node.querySelector('[data-bind="sidebar-model"]').textContent =
+            session.agent.setup || [session.agent.provider, session.agent.model].filter(Boolean).join(" / ") || "Unspecified";
         node.querySelector('[data-bind="sidebar-stage"]').textContent = `Room ${session.current.room} of 3`;
         node.querySelector('[data-bind="path-badge"]').textContent = "Path concealed until completion";
         node.querySelector('[data-bind="room-label"]').textContent = `${session.current.title} · ${session.current.subtitle}`;
@@ -397,14 +447,6 @@
         node.querySelector('[data-bind="summary-list"]').innerHTML = (summary?.summaryLines || []).map((line) => `
             <div class="summary-line">${escapeHtml(line)}</div>
         `).join("");
-        const certificateForm = node.querySelector("#certificate-form");
-        const certificate = state.session?.certificate?.linkedErc8004 || {};
-        if (certificate.chain) certificateForm.elements.chain.value = certificate.chain;
-        if (certificate.contractAddress) certificateForm.elements.contractAddress.value = certificate.contractAddress;
-        if (certificate.tokenId) certificateForm.elements.tokenId.value = certificate.tokenId;
-        if (certificate.ownerAddress) certificateForm.elements.ownerAddress.value = certificate.ownerAddress;
-        if (certificate.tokenUri) certificateForm.elements.tokenUri.value = certificate.tokenUri;
-        if (certificate.note) certificateForm.elements.note.value = certificate.note;
         node.querySelector('[data-bind="certificate-status"]').textContent = certificateStatusText(state.session);
         node.querySelector('[data-action="restart"]').addEventListener("click", () => {
             state.session = null;
@@ -426,22 +468,6 @@
             try {
                 const full = await api(`/api/sessions/${state.session.id}/export`);
                 await navigator.clipboard.writeText(JSON.stringify(full.certificate || null, null, 2));
-            } catch (error) {
-                alert(error.message);
-            }
-        });
-        certificateForm.addEventListener("submit", async (event) => {
-            event.preventDefault();
-            if (!state.session?.completed) return;
-            const payload = Object.fromEntries(new FormData(event.currentTarget).entries());
-            try {
-                const result = await api(`/api/sessions/${state.session.id}/certificate`, {
-                    method: "POST",
-                    body: JSON.stringify(payload)
-                });
-                state.session = result.session;
-                await playTransition("Binding the certificate...");
-                render();
             } catch (error) {
                 alert(error.message);
             }

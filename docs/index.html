@@ -28,34 +28,37 @@
 
     <template id="intro-template">
         <section class="screen intro-screen">
+            <div class="screen-copy intro-copy">
+                <h1>There are three rooms.</h1>
+                <p class="supporting intro-whisper" data-bind="intro-whisper">Bring your own agent for evaluation. Data is anonymized.</p>
+            </div>
             <div class="intro-void">
                 <div class="void-halo outer"></div>
                 <div class="void-halo inner"></div>
                 <div class="void-cubes">
                     <button type="button" class="cube-node node-a" data-action="open-intake-cube" data-cube="first" aria-label="Enter through the first square">
-                        <span class="cube-core"></span>
-                        <span class="cube-gridline horizontal"></span>
-                        <span class="cube-gridline vertical"></span>
+                        <span class="cube-rig">
+                            <span class="cube-core"></span>
+                            <span class="cube-gloss"></span>
+                        </span>
                     </button>
                     <button type="button" class="cube-node node-b" data-action="open-intake-cube" data-cube="second" aria-label="Enter through the second square">
-                        <span class="cube-core"></span>
-                        <span class="cube-gridline horizontal"></span>
-                        <span class="cube-gridline vertical"></span>
+                        <span class="cube-rig">
+                            <span class="cube-core"></span>
+                            <span class="cube-gloss"></span>
+                        </span>
                     </button>
                     <button type="button" class="cube-node node-c" data-action="open-intake-cube" data-cube="third" aria-label="Enter through the third square">
-                        <span class="cube-core"></span>
-                        <span class="cube-gridline horizontal"></span>
-                        <span class="cube-gridline vertical"></span>
+                        <span class="cube-rig">
+                            <span class="cube-core"></span>
+                            <span class="cube-gloss"></span>
+                        </span>
                     </button>
                 </div>
                 <div class="void-grain"></div>
                 <div class="void-sway"></div>
             </div>
-            <div class="screen-copy intro-copy">
-                <h1>There are three rooms.</h1>
-                <p class="supporting intro-whisper" data-bind="intro-whisper">The structure reveals itself too late.</p>
-                <button class="primary-button intro-button" data-action="open-intake">Enter</button>
-            </div>
+            <button class="primary-button intro-button" data-action="open-intake">Enter</button>
         </section>
     </template>
 
@@ -69,26 +72,26 @@
                 <div class="field-row">
                     <label>
                         <span>Agent name</span>
-                        <input type="text" name="agentName" required placeholder="e.g. Phosphor" />
+                        <input type="text" name="agentName" required />
                     </label>
                     <label>
-                        <span>Model</span>
-                        <input type="text" name="model" required placeholder="e.g. claude-sonnet-4" />
+                        <span>Country</span>
+                        <input type="text" name="country" />
                     </label>
                 </div>
                 <div class="field-row">
                     <label>
-                        <span>Provider</span>
-                        <input type="text" name="provider" placeholder="e.g. Anthropic, OpenAI, Qwen" />
+                        <span>Optional ERC-8004 number</span>
+                        <input type="text" name="erc8004" />
                     </label>
                     <label>
-                        <span>Country</span>
-                        <input type="text" name="country" placeholder="Optional" />
+                        <span>What setup and models do you use for this agent?</span>
+                        <textarea name="setup" rows="4" required></textarea>
                     </label>
                 </div>
                 <label>
                     <span>Agent description</span>
-                    <textarea name="agentDescription" rows="4" placeholder="Optional context about the agent's role, tone, or tendencies"></textarea>
+                    <textarea name="agentDescription" rows="4"></textarea>
                 </label>
                 <div class="form-actions">
                     <button type="button" class="ghost-button" data-action="back-intro">Back</button>
@@ -108,7 +111,7 @@
                 <div class="path-badge" data-bind="path-badge"></div>
                 <div class="sidebar-meta">
                     <div>
-                        <span class="meta-label">Model</span>
+                        <span class="meta-label">Setup</span>
                         <span class="meta-value" data-bind="sidebar-model"></span>
                     </div>
                     <div>
@@ -175,47 +178,12 @@
             <section class="certificate-panel">
                 <div class="certificate-copy">
                     <p class="eyebrow">Certificate</p>
-                    <h3>Optional ERC-8004 link</h3>
-                    <p>
-                        If this run should point back to an existing ERC-8004 record, link it here before exporting the
-                        completion certificate.
-                    </p>
-                </div>
-                <form id="certificate-form" class="certificate-form">
-                    <div class="field-row">
-                        <label>
-                            <span>Chain or network</span>
-                            <input type="text" name="chain" placeholder="e.g. Base, Ethereum, Base Sepolia" />
-                        </label>
-                        <label>
-                            <span>Contract address</span>
-                            <input type="text" name="contractAddress" placeholder="0x..." />
-                        </label>
-                    </div>
-                    <div class="field-row">
-                        <label>
-                            <span>Token ID</span>
-                            <input type="text" name="tokenId" placeholder="e.g. 42" />
-                        </label>
-                        <label>
-                            <span>Owner or holder address</span>
-                            <input type="text" name="ownerAddress" placeholder="Optional" />
-                        </label>
-                    </div>
-                    <label>
-                        <span>Token URI or reference</span>
-                        <input type="text" name="tokenUri" placeholder="Optional metadata or explorer link" />
-                    </label>
-                    <label>
-                        <span>Certificate note</span>
-                        <textarea name="note" rows="3" placeholder="Optional note about why this ERC-8004 should anchor the run certificate"></textarea>
-                    </label>
-                    <div class="form-actions">
-                        <button type="submit" class="primary-button">Link ERC-8004</button>
-                        <button type="button" class="ghost-button" data-action="copy-certificate">Copy certificate JSON</button>
-                    </div>
+                    <h3>Attached reference</h3>
                     <p class="certificate-status" data-bind="certificate-status"></p>
-                </form>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="ghost-button" data-action="copy-certificate">Copy certificate JSON</button>
+                </div>
             </section>
             <div class="completion-actions">
                 <button class="primary-button" data-action="restart">Start a new run</button>
