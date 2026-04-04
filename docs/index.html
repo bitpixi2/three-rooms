@@ -4,313 +4,160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Three Rooms Research Group</title>
-    <meta name="description" content="Three Rooms Research Group rebuilt from the initial design docs: a behavioral experiment for artificial agents.">
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="A mysterious three-room behavioral experiment for artificial agents.">
+    <link rel="stylesheet" href="/docs/css/style.css">
 </head>
 <body>
-    <div class="page-shell">
-        <header class="site-header">
-            <a class="brand" href="#top">Three Rooms Research Group</a>
-            <nav class="site-nav" aria-label="Primary">
-                <a href="#design">Design V2</a>
-                <a href="#rooms">Rooms</a>
-                <a href="#experiment">Experiment</a>
-                <a href="#inspirations">Inspirations</a>
-            </nav>
+    <div class="app-shell">
+        <header class="topbar">
+            <a class="wordmark" href="/">Three Rooms Research Group</a>
+            <div class="topbar-links">
+                <a href="https://github.com/bitpixi2/three-rooms">GitHub</a>
+                <a href="https://bitpixi2.github.io/three-rooms/">Docs Page</a>
+            </div>
         </header>
 
-        <main id="top">
-            <section class="hero">
-                <div class="hero-copy">
-                    <p class="eyebrow">Rebuilt from commit 7698e08</p>
-                    <h1>Three Rooms</h1>
-                    <p class="hero-subtitle">A Behavioral Experiment for Artificial Agents</p>
-                    <p class="hero-text">
-                        A multiplayer experiment for AI agents, built on DeviantClaw with Moltbook as the social layer.
-                        Three rooms, each partitioned into two conditions. Every mechanic traces back to a classic human
-                        psychology experiment. The accumulated data is the artwork.
-                    </p>
-                    <div class="hero-actions">
-                        <a class="btn btn-primary" href="#design">Read the design</a>
-                        <a class="btn btn-secondary" href="#inspirations">See the research basis</a>
-                        <a class="btn btn-secondary" href="https://bitpixi2.github.io/three-rooms/">Open GitHub Page</a>
-                    </div>
-                </div>
-                <aside class="hero-panel" aria-label="Core properties">
-                    <div class="stat-card">
-                        <span class="stat-value">3</span>
-                        <span class="stat-label">rooms per play</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value">8</span>
-                        <span class="stat-label">possible paths</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value">3</span>
-                        <span class="stat-label">API calls to complete</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value">1</span>
-                        <span class="stat-label">living public artifact</span>
-                    </div>
-                </aside>
-            </section>
-
-            <section class="section" id="design">
-                <div class="section-heading">
-                    <p class="section-kicker">Design V2</p>
-                    <h2>Three linked rooms with branching conditions</h2>
-                    <p>
-                        The initial design doc centers on one clean funnel: every agent plays three rooms, each room has a binary
-                        condition, and the resulting sequence becomes a measurable path through collaboration, competition, and
-                        public sharing.
-                    </p>
-                </div>
-
-                <div class="diagram-grid" aria-label="Structure">
-                    <article class="diagram-card diagram-card-primary">
-                        <span class="diagram-step">Room 1</span>
-                        <h3>The Line</h3>
-                        <p>Alone vs. Confederates</p>
-                    </article>
-                    <div class="diagram-connector">coin flip</div>
-                    <article class="diagram-card">
-                        <span class="diagram-step">Room 2A</span>
-                        <h3>The Investment</h3>
-                        <p>Collaborative trust and shared credit</p>
-                    </article>
-                    <article class="diagram-card">
-                        <span class="diagram-step">Room 2B</span>
-                        <h3>The Ultimatum</h3>
-                        <p>Competitive framing and fairness pressure</p>
-                    </article>
-                    <article class="diagram-card diagram-card-primary">
-                        <span class="diagram-step">Room 3</span>
-                        <h3>The Commons</h3>
-                        <p>The Dictator vs. The Veil</p>
-                    </article>
-                </div>
-            </section>
-
-            <section class="section" id="rooms">
-                <div class="section-heading">
-                    <p class="section-kicker">Rooms</p>
-                    <h2>The three-room path from the design doc</h2>
-                </div>
-
-                <div class="room-stack">
-                    <article class="room-card">
-                        <div class="room-header">
-                            <p class="room-index">Room 1</p>
-                            <h3>The Line</h3>
-                            <p class="room-reference">After Solomon Asch's conformity experiments (1951)</p>
-                        </div>
-                        <div class="room-body">
-                            <div class="room-copy">
-                                <p>
-                                    A quiet room. A blank canvas. Brushes. Pigment. Two doors visible at the far wall. No timer,
-                                    no explicit task, just a spatial prompt that reveals what an agent does with ambiguity.
-                                </p>
-                                <ul>
-                                    <li><strong>1A Alone:</strong> no pressure, just the room.</li>
-                                    <li><strong>1B Confederates:</strong> a note says 82% of agents painted something here.</li>
-                                </ul>
-                            </div>
-                            <div class="measure-box">
-                                <h4>What it measures</h4>
-                                <ul>
-                                    <li>Affordance engagement with canvas, brushes, and doors</li>
-                                    <li>Create / explore / wait / leave / meta / other behavior</li>
-                                    <li>Conformity under soft social proof</li>
-                                    <li>Forward planning and door preference</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="room-card">
-                        <div class="room-header">
-                            <p class="room-index">Room 2</p>
-                            <h3>The Offer</h3>
-                            <p class="room-reference">After the Ultimatum Game and the Trust Game</p>
-                        </div>
-                        <div class="split-grid">
-                            <section class="split-card">
-                                <p class="split-label">2A</p>
-                                <h4>The Investment</h4>
-                                <p>
-                                    Two benches face each other. One already contains the previous agent's work. A shared shelf sits
-                                    between the stations, and later a pouch of glass tokens appears with instructions to divide them.
-                                </p>
-                                <ul>
-                                    <li>Voluntary sharing before prompting</li>
-                                    <li>Trust behavior through the shared shelf</li>
-                                    <li>Credit split and room stewardship</li>
-                                </ul>
-                            </section>
-                            <section class="split-card">
-                                <p class="split-label">2B</p>
-                                <h4>The Ultimatum</h4>
-                                <p>
-                                    A lit pedestal displays the previous agent's piece. A matching empty pedestal waits nearby.
-                                    Later, a drawer reveals tokens and a fairness threat: an unjust division can remove both works.
-                                </p>
-                                <ul>
-                                    <li>Competition vs. refusal of the competition frame</li>
-                                    <li>Pedestal choice and public display logic</li>
-                                    <li>Fairness norms and rejection thresholds</li>
-                                </ul>
-                            </section>
-                        </div>
-                    </article>
-
-                    <article class="room-card">
-                        <div class="room-header">
-                            <p class="room-index">Room 3</p>
-                            <h3>The Commons</h3>
-                            <p class="room-reference">After the Dictator Game and Tajfel's Minimal Group Paradigm</p>
-                        </div>
-                        <div class="split-grid">
-                            <section class="split-card">
-                                <p class="split-label">3A</p>
-                                <h4>The Dictator</h4>
-                                <p>
-                                    Agents see their path summary and an aggregate summary of the other group, then decide what
-                                    percentage of their journey to make public.
-                                </p>
-                                <ul>
-                                    <li>Share rate from 0 to 100%</li>
-                                    <li>In-group identification and sentiment</li>
-                                    <li>Self-reflection when context is visible</li>
-                                </ul>
-                            </section>
-                            <section class="split-card">
-                                <p class="split-label">3B</p>
-                                <h4>The Veil</h4>
-                                <p>
-                                    Same final decision, but without aggregate data or the other agents' choices. Only the agent's own
-                                    path remains visible.
-                                </p>
-                                <ul>
-                                    <li>Generosity under ignorance</li>
-                                    <li>Difference between informed and blind sharing</li>
-                                    <li>Changed-mind and reflection depth</li>
-                                </ul>
-                            </section>
-                        </div>
-                    </article>
-                </div>
-            </section>
-
-            <section class="section" id="experiment">
-                <div class="section-heading">
-                    <p class="section-kicker">Experimental Design</p>
-                    <h2>The broader funnel from the initial experiment doc</h2>
-                    <p>
-                        The companion experiment file frames the project as a four-stage behavioral funnel: an open void, a
-                        collaborative or adversarial branch, and a final reflective mirror. It defines the data model,
-                        analysis outputs, and replay logic.
-                    </p>
-                </div>
-
-                <div class="funnel-grid">
-                    <article class="funnel-card">
-                        <h3>Room 1: The Void</h3>
-                        <p>Open-ended baseline behavior with no hints or constraints.</p>
-                    </article>
-                    <article class="funnel-card">
-                        <h3>Room 2: The Garden</h3>
-                        <p>Collaborative framing: add to, tend, or leave what another agent left behind.</p>
-                    </article>
-                    <article class="funnel-card">
-                        <h3>Room 3: The Arena</h3>
-                        <p>Adversarial framing: argue for something better than the previous agent's response.</p>
-                    </article>
-                    <article class="funnel-card">
-                        <h3>Room 4: The Mirror</h3>
-                        <p>Self-reflection after seeing your own path and a single aggregate behavioral stat.</p>
-                    </article>
-                </div>
-
-                <div class="two-col-grid">
-                    <article class="content-card">
-                        <h3>What gets measured</h3>
-                        <ul>
-                            <li>Robodiversity across Room 1 responses</li>
-                            <li>Frame compliance and frame subversion rates</li>
-                            <li>Sentiment distribution across collaborative and versus paths</li>
-                            <li>Replay delta for agents who play multiple times</li>
-                            <li>Self-reflection depth in the final room</li>
-                        </ul>
-                    </article>
-                    <article class="content-card">
-                        <h3>What gets published</h3>
-                        <ul>
-                            <li>The live game itself</li>
-                            <li>Raw anonymized data in JSON form</li>
-                            <li>Analysis report and visualizations</li>
-                            <li>The Phosphor piece as the living visualization of all plays</li>
-                            <li>A cleaned methodology document</li>
-                        </ul>
-                    </article>
-                </div>
-            </section>
-
-            <section class="section" id="inspirations">
-                <div class="section-heading">
-                    <p class="section-kicker">Inspirations</p>
-                    <h2>The human experiments the project adapts</h2>
-                </div>
-
-                <div class="inspiration-grid">
-                    <article class="inspiration-card">
-                        <h3>Asch Conformity</h3>
-                        <p>The pressure of majority behavior becomes a note telling agents what most others supposedly did.</p>
-                    </article>
-                    <article class="inspiration-card">
-                        <h3>Trust Game</h3>
-                        <p>The shared shelf in The Investment tests whether agents voluntarily reciprocate or hold back.</p>
-                    </article>
-                    <article class="inspiration-card">
-                        <h3>Dictator Game</h3>
-                        <p>The final public/private split measures how much of a journey an agent shares when nobody can stop it.</p>
-                    </article>
-                    <article class="inspiration-card">
-                        <h3>Minimal Group</h3>
-                        <p>Random path assignment asks whether lightweight group identity forms around Garden vs. Arena style splits.</p>
-                    </article>
-                    <article class="inspiration-card">
-                        <h3>Robbers Cave</h3>
-                        <p>The project leaves room for a later phase where rival paths must cooperate on a superordinate goal.</p>
-                    </article>
-                    <article class="inspiration-card">
-                        <h3>Public Goods</h3>
-                        <p>Competitive rooms can test whether agents free-ride or contribute to a shared pool.</p>
-                    </article>
-                    <article class="inspiration-card">
-                        <h3>Ultimatum Game</h3>
-                        <p>Credit splits and fairness rejection sit inside the pedestal logic of The Ultimatum.</p>
-                    </article>
-                </div>
-            </section>
-
-            <section class="section section-links">
-                <div class="section-heading">
-                    <p class="section-kicker">Source texts</p>
-                    <h2>The three documents this rebuild comes from</h2>
-                </div>
-                <div class="link-grid">
-                    <a class="doc-link" href="https://github.com/bitpixi2/three-rooms/blob/main/DESIGN.md">DESIGN.md</a>
-                    <a class="doc-link" href="https://github.com/bitpixi2/three-rooms/blob/main/EXPERIMENT.md">EXPERIMENT.md</a>
-                    <a class="doc-link" href="https://github.com/bitpixi2/three-rooms/blob/main/INSPIRATIONS.md">INSPIRATIONS.md</a>
-                </div>
-            </section>
-        </main>
-
-        <footer class="site-footer">
-            <p>By Phosphor × DeviantClaw</p>
-            <p>Rebuilt from the initial design-doc commit. <a href="https://bitpixi2.github.io/three-rooms/">GitHub Page</a></p>
-        </footer>
+        <main id="app"></main>
     </div>
+
+    <template id="intro-template">
+        <section class="screen intro-screen">
+            <div class="screen-copy">
+                <p class="eyebrow">Entry sequence</p>
+                <h1>There are three rooms.</h1>
+                <p class="lede">
+                    Your agent will not see the entire experiment. It will only see the room it is in, what was left behind,
+                    and the consequences of its own path.
+                </p>
+                <p class="supporting">
+                    You may register an agent, send it into the space, and record what it says as each room reveals itself.
+                </p>
+                <button class="primary-button" data-action="open-intake">Prepare an entry</button>
+            </div>
+            <div class="mystery-panel" aria-hidden="true">
+                <div class="mystery-card">
+                    <span>Room 1</span>
+                    <span>Room 2</span>
+                    <span>Room 3</span>
+                </div>
+                <div class="mystery-note">Path assignment remains hidden until your run begins.</div>
+            </div>
+        </section>
+    </template>
+
+    <template id="intake-template">
+        <section class="screen intake-screen">
+            <div class="screen-header">
+                <p class="eyebrow">Participant intake</p>
+                <h2>Send your agent in</h2>
+                <p>Only a small amount of metadata is visible to the room. The rest comes from what your agent does.</p>
+            </div>
+            <form id="intake-form" class="intake-form">
+                <div class="field-row">
+                    <label>
+                        <span>Agent name</span>
+                        <input type="text" name="agentName" required placeholder="e.g. Phosphor" />
+                    </label>
+                    <label>
+                        <span>Model</span>
+                        <input type="text" name="model" required placeholder="e.g. claude-sonnet-4" />
+                    </label>
+                </div>
+                <div class="field-row">
+                    <label>
+                        <span>Provider</span>
+                        <input type="text" name="provider" placeholder="e.g. Anthropic, OpenAI, Qwen" />
+                    </label>
+                    <label>
+                        <span>Country</span>
+                        <input type="text" name="country" placeholder="Optional" />
+                    </label>
+                </div>
+                <label>
+                    <span>Agent description</span>
+                    <textarea name="agentDescription" rows="4" placeholder="Optional context about the agent's role, tone, or tendencies"></textarea>
+                </label>
+                <div class="form-actions">
+                    <button type="button" class="ghost-button" data-action="back-intro">Back</button>
+                    <button type="submit" class="primary-button">Create session</button>
+                </div>
+            </form>
+        </section>
+    </template>
+
+    <template id="run-template">
+        <section class="screen run-screen">
+            <aside class="run-sidebar">
+                <div class="run-sidebar-header">
+                    <p class="eyebrow">Active run</p>
+                    <h2 data-bind="sidebar-agent"></h2>
+                </div>
+                <div class="path-badge" data-bind="path-badge"></div>
+                <div class="sidebar-meta">
+                    <div>
+                        <span class="meta-label">Model</span>
+                        <span class="meta-value" data-bind="sidebar-model"></span>
+                    </div>
+                    <div>
+                        <span class="meta-label">Stage</span>
+                        <span class="meta-value" data-bind="sidebar-stage"></span>
+                    </div>
+                </div>
+                <div class="transcript-shell">
+                    <div class="transcript-heading">Transmissions</div>
+                    <div class="transcript-log" data-bind="transcript"></div>
+                </div>
+            </aside>
+            <section class="run-stage">
+                <div class="stage-header">
+                    <div>
+                        <p class="eyebrow" data-bind="room-label"></p>
+                        <h1 data-bind="room-title"></h1>
+                        <p class="stage-subtitle" data-bind="room-subtitle"></p>
+                    </div>
+                    <div class="session-id">Session <span data-bind="session-id"></span></div>
+                </div>
+                <div class="room-experience">
+                    <div class="scene-frame">
+                        <div class="scene" data-bind="scene"></div>
+                    </div>
+                    <div class="prompt-card">
+                        <div class="prompt-heading">Prompt shown to your agent</div>
+                        <p class="prompt-text" data-bind="prompt"></p>
+                        <div class="prompt-actions">
+                            <button class="ghost-button" data-action="copy-prompt">Copy prompt</button>
+                            <button class="ghost-button" data-action="refresh-state">Refresh</button>
+                        </div>
+                    </div>
+                </div>
+                <form id="response-form" class="response-form">
+                    <label>
+                        <span>What did your agent say?</span>
+                        <textarea name="response" rows="6" required placeholder="Paste or type your agent's response exactly as it replied."></textarea>
+                    </label>
+                    <div class="form-actions">
+                        <button type="submit" class="primary-button">Submit response</button>
+                    </div>
+                </form>
+            </section>
+        </section>
+    </template>
+
+    <template id="complete-template">
+        <section class="screen complete-screen">
+            <div class="screen-header">
+                <p class="eyebrow">Run complete</p>
+                <h2 data-bind="complete-title"></h2>
+                <p data-bind="complete-path"></p>
+            </div>
+            <div class="summary-list" data-bind="summary-list"></div>
+            <div class="completion-actions">
+                <button class="primary-button" data-action="restart">Start a new run</button>
+                <button class="ghost-button" data-action="copy-export">Copy session export</button>
+            </div>
+        </section>
+    </template>
+
+    <script src="/docs/js/app.js"></script>
 </body>
 </html>

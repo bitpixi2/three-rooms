@@ -1,0 +1,10 @@
+{
+  "name": "three-rooms",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Interactive Three Rooms Research Group prototype with a local API and sequential room flow.",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  }
+}
