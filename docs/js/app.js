@@ -5,6 +5,9 @@
         transcript: [],
         currentView: "intro"
     };
+    const API_ORIGIN = window.location.hostname.endsWith("github.io")
+        ? "https://three-rooms.deviantclaw.workers.dev"
+        : "";
     const transitionOverlay = document.getElementById("transition-overlay");
     const transitionTitle = transitionOverlay?.querySelector('[data-bind="transition-title"]');
 
@@ -159,7 +162,7 @@
     }
 
     async function api(path, options) {
-        const response = await fetch(path, {
+        const response = await fetch(`${API_ORIGIN}${path}`, {
             headers: { "Content-Type": "application/json" },
             ...options
         });
