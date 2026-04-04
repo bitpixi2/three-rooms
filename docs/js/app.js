@@ -249,9 +249,42 @@
 
     function renderIntro() {
         const node = cloneTemplate("intro");
-        node.querySelector('[data-action="open-intake"]').addEventListener("click", async () => {
-            await playTransition("Preparing intake...");
+        const whisper = node.querySelector('[data-bind="intro-whisper"]');
+        const introVoid = node.querySelector(".intro-void");
+        const whisperDefault = whisper?.textContent || "";
+        const doorMessages = {
+            top: "The upper door notices you first.",
+            middle: "The middle door opens like a cut in the air.",
+            bottom: "The lower door hums beneath the floorline."
+        };
+
+        const enterIntake = async (message) => {
+            await playTransition(message);
             setView("intake");
+        };
+
+        node.querySelector('[data-action="open-intake"]').addEventListener("click", async () => {
+            await enterIntake("Preparing intake...");
+        });
+
+        node.querySelectorAll('[data-action="open-intake-door"]').forEach((button) => {
+            const { door } = button.dataset;
+            const message = doorMessages[door] || whisperDefault;
+            const engage = () => {
+                if (whisper) whisper.textContent = message;
+                if (introVoid) introVoid.dataset.activeDoor = door;
+            };
+            const disengage = () => {
+                if (whisper) whisper.textContent = whisperDefault;
+                if (introVoid) delete introVoid.dataset.activeDoor;
+            };
+            button.addEventListener("mouseenter", engage);
+            button.addEventListener("focus", engage);
+            button.addEventListener("mouseleave", disengage);
+            button.addEventListener("blur", disengage);
+            button.addEventListener("click", async () => {
+                await enterIntake("A door yields.");
+            });
         });
         mount(node);
     }

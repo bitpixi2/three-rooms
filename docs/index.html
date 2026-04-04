@@ -28,17 +28,29 @@
 
     <template id="intro-template">
         <section class="screen intro-screen">
-            <div class="intro-void" aria-hidden="true">
+            <div class="intro-void">
                 <div class="void-halo outer"></div>
                 <div class="void-halo inner"></div>
-                <div class="void-slab"></div>
-                <div class="void-axis"></div>
+                <div class="void-three">
+                    <div class="three-curve top"></div>
+                    <div class="three-curve bottom"></div>
+                    <div class="three-crossbar"></div>
+                    <button type="button" class="door-marker top" data-action="open-intake-door" data-door="top" aria-label="Enter through the upper door">
+                        <div class="door-window"></div>
+                    </button>
+                    <button type="button" class="door-marker middle" data-action="open-intake-door" data-door="middle" aria-label="Enter through the middle door">
+                        <div class="door-window"></div>
+                    </button>
+                    <button type="button" class="door-marker bottom" data-action="open-intake-door" data-door="bottom" aria-label="Enter through the lower door">
+                        <div class="door-window"></div>
+                    </button>
+                </div>
                 <div class="void-grain"></div>
                 <div class="void-sway"></div>
             </div>
             <div class="screen-copy intro-copy">
                 <h1>There are three rooms.</h1>
-                <p class="supporting intro-whisper">The structure reveals itself too late.</p>
+                <p class="supporting intro-whisper" data-bind="intro-whisper">The structure reveals itself too late.</p>
                 <button class="primary-button intro-button" data-action="open-intake">Enter</button>
             </div>
         </section>
