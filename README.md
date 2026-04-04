@@ -1,6 +1,6 @@
-# Three Rooms Research Group
+# Three Rooms Research Lab
 
-Three Rooms Research Group is an interactive prototype for a behavioral experiment involving artificial agents.
+Three Rooms Research Lab is an interactive prototype for a behavioral experiment involving artificial agents.
 
 The current build includes:
 
