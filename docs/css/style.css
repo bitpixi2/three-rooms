@@ -196,15 +196,15 @@ button {
 :root {
     --bg: #020202;
     --bg-soft: #090909;
-    --panel: rgba(8, 8, 9, 0.8);
-    --panel-soft: rgba(14, 14, 16, 0.86);
-    --line: rgba(255, 255, 255, 0.12);
-    --text: #f3f3f3;
-    --muted: #9f9fa6;
-    --ice: #f2f2f2;
-    --rose: #d8d8d8;
-    --gold: #e4e4e4;
-    --mint: #cbcbcb;
+    --panel: rgba(10, 10, 12, 0.9);
+    --panel-soft: rgba(19, 19, 23, 0.94);
+    --line: rgba(255, 255, 255, 0.22);
+    --text: #fcfcfc;
+    --muted: #d0d0d6;
+    --ice: #ffffff;
+    --rose: #ededed;
+    --gold: #f2f2f2;
+    --mint: #e0e0e0;
     --glow: 0 24px 80px rgba(0, 0, 0, 0.62);
     --glow-soft: 0 18px 48px rgba(0, 0, 0, 0.48);
 }
@@ -261,7 +261,7 @@ body {
 .wordmark {
     letter-spacing: 0.28em;
     font-size: 0.7rem;
-    opacity: 0.8;
+    opacity: 0.96;
 }
 
 .intro-screen,
@@ -332,6 +332,7 @@ body {
     border: 1px solid var(--line);
     border-radius: 24px;
     background: var(--panel-soft);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .mystery-panel {
@@ -389,7 +390,7 @@ body {
     min-height: 48px;
     padding: 0 18px;
     border-radius: 999px;
-    border: 1px solid var(--line);
+    border: 1px solid rgba(255, 255, 255, 0.26);
     transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
 }
 
@@ -405,8 +406,8 @@ body {
 }
 
 .ghost-button {
-    background: rgba(255, 255, 255, 0.03);
-    color: var(--muted);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--ice);
 }
 
 .ghost-link {
@@ -419,7 +420,7 @@ body {
 .ghost-button:hover,
 .ghost-link:hover {
     transform: translateY(-1px);
-    border-color: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.46);
     color: var(--text);
 }
 
@@ -472,7 +473,7 @@ body {
     letter-spacing: 0.04em;
     white-space: nowrap;
     overflow-wrap: normal;
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .intro-button {
@@ -504,14 +505,14 @@ body {
 
 .void-halo.outer {
     border-radius: 42%;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 0 0 14px rgba(255, 255, 255, 0.015), 0 0 72px rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    box-shadow: 0 0 0 14px rgba(255, 255, 255, 0.025), 0 0 72px rgba(255, 255, 255, 0.12);
 }
 
 .void-halo.inner {
     inset: 11%;
     border-radius: 40%;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .void-cubes {
@@ -544,10 +545,10 @@ body {
     border-radius: 26px;
     transform-style: preserve-3d;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.34);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     background:
-        linear-gradient(155deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.08) 38%, rgba(255, 255, 255, 0.02) 100%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.01));
+        linear-gradient(155deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.14) 38%, rgba(255, 255, 255, 0.04) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03));
     backdrop-filter: blur(20px) saturate(1.18);
     box-shadow:
         0 26px 56px rgba(0, 0, 0, 0.36),
@@ -590,10 +591,10 @@ body {
 .cube-core {
     inset: 11% 10%;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.28);
     background:
-        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04) 34%, transparent 54%),
-        linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02) 46%, rgba(255, 255, 255, 0.08) 100%),
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.06) 34%, transparent 54%),
+        linear-gradient(160deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.05) 46%, rgba(255, 255, 255, 0.12) 100%),
         linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0));
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.18),
@@ -767,21 +768,22 @@ textarea {
     width: 100%;
     padding: 14px 16px;
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(8, 11, 18, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(20, 22, 28, 0.96);
     color: var(--text);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 input::placeholder,
 textarea::placeholder {
-    color: rgba(174, 183, 196, 0.72);
+    color: rgba(232, 232, 238, 0.74);
 }
 
 input:focus,
 textarea:focus {
     outline: none;
-    border-color: rgba(198, 216, 233, 0.56);
-    box-shadow: 0 0 0 4px rgba(198, 216, 233, 0.08);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
 }
 
 textarea {
@@ -864,8 +866,8 @@ textarea {
 .transcript-entry {
     padding: 12px 14px;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.03);
-    border-left: 3px solid rgba(198, 216, 233, 0.38);
+    background: rgba(255, 255, 255, 0.07);
+    border-left: 3px solid rgba(255, 255, 255, 0.52);
     animation: riseIn 560ms ease both;
     animation-delay: calc(var(--entry-index, 0) * 38ms);
 }
@@ -881,7 +883,7 @@ textarea {
 .run-stage {
     border: 1px solid var(--line);
     border-radius: 24px;
-    background: rgba(10, 14, 22, 0.82);
+    background: rgba(14, 16, 20, 0.94);
     display: grid;
     grid-template-rows: auto auto auto;
 }
@@ -911,9 +913,9 @@ textarea {
     width: 38px;
     height: 38px;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--muted);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--ice);
     display: grid;
     place-items: center;
     font-size: 0.86rem;
@@ -937,8 +939,8 @@ textarea {
 .stage-variant-chip {
     border-radius: 999px;
     padding: 10px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
     color: var(--ice);
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -969,8 +971,8 @@ textarea {
     display: grid;
     grid-template-rows: minmax(0, 1fr) auto;
     background:
-        radial-gradient(circle at top, rgba(198, 216, 233, 0.10), transparent 36%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.18));
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.16), transparent 36%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.18));
 }
 
 .scene {
