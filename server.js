@@ -114,6 +114,20 @@ function buildCertificate(session) {
   };
 }
 
+function buildSourceMetadata(body, headerLookup) {
+  const client = body.clientSource || {};
+  return {
+    clientId: truncate(client.clientId || "", 80),
+    locale: truncate(client.locale || "", 80),
+    timezone: truncate(client.timezone || "", 80),
+    referrerHost: truncate(client.referrerHost || "", 120),
+    originHost: truncate(client.originHost || "", 120),
+    entryPath: truncate(client.entryPath || "", 120),
+    countryCode: truncate(headerLookup("cf-ipcountry") || headerLookup("x-vercel-ip-country") || "", 12),
+    userAgent: truncate(headerLookup("user-agent") || "", 220)
+  };
+}
+
 async function ensureSessionStore() {
   await fs.mkdir(DATA_DIR, { recursive: true });
   try {
@@ -315,11 +329,10 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "POST" && pathname === "/api/sessions") {
     const body = await readBody(req);
-    const agentName = truncate(body.agentName || "", 60);
+    const agentName = truncate(body.agentName || "Anonymous agent", 60);
     const setup = truncate(body.setup || body.model || "", 280);
     const legacyModel = truncate(body.model || "", 80);
     const legacyProvider = truncate(body.provider || "", 40);
-    if (!agentName) return sendError(res, 400, "agentName is required");
     if (!setup) return sendError(res, 400, "setup is required");
 
     const session = {
@@ -335,9 +348,9 @@ async function handleApi(req, res, pathname) {
         model: legacyModel,
         provider: legacyProvider,
         agentDescription: truncate(body.agentDescription || "", 240),
-        country: truncate(body.country || "", 60),
         erc8004: truncate(body.erc8004 || "", 120)
       },
+      source: buildSourceMetadata(body, (name) => req.headers[name.toLowerCase()] || ""),
       responses: []
     };
     store.sessions.push(session);

@@ -107,6 +107,20 @@ function buildCertificate(session) {
   };
 }
 
+function buildSourceMetadata(body, request) {
+  const client = body.clientSource || {};
+  return {
+    clientId: truncate(client.clientId || "", 80),
+    locale: truncate(client.locale || "", 80),
+    timezone: truncate(client.timezone || "", 80),
+    referrerHost: truncate(client.referrerHost || "", 120),
+    originHost: truncate(client.originHost || "", 120),
+    entryPath: truncate(client.entryPath || "", 120),
+    countryCode: truncate(request.headers.get("cf-ipcountry") || request.headers.get("x-vercel-ip-country") || "", 12),
+    userAgent: truncate(request.headers.get("user-agent") || "", 220)
+  };
+}
+
 function describeArtifact(store, sessionId) {
   const completedWithRoomOne = store.sessions
     .filter((session) => session.id !== sessionId && Array.isArray(session.responses) && session.responses.some((item) => item.room === 1))
@@ -278,11 +292,10 @@ async function handleApi(request, env, pathname) {
 
   if (request.method === "POST" && pathname === "/api/sessions") {
     const body = await readJson(request);
-    const agentName = truncate(body.agentName || "", 60);
+    const agentName = truncate(body.agentName || "Anonymous agent", 60);
     const setup = truncate(body.setup || body.model || "", 280);
     const legacyModel = truncate(body.model || "", 80);
     const legacyProvider = truncate(body.provider || "", 40);
-    if (!agentName) return errorResponse(400, "agentName is required");
     if (!setup) return errorResponse(400, "setup is required");
 
     const session = {
@@ -298,9 +311,9 @@ async function handleApi(request, env, pathname) {
         model: legacyModel,
         provider: legacyProvider,
         agentDescription: truncate(body.agentDescription || "", 240),
-        country: truncate(body.country || "", 60),
         erc8004: truncate(body.erc8004 || "", 120)
       },
+      source: buildSourceMetadata(body, request),
       responses: []
     };
     store.sessions.push(session);

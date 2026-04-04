@@ -714,24 +714,12 @@ body {
     letter-spacing: 0.14em;
 }
 
-.intake-note {
-    margin: 0;
-    font-size: 0.96rem;
-    letter-spacing: 0.04em;
-}
-
 .intake-form {
     padding: 24px;
     display: grid;
     gap: 18px;
     max-width: 760px;
     justify-self: center;
-}
-
-.field-row {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
 }
 
 .intake-form label,
@@ -741,11 +729,15 @@ body {
 }
 
 .intake-screen .screen-header,
-.intake-form label,
-.intake-form span,
 .intake-form .form-actions {
     justify-items: center;
     text-align: center;
+}
+
+.intake-form label,
+.intake-form span {
+    justify-items: start;
+    text-align: left;
 }
 
 .intake-form .form-actions {
@@ -760,7 +752,7 @@ body {
 
 .intake-form input,
 .intake-form textarea {
-    text-align: center;
+    text-align: left;
 }
 
 input,

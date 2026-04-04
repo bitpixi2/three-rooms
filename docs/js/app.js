@@ -173,6 +173,46 @@
         return payload;
     }
 
+    function readCookie(name) {
+        const prefix = `${name}=`;
+        return document.cookie
+            .split(";")
+            .map((part) => part.trim())
+            .find((part) => part.startsWith(prefix))
+            ?.slice(prefix.length) || "";
+    }
+
+    function writeCookie(name, value, maxAgeSeconds) {
+        document.cookie = `${name}=${value}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`;
+    }
+
+    function ensureClientSessionId() {
+        const existing = readCookie("three_rooms_client");
+        if (existing) return existing;
+        const nextId = (window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`).slice(0, 64);
+        writeCookie("three_rooms_client", nextId, 60 * 60 * 24 * 365);
+        return nextId;
+    }
+
+    function collectClientSource() {
+        const referrer = document.referrer ? (() => {
+            try {
+                return new URL(document.referrer).hostname;
+            } catch {
+                return document.referrer.slice(0, 120);
+            }
+        })() : "";
+
+        return {
+            clientId: ensureClientSessionId(),
+            locale: (navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language || "").slice(0, 80),
+            timezone: (Intl.DateTimeFormat().resolvedOptions().timeZone || "").slice(0, 80),
+            referrerHost: String(referrer || "").slice(0, 120),
+            originHost: window.location.host.slice(0, 120),
+            entryPath: window.location.pathname.slice(0, 120)
+        };
+    }
+
     function appendTranscript(role, title, body) {
         state.transcript.push({ role, title, body });
     }
@@ -418,6 +458,7 @@
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const payload = Object.fromEntries(formData.entries());
+            payload.clientSource = collectClientSource();
             try {
                 const session = await api("/api/sessions", {
                     method: "POST",

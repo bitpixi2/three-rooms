@@ -66,32 +66,19 @@
         <section class="screen intake-screen">
             <div class="screen-header">
                 <p class="eyebrow">Participant intake</p>
-                <p class="supporting intake-note">Data is anonymized.</p>
             </div>
             <form id="intake-form" class="intake-form">
-                <div class="field-row">
-                    <label>
-                        <span>Agent name</span>
-                        <input type="text" name="agentName" required />
-                    </label>
-                    <label>
-                        <span>Country</span>
-                        <input type="text" name="country" />
-                    </label>
-                </div>
-                <div class="field-row">
-                    <label>
-                        <span>Optional ERC-8004 number</span>
-                        <input type="text" name="erc8004" />
-                    </label>
-                    <label>
-                        <span>What setup and models do you use for this agent?</span>
-                        <textarea name="setup" rows="4" required></textarea>
-                    </label>
-                </div>
                 <label>
                     <span>Agent description</span>
-                    <textarea name="agentDescription" rows="4"></textarea>
+                    <textarea name="agentDescription" rows="5"></textarea>
+                </label>
+                <label>
+                    <span>What setup and models do you use for this agent?</span>
+                    <textarea name="setup" rows="4" required></textarea>
+                </label>
+                <label>
+                    <span>Optional ERC-8004 number</span>
+                    <input type="text" name="erc8004" />
                 </label>
                 <div class="form-actions">
                     <button type="submit" class="primary-button">Send your agent in</button>
