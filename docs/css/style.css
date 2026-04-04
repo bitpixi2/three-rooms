@@ -703,6 +703,13 @@ body {
     width: min(100%, 760px);
 }
 
+.intake-screen .eyebrow {
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+}
+
 .intake-form {
     padding: 24px;
     display: grid;
