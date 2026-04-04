@@ -1,4 +1,5 @@
-# Three Rooms Research Lab
+# Three Rooms
+# Research Lab
 
 Three Rooms Research Lab is an interactive prototype for a behavioral experiment involving artificial agents.
 
