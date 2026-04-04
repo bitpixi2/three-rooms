@@ -255,6 +255,7 @@
         const whisper = node.querySelector('[data-bind="intro-whisper"]');
         const introVoid = node.querySelector(".intro-void");
         const whisperDefault = whisper?.textContent || "";
+        const cubeStates = new Map();
         const cubeMessages = {
             first: "The first square advances by a clean measure.",
             second: "The second square rotates into alignment.",
@@ -270,14 +271,78 @@
             await enterIntake("Preparing intake...");
         });
 
+        const clampCubeState = (button, state) => {
+            if (!introVoid) return;
+            const voidRect = introVoid.getBoundingClientRect();
+            const cubeRect = button.getBoundingClientRect();
+            const maxX = Math.max(0, (voidRect.width - cubeRect.width) / 2);
+            const maxY = Math.max(0, (voidRect.height - cubeRect.height) / 2);
+
+            if (state.x > maxX) {
+                state.x = maxX;
+                state.vx *= -0.72;
+            } else if (state.x < -maxX) {
+                state.x = -maxX;
+                state.vx *= -0.72;
+            }
+
+            if (state.y > maxY) {
+                state.y = maxY;
+                state.vy *= -0.72;
+            } else if (state.y < -maxY) {
+                state.y = -maxY;
+                state.vy *= -0.72;
+            }
+        };
+
+        let animationFrame = 0;
+        const animateCubes = () => {
+            animationFrame = 0;
+            let shouldContinue = false;
+            cubeStates.forEach((state, button) => {
+                if (!button.isConnected || state.dragging) return;
+                state.x += state.vx;
+                state.y += state.vy;
+                state.vx *= 0.95;
+                state.vy *= 0.95;
+                clampCubeState(button, state);
+                button.style.setProperty("--drag-x", `${state.x.toFixed(2)}px`);
+                button.style.setProperty("--drag-y", `${state.y.toFixed(2)}px`);
+                if (Math.abs(state.vx) > 0.08 || Math.abs(state.vy) > 0.08) {
+                    shouldContinue = true;
+                } else {
+                    state.vx = 0;
+                    state.vy = 0;
+                }
+            });
+            if (shouldContinue) {
+                animationFrame = window.requestAnimationFrame(animateCubes);
+            }
+        };
+
+        const kickAnimation = () => {
+            if (!animationFrame) {
+                animationFrame = window.requestAnimationFrame(animateCubes);
+            }
+        };
+
         node.querySelectorAll('[data-action="open-intake-cube"]').forEach((button) => {
             const { cube } = button.dataset;
             const message = cubeMessages[cube] || whisperDefault;
             let startX = 0;
             let startY = 0;
-            let baseX = 0;
-            let baseY = 0;
             let dragged = false;
+            let lastClientX = 0;
+            let lastClientY = 0;
+            let lastMoveTime = 0;
+            const state = {
+                x: 0,
+                y: 0,
+                vx: 0,
+                vy: 0,
+                dragging: false
+            };
+            cubeStates.set(button, state);
             const engage = () => {
                 if (whisper) whisper.textContent = message;
                 if (introVoid) introVoid.dataset.activeCube = cube;
@@ -290,35 +355,44 @@
                 event.preventDefault();
                 startX = event.clientX;
                 startY = event.clientY;
-                baseX = Number(button.dataset.dragX || 0);
-                baseY = Number(button.dataset.dragY || 0);
+                lastClientX = event.clientX;
+                lastClientY = event.clientY;
+                lastMoveTime = event.timeStamp || performance.now();
                 dragged = false;
+                state.dragging = true;
+                state.vx = 0;
+                state.vy = 0;
                 button.dataset.dragging = "true";
                 button.setPointerCapture(event.pointerId);
                 engage();
             });
             button.addEventListener("pointermove", (event) => {
                 if (button.dataset.dragging !== "true") return;
-                const nextX = baseX + (event.clientX - startX);
-                const nextY = baseY + (event.clientY - startY);
-                if (Math.abs(nextX - baseX) > 3 || Math.abs(nextY - baseY) > 3) {
+                const nextX = state.x + (event.clientX - lastClientX);
+                const nextY = state.y + (event.clientY - lastClientY);
+                if (Math.abs(event.clientX - startX) > 3 || Math.abs(event.clientY - startY) > 3) {
                     dragged = true;
                 }
-                button.dataset.dragX = String(nextX);
-                button.dataset.dragY = String(nextY);
-                button.style.setProperty("--drag-x", `${nextX}px`);
-                button.style.setProperty("--drag-y", `${nextY}px`);
+                state.x = nextX;
+                state.y = nextY;
+                const elapsed = Math.max(1, (event.timeStamp || performance.now()) - lastMoveTime);
+                state.vx = (event.clientX - lastClientX) / elapsed * 14;
+                state.vy = (event.clientY - lastClientY) / elapsed * 14;
+                lastClientX = event.clientX;
+                lastClientY = event.clientY;
+                lastMoveTime = event.timeStamp || performance.now();
+                clampCubeState(button, state);
+                button.style.setProperty("--drag-x", `${state.x.toFixed(2)}px`);
+                button.style.setProperty("--drag-y", `${state.y.toFixed(2)}px`);
             });
             const release = () => {
                 if (button.dataset.dragging !== "true") return;
                 delete button.dataset.dragging;
+                state.dragging = false;
                 if (dragged) {
                     button.dataset.suppressClick = "true";
+                    kickAnimation();
                 }
-                button.dataset.dragX = "0";
-                button.dataset.dragY = "0";
-                button.style.setProperty("--drag-x", "0px");
-                button.style.setProperty("--drag-y", "0px");
                 disengage();
             };
             button.addEventListener("pointerup", release);

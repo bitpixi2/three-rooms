@@ -482,7 +482,7 @@ body {
 
 .intro-void {
     position: relative;
-    width: min(62vw, 520px);
+    width: min(31vw, 260px);
     aspect-ratio: 1 / 1;
     display: grid;
     place-items: center;
@@ -505,7 +505,7 @@ body {
 .void-halo.outer {
     border-radius: 42%;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 0 0 28px rgba(255, 255, 255, 0.015), 0 0 120px rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 14px rgba(255, 255, 255, 0.015), 0 0 72px rgba(255, 255, 255, 0.08);
 }
 
 .void-halo.inner {
@@ -2218,7 +2218,7 @@ textarea {
     }
 
     .intro-void {
-        width: min(84vw, 360px);
+        width: min(48vw, 220px);
     }
 
     .intro-copy {
