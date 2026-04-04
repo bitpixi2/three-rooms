@@ -464,11 +464,14 @@ body {
 }
 
 .intro-whisper {
+    display: inline-block;
+    width: max-content;
     max-width: none;
     margin: 0;
     font-size: 0.96rem;
     letter-spacing: 0.04em;
     white-space: nowrap;
+    overflow-wrap: normal;
     color: rgba(255, 255, 255, 0.72);
 }
 
@@ -2226,7 +2229,8 @@ textarea {
     .intro-whisper {
         font-size: 0.82rem;
         letter-spacing: 0.03em;
-        max-width: 100%;
+        width: max-content;
+        max-width: none;
     }
 
     .intro-button,
