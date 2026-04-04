@@ -1,0 +1,438 @@
+:root {
+    --bg: #090b12;
+    --panel: rgba(14, 18, 28, 0.9);
+    --panel-soft: rgba(20, 26, 39, 0.78);
+    --line: rgba(190, 209, 223, 0.16);
+    --text: #edf3f7;
+    --muted: #b0bcc8;
+    --ice: #c2d7e8;
+    --rose: #cda1b7;
+    --gold: #d9c28e;
+    --mint: #9fcdbc;
+    --shadow: 0 28px 70px rgba(0, 0, 0, 0.34);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+    line-height: 1.6;
+    background:
+        radial-gradient(circle at top left, rgba(194, 215, 232, 0.12), transparent 30%),
+        radial-gradient(circle at top right, rgba(205, 161, 183, 0.10), transparent 26%),
+        linear-gradient(180deg, #090b12 0%, #080a0f 42%, #06070b 100%);
+    padding: 26px;
+}
+
+a {
+    color: inherit;
+}
+
+.page-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.site-header,
+.site-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.site-header {
+    margin-bottom: 26px;
+}
+
+.brand {
+    text-decoration: none;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.84rem;
+}
+
+.site-nav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.site-nav a,
+.site-footer {
+    color: var(--muted);
+    text-decoration: none;
+}
+
+.site-nav a:hover,
+.doc-link:hover,
+.btn:hover {
+    color: var(--text);
+}
+
+.hero,
+.section,
+.site-footer {
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+}
+
+.hero,
+.section {
+    padding: 34px;
+    margin-bottom: 22px;
+}
+
+.hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(250px, 0.8fr);
+    gap: 28px;
+    align-items: stretch;
+}
+
+.eyebrow,
+.section-kicker,
+.diagram-step,
+.room-index,
+.split-label {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.73rem;
+}
+
+.eyebrow,
+.section-kicker,
+.diagram-step,
+.split-label {
+    color: var(--gold);
+}
+
+.hero h1,
+.section-heading h2,
+.room-card h3,
+.diagram-card h3,
+.content-card h3,
+.funnel-card h3,
+.inspiration-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    line-height: 1.06;
+}
+
+.hero h1 {
+    font-size: clamp(3rem, 6vw, 5.8rem);
+    margin: 8px 0 10px;
+}
+
+.hero-subtitle {
+    font-size: 1.18rem;
+    color: var(--ice);
+    margin: 0 0 18px;
+    letter-spacing: 0.03em;
+}
+
+.hero-text,
+.section-heading p,
+.diagram-card p,
+.room-reference,
+.room-body p,
+.room-body li,
+.split-card p,
+.split-card li,
+.funnel-card p,
+.content-card li,
+.inspiration-card p,
+.site-footer p {
+    color: var(--muted);
+}
+
+.hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 26px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    text-decoration: none;
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, rgba(194, 215, 232, 0.22), rgba(159, 205, 188, 0.14));
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.28);
+}
+
+.hero-panel {
+    display: grid;
+    gap: 12px;
+}
+
+.stat-card,
+.diagram-card,
+.room-card,
+.split-card,
+.funnel-card,
+.content-card,
+.inspiration-card,
+.doc-link {
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    background: var(--panel-soft);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.stat-card {
+    padding: 20px;
+}
+
+.stat-value {
+    display: block;
+    color: var(--ice);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.section-heading {
+    max-width: 780px;
+    margin-bottom: 24px;
+}
+
+.section-heading h2 {
+    font-size: clamp(2rem, 3vw, 3.3rem);
+    margin: 10px 0 12px;
+}
+
+.diagram-grid,
+.funnel-grid,
+.two-col-grid,
+.inspiration-grid,
+.link-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.diagram-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: stretch;
+}
+
+.diagram-card {
+    padding: 22px;
+}
+
+.diagram-card-primary {
+    background:
+        linear-gradient(155deg, rgba(194, 215, 232, 0.10), rgba(205, 161, 183, 0.07)),
+        var(--panel-soft);
+}
+
+.diagram-connector {
+    display: grid;
+    place-items: center;
+    min-height: 126px;
+    border-radius: 22px;
+    border: 1px dashed rgba(217, 194, 142, 0.28);
+    color: var(--gold);
+    background: rgba(255, 255, 255, 0.02);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+}
+
+.room-stack {
+    display: grid;
+    gap: 18px;
+}
+
+.room-card {
+    padding: 24px;
+}
+
+.room-header {
+    margin-bottom: 18px;
+}
+
+.room-index {
+    color: var(--rose);
+    margin: 0 0 8px;
+}
+
+.room-header h3 {
+    font-size: 2rem;
+    margin: 0 0 8px;
+}
+
+.room-reference {
+    margin: 0;
+}
+
+.room-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.9fr);
+    gap: 20px;
+}
+
+.room-body ul,
+.split-card ul,
+.content-card ul {
+    margin: 14px 0 0;
+    padding-left: 20px;
+}
+
+.measure-box {
+    padding: 18px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(159, 205, 188, 0.18);
+    background: rgba(159, 205, 188, 0.07);
+}
+
+.measure-box h4 {
+    margin: 0 0 10px;
+    color: var(--mint);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.split-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.split-card,
+.funnel-card,
+.content-card,
+.inspiration-card {
+    padding: 20px;
+}
+
+.split-card h4 {
+    font-size: 1.4rem;
+    margin: 4px 0 10px;
+    color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
+}
+
+.funnel-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 16px;
+}
+
+.two-col-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.inspiration-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.inspiration-card h3,
+.content-card h3,
+.funnel-card h3 {
+    margin: 0 0 10px;
+    font-size: 1.35rem;
+}
+
+.section-links .link-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.doc-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 92px;
+    padding: 20px;
+    color: var(--ice);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.doc-link:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.site-footer {
+    padding: 20px 24px;
+    margin-top: 22px;
+}
+
+@media (max-width: 980px) {
+    .hero,
+    .diagram-grid,
+    .room-body,
+    .split-grid,
+    .funnel-grid,
+    .two-col-grid,
+    .inspiration-grid,
+    .section-links .link-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .diagram-connector {
+        min-height: auto;
+        padding: 18px;
+    }
+}
+
+@media (max-width: 720px) {
+    body {
+        padding: 14px;
+    }
+
+    .hero,
+    .section {
+        padding: 24px 20px;
+        border-radius: 22px;
+    }
+
+    .site-header,
+    .site-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .site-nav {
+        gap: 12px;
+    }
+
+    .hero h1 {
+        font-size: 2.8rem;
+    }
+}
