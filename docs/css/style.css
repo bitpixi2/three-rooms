@@ -37,7 +37,7 @@ body {
     color: var(--text);
     font-family: var(--font-body);
     line-height: 1.6;
-    padding: 22px;
+    padding: 0;
 }
 
 body.is-transitioning {
@@ -58,8 +58,9 @@ button {
 .app-shell {
     position: relative;
     z-index: 1;
-    max-width: 1280px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: none;
+    margin: 0;
 }
 
 .ambient-backdrop {
@@ -128,20 +129,7 @@ button {
 }
 
 .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-    margin-bottom: 20px;
-    padding: 14px 18px;
-    position: sticky;
-    top: 14px;
-    z-index: 5;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 999px;
-    background: rgba(7, 10, 17, 0.58);
-    backdrop-filter: blur(18px);
-    box-shadow: var(--glow-soft);
+    display: none;
 }
 
 .wordmark {
@@ -172,10 +160,10 @@ button {
 .screen {
     position: relative;
     overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: 28px;
+    border: 0;
+    border-radius: 0;
     background: var(--panel);
-    box-shadow: var(--glow);
+    box-shadow: none;
     backdrop-filter: blur(18px);
     opacity: 0;
     transform: translateY(18px) scale(0.988);
