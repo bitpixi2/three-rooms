@@ -1,26 +1,3 @@
-const http = require("http");
-const fs = require("fs/promises");
-const path = require("path");
-const { randomUUID } = require("crypto");
-
-const ROOT = __dirname;
-const DOCS_DIR = path.join(ROOT, "docs");
-const DATA_DIR = path.join(ROOT, "data");
-const SESSIONS_PATH = path.join(DATA_DIR, "sessions.json");
-const PORT = Number(process.env.PORT || 8787);
-
-const MIME_TYPES = {
-  ".html": "text/html; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".js": "application/javascript; charset=utf-8",
-  ".json": "application/json; charset=utf-8",
-  ".svg": "image/svg+xml; charset=utf-8",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".webp": "image/webp"
-};
-
 const ROOM_ONE_VARIANTS = {
   alone: {
     label: "1A",
@@ -96,6 +73,22 @@ function pathLabel(pathState) {
   ].join("-");
 }
 
+function buildSummary(session) {
+  const roomOne = session.responses.find((item) => item.room === 1);
+  const roomTwo = session.responses.find((item) => item.room === 2);
+  const roomThree = session.responses.find((item) => item.room === 3);
+  return {
+    title: "Run complete",
+    path: pathLabel(session.path),
+    agentName: session.agent?.agentName || "Unnamed agent",
+    summaryLines: [
+      `The Line: ${truncate(roomOne?.response || "No response recorded.", 140)}`,
+      `${ROOM_TWO_VARIANTS[session.path.room2].title}: ${truncate(roomTwo?.response || "No response recorded.", 140)}`,
+      `${ROOM_THREE_VARIANTS[session.path.room3].title}: ${truncate(roomThree?.response || "No response recorded.", 140)}`
+    ]
+  };
+}
+
 function buildCertificate(session) {
   if (!session.completed) return null;
   const summary = buildSummary(session);
@@ -109,66 +102,6 @@ function buildCertificate(session) {
     summaryLines: summary.summaryLines,
     linkedErc8004: session.certificate?.linkedErc8004 || null
   };
-}
-
-async function ensureSessionStore() {
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  try {
-    await fs.access(SESSIONS_PATH);
-  } catch {
-    await fs.writeFile(SESSIONS_PATH, JSON.stringify({ sessions: [] }, null, 2));
-  }
-}
-
-async function loadStore() {
-  await ensureSessionStore();
-  const raw = await fs.readFile(SESSIONS_PATH, "utf8");
-  const parsed = JSON.parse(raw || "{}");
-  if (!Array.isArray(parsed.sessions)) parsed.sessions = [];
-  return parsed;
-}
-
-async function saveStore(store) {
-  await ensureSessionStore();
-  await fs.writeFile(SESSIONS_PATH, JSON.stringify(store, null, 2));
-}
-
-async function readBody(req) {
-  return new Promise((resolve, reject) => {
-    let body = "";
-    req.on("data", (chunk) => {
-      body += chunk;
-      if (body.length > 1_000_000) {
-        reject(new Error("Request body too large"));
-        req.destroy();
-      }
-    });
-    req.on("end", () => {
-      if (!body) return resolve({});
-      try {
-        resolve(JSON.parse(body));
-      } catch {
-        reject(new Error("Invalid JSON body"));
-      }
-    });
-    req.on("error", reject);
-  });
-}
-
-function sendJson(res, statusCode, payload) {
-  const body = JSON.stringify(payload, null, 2);
-  res.writeHead(statusCode, {
-    "Content-Type": "application/json; charset=utf-8",
-    "Cache-Control": "no-store",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS"
-  });
-  res.end(body);
-}
-
-function sendError(res, statusCode, message) {
-  sendJson(res, statusCode, { error: message });
 }
 
 function describeArtifact(store, sessionId) {
@@ -260,24 +193,7 @@ function buildRoomPrompt(store, session) {
   };
 }
 
-function buildSummary(session) {
-  const roomOne = session.responses.find((item) => item.room === 1);
-  const roomTwo = session.responses.find((item) => item.room === 2);
-  const roomThree = session.responses.find((item) => item.room === 3);
-  return {
-    title: "Run complete",
-    path: pathLabel(session.path),
-    agentName: session.agent?.agentName || "Unnamed agent",
-    summaryLines: [
-      `The Line: ${truncate(roomOne?.response || "No response recorded.", 140)}`,
-      `${ROOM_TWO_VARIANTS[session.path.room2].title}: ${truncate(roomTwo?.response || "No response recorded.", 140)}`,
-      `${ROOM_THREE_VARIANTS[session.path.room3].title}: ${truncate(roomThree?.response || "No response recorded.", 140)}`
-    ]
-  };
-}
-
 function publicSession(store, session) {
-  const current = buildRoomPrompt(store, session);
   return {
     id: session.id,
     createdAt: session.createdAt,
@@ -287,38 +203,85 @@ function publicSession(store, session) {
     pathLabel: pathLabel(session.path),
     currentRoom: session.currentRoom,
     completed: session.completed,
-    current,
+    current: buildRoomPrompt(store, session),
     responses: session.responses || [],
     summary: session.completed ? buildSummary(session) : null,
     certificate: buildCertificate(session)
   };
 }
 
-async function handleApi(req, res, pathname) {
-  if (req.method === "OPTIONS") {
-    res.writeHead(204, {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS"
+function jsonResponse(status, payload, extraHeaders = {}) {
+  return new Response(JSON.stringify(payload, null, 2), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+      "access-control-allow-origin": "*",
+      "access-control-allow-headers": "content-type",
+      "access-control-allow-methods": "GET, POST, OPTIONS",
+      ...extraHeaders
+    }
+  });
+}
+
+function errorResponse(status, message) {
+  return jsonResponse(status, { error: message });
+}
+
+async function readJson(request) {
+  if (!request.body) return {};
+  try {
+    return await request.json();
+  } catch {
+    throw new Error("Invalid JSON body");
+  }
+}
+
+function getStoreStub(env) {
+  return env.SESSION_STORE.get(env.SESSION_STORE.idFromName("global"));
+}
+
+async function loadStore(env) {
+  const response = await getStoreStub(env).fetch("https://session-store.internal/store");
+  if (!response.ok) throw new Error("Failed to load session store");
+  return response.json();
+}
+
+async function saveStore(env, store) {
+  const response = await getStoreStub(env).fetch("https://session-store.internal/store", {
+    method: "PUT",
+    body: JSON.stringify(store)
+  });
+  if (!response.ok) throw new Error("Failed to save session store");
+}
+
+async function handleApi(request, env, pathname) {
+  if (request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "access-control-allow-origin": "*",
+        "access-control-allow-headers": "content-type",
+        "access-control-allow-methods": "GET, POST, OPTIONS"
+      }
     });
-    return res.end();
   }
 
-  const store = await loadStore();
+  const store = await loadStore(env);
 
-  if (req.method === "GET" && pathname === "/api/health") {
-    return sendJson(res, 200, { ok: true });
+  if (request.method === "GET" && pathname === "/api/health") {
+    return jsonResponse(200, { ok: true });
   }
 
-  if (req.method === "POST" && pathname === "/api/sessions") {
-    const body = await readBody(req);
+  if (request.method === "POST" && pathname === "/api/sessions") {
+    const body = await readJson(request);
     const agentName = truncate(body.agentName || "", 60);
     const model = truncate(body.model || "", 80);
-    if (!agentName) return sendError(res, 400, "agentName is required");
-    if (!model) return sendError(res, 400, "model is required");
+    if (!agentName) return errorResponse(400, "agentName is required");
+    if (!model) return errorResponse(400, "model is required");
 
     const session = {
-      id: randomUUID().slice(0, 8),
+      id: crypto.randomUUID().slice(0, 8),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       currentRoom: 1,
@@ -334,27 +297,27 @@ async function handleApi(req, res, pathname) {
       responses: []
     };
     store.sessions.push(session);
-    await saveStore(store);
-    return sendJson(res, 201, publicSession(store, session));
+    await saveStore(env, store);
+    return jsonResponse(201, publicSession(store, session));
   }
 
   const sessionMatch = pathname.match(/^\/api\/sessions\/([^/]+)$/);
-  if (req.method === "GET" && sessionMatch) {
+  if (request.method === "GET" && sessionMatch) {
     const session = store.sessions.find((item) => item.id === sessionMatch[1]);
-    if (!session) return sendError(res, 404, "Session not found");
-    return sendJson(res, 200, publicSession(store, session));
+    if (!session) return errorResponse(404, "Session not found");
+    return jsonResponse(200, publicSession(store, session));
   }
 
   const responseMatch = pathname.match(/^\/api\/sessions\/([^/]+)\/respond$/);
-  if (req.method === "POST" && responseMatch) {
+  if (request.method === "POST" && responseMatch) {
     const session = store.sessions.find((item) => item.id === responseMatch[1]);
-    if (!session) return sendError(res, 404, "Session not found");
-    if (session.completed) return sendError(res, 400, "Session already complete");
+    if (!session) return errorResponse(404, "Session not found");
+    if (session.completed) return errorResponse(400, "Session already complete");
 
     const current = buildRoomPrompt(store, session);
-    const body = await readBody(req);
+    const body = await readJson(request);
     const response = String(body.response || "").trim();
-    if (!response) return sendError(res, 400, "response is required");
+    if (!response) return errorResponse(400, "response is required");
 
     session.responses.push({
       room: current.room,
@@ -371,8 +334,8 @@ async function handleApi(req, res, pathname) {
     } else {
       session.currentRoom += 1;
     }
-    await saveStore(store);
-    return sendJson(res, 200, {
+    await saveStore(env, store);
+    return jsonResponse(200, {
       accepted: true,
       recorded: session.responses[session.responses.length - 1],
       session: publicSession(store, session)
@@ -380,16 +343,16 @@ async function handleApi(req, res, pathname) {
   }
 
   const certificateMatch = pathname.match(/^\/api\/sessions\/([^/]+)\/certificate$/);
-  if (req.method === "POST" && certificateMatch) {
+  if (request.method === "POST" && certificateMatch) {
     const session = store.sessions.find((item) => item.id === certificateMatch[1]);
-    if (!session) return sendError(res, 404, "Session not found");
-    if (!session.completed) return sendError(res, 400, "Session must be complete before linking a certificate");
+    if (!session) return errorResponse(404, "Session not found");
+    if (!session.completed) return errorResponse(400, "Session must be complete before linking a certificate");
 
-    const body = await readBody(req);
+    const body = await readJson(request);
     const contractAddress = truncate(body.contractAddress || "", 120);
     const tokenId = truncate(body.tokenId || "", 120);
-    if (!contractAddress) return sendError(res, 400, "contractAddress is required");
-    if (!tokenId) return sendError(res, 400, "tokenId is required");
+    if (!contractAddress) return errorResponse(400, "contractAddress is required");
+    if (!tokenId) return errorResponse(400, "tokenId is required");
 
     session.certificate = {
       linkedAt: new Date().toISOString(),
@@ -403,8 +366,8 @@ async function handleApi(req, res, pathname) {
       }
     };
     session.updatedAt = new Date().toISOString();
-    await saveStore(store);
-    return sendJson(res, 200, {
+    await saveStore(env, store);
+    return jsonResponse(200, {
       accepted: true,
       certificate: buildCertificate(session),
       session: publicSession(store, session)
@@ -412,69 +375,53 @@ async function handleApi(req, res, pathname) {
   }
 
   const exportMatch = pathname.match(/^\/api\/sessions\/([^/]+)\/export$/);
-  if (req.method === "GET" && exportMatch) {
+  if (request.method === "GET" && exportMatch) {
     const session = store.sessions.find((item) => item.id === exportMatch[1]);
-    if (!session) return sendError(res, 404, "Session not found");
-    return sendJson(res, 200, {
+    if (!session) return errorResponse(404, "Session not found");
+    return jsonResponse(200, {
       ...session,
       certificate: buildCertificate(session)
     });
   }
 
-  return sendError(res, 404, "Not found");
+  return errorResponse(404, "Not found");
 }
 
-async function serveStatic(req, res, pathname) {
-  const relative = pathname.replace(/^\/+/, "");
-  const candidates =
-    pathname === "/" || pathname === "/index.html"
-      ? [path.join(DOCS_DIR, "index.html")]
-      : [path.join(ROOT, relative), path.join(DOCS_DIR, relative)];
+export class SessionStore {
+  constructor(state) {
+    this.state = state;
+  }
 
-  for (let filePath of candidates) {
+  async fetch(request) {
+    const url = new URL(request.url);
+    if (url.pathname !== "/store") {
+      return errorResponse(404, "Not found");
+    }
+    if (request.method === "GET") {
+      const store = (await this.state.storage.get("store")) || { sessions: [] };
+      if (!Array.isArray(store.sessions)) store.sessions = [];
+      return jsonResponse(200, store);
+    }
+    if (request.method === "PUT") {
+      const store = await readJson(request);
+      if (!Array.isArray(store.sessions)) store.sessions = [];
+      await this.state.storage.put("store", store);
+      return jsonResponse(200, { ok: true });
+    }
+    return errorResponse(405, "Method not allowed");
+  }
+}
+
+export default {
+  async fetch(request, env) {
     try {
-      const stat = await fs.stat(filePath);
-      if (stat.isDirectory()) {
-        filePath = path.join(filePath, "index.html");
+      const url = new URL(request.url);
+      if (url.pathname.startsWith("/api/")) {
+        return handleApi(request, env, url.pathname);
       }
-      const ext = path.extname(filePath).toLowerCase();
-      const data = await fs.readFile(filePath);
-      res.writeHead(200, {
-        "Content-Type": MIME_TYPES[ext] || "application/octet-stream",
-        "Cache-Control": ext === ".html" ? "no-cache" : "public, max-age=300"
-      });
-      return res.end(data);
-    } catch {
-      continue;
+      return env.ASSETS.fetch(request);
+    } catch (error) {
+      return errorResponse(500, error instanceof Error ? error.message : "Internal server error");
     }
   }
-
-  try {
-    const fallback = await fs.readFile(path.join(DOCS_DIR, "index.html"));
-    res.writeHead(200, {
-      "Content-Type": "text/html; charset=utf-8",
-      "Cache-Control": "no-cache"
-    });
-    return res.end(fallback);
-  } catch {
-    res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-    return res.end("Not found");
-  }
-}
-
-const server = http.createServer(async (req, res) => {
-  try {
-    const url = new URL(req.url, `http://${req.headers.host || "localhost"}`);
-    if (url.pathname.startsWith("/api/")) {
-      return await handleApi(req, res, url.pathname);
-    }
-    return await serveStatic(req, res, url.pathname);
-  } catch (error) {
-    console.error("[three-rooms]", error);
-    return sendError(res, 500, "Internal server error");
-  }
-});
-
-server.listen(PORT, () => {
-  console.log(`Three Rooms server listening on http://localhost:${PORT}`);
-});
+};

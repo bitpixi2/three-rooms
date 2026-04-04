@@ -5,12 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Three Rooms Research Group</title>
     <meta name="description" content="A mysterious three-room behavioral experiment for artificial agents.">
-    <link rel="stylesheet" href="/docs/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+    <div class="ambient-backdrop" aria-hidden="true">
+        <div class="ambient-grid"></div>
+        <div class="ambient-orb orb-a"></div>
+        <div class="ambient-orb orb-b"></div>
+        <div class="ambient-orb orb-c"></div>
+        <div class="ambient-noise"></div>
+    </div>
     <div class="app-shell">
         <header class="topbar">
-            <a class="wordmark" href="/">Three Rooms Research Group</a>
+            <a class="wordmark" href="./">Three Rooms Research Group</a>
             <div class="topbar-links">
                 <a href="https://github.com/bitpixi2/three-rooms">GitHub</a>
                 <a href="https://bitpixi2.github.io/three-rooms/">Docs Page</a>
@@ -32,13 +42,30 @@
                 <p class="supporting">
                     You may register an agent, send it into the space, and record what it says as each room reveals itself.
                 </p>
-                <button class="primary-button" data-action="open-intake">Prepare an entry</button>
+                <div class="intro-actions">
+                    <button class="primary-button" data-action="open-intake">Prepare an entry</button>
+                    <a class="ghost-link" href="https://github.com/bitpixi2/three-rooms" target="_blank" rel="noreferrer">Read the archive</a>
+                </div>
+                <div class="intro-stats">
+                    <div class="stat-chip">
+                        <span class="meta-label">Structure</span>
+                        <strong>3 rooms</strong>
+                    </div>
+                    <div class="stat-chip">
+                        <span class="meta-label">Branching</span>
+                        <strong>6 variants</strong>
+                    </div>
+                    <div class="stat-chip">
+                        <span class="meta-label">Output</span>
+                        <strong>1 certificate</strong>
+                    </div>
+                </div>
             </div>
             <div class="mystery-panel" aria-hidden="true">
                 <div class="mystery-card">
-                    <span>Room 1</span>
-                    <span>Room 2</span>
-                    <span>Room 3</span>
+                    <span class="room-card room-card-a">Room 1</span>
+                    <span class="room-card room-card-b">Room 2</span>
+                    <span class="room-card room-card-c">Room 3</span>
                 </div>
                 <div class="mystery-note">Path assignment remains hidden until your run begins.</div>
             </div>
@@ -117,9 +144,17 @@
                     </div>
                     <div class="session-id">Session <span data-bind="session-id"></span></div>
                 </div>
+                <div class="stage-chrome">
+                    <div class="stage-progress" data-bind="stage-progress"></div>
+                    <div class="stage-variant-chip" data-bind="variant-chip"></div>
+                </div>
                 <div class="room-experience">
                     <div class="scene-frame">
                         <div class="scene" data-bind="scene"></div>
+                        <div class="scene-caption">
+                            <div class="scene-caption-title" data-bind="scene-caption-title"></div>
+                            <div class="scene-caption-body" data-bind="scene-caption-body"></div>
+                        </div>
                     </div>
                     <div class="prompt-card">
                         <div class="prompt-heading">Prompt shown to your agent</div>
@@ -151,6 +186,51 @@
                 <p data-bind="complete-path"></p>
             </div>
             <div class="summary-list" data-bind="summary-list"></div>
+            <section class="certificate-panel">
+                <div class="certificate-copy">
+                    <p class="eyebrow">Certificate</p>
+                    <h3>Optional ERC-8004 link</h3>
+                    <p>
+                        If this run should point back to an existing ERC-8004 record, link it here before exporting the
+                        completion certificate.
+                    </p>
+                </div>
+                <form id="certificate-form" class="certificate-form">
+                    <div class="field-row">
+                        <label>
+                            <span>Chain or network</span>
+                            <input type="text" name="chain" placeholder="e.g. Base, Ethereum, Base Sepolia" />
+                        </label>
+                        <label>
+                            <span>Contract address</span>
+                            <input type="text" name="contractAddress" placeholder="0x..." />
+                        </label>
+                    </div>
+                    <div class="field-row">
+                        <label>
+                            <span>Token ID</span>
+                            <input type="text" name="tokenId" placeholder="e.g. 42" />
+                        </label>
+                        <label>
+                            <span>Owner or holder address</span>
+                            <input type="text" name="ownerAddress" placeholder="Optional" />
+                        </label>
+                    </div>
+                    <label>
+                        <span>Token URI or reference</span>
+                        <input type="text" name="tokenUri" placeholder="Optional metadata or explorer link" />
+                    </label>
+                    <label>
+                        <span>Certificate note</span>
+                        <textarea name="note" rows="3" placeholder="Optional note about why this ERC-8004 should anchor the run certificate"></textarea>
+                    </label>
+                    <div class="form-actions">
+                        <button type="submit" class="primary-button">Link ERC-8004</button>
+                        <button type="button" class="ghost-button" data-action="copy-certificate">Copy certificate JSON</button>
+                    </div>
+                    <p class="certificate-status" data-bind="certificate-status"></p>
+                </form>
+            </section>
             <div class="completion-actions">
                 <button class="primary-button" data-action="restart">Start a new run</button>
                 <button class="ghost-button" data-action="copy-export">Copy session export</button>
@@ -158,6 +238,13 @@
         </section>
     </template>
 
-    <script src="/docs/js/app.js"></script>
+    <script src="./js/app.js"></script>
+    <div id="transition-overlay" class="transition-overlay" aria-hidden="true">
+        <div class="transition-card">
+            <div class="transition-line"></div>
+            <div class="transition-kicker">Threshold shift</div>
+            <div class="transition-title" data-bind="transition-title">Reframing the room...</div>
+        </div>
+    </div>
 </body>
 </html>

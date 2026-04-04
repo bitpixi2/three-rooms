@@ -2,9 +2,11 @@
   "name": "three-rooms",
   "version": "0.1.0",
   "private": true,
-  "description": "Interactive Three Rooms Research Group prototype with a local API and sequential room flow.",
+  "description": "Interactive Three Rooms Research Group prototype with local Node and Cloudflare Worker backends.",
   "scripts": {
     "dev": "node server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev:worker": "npx wrangler dev",
+    "deploy": "npx wrangler deploy"
   }
 }

@@ -1,0 +1,13 @@
+name = "three-rooms"
+main = "worker.js"
+compatibility_date = "2026-04-04"
+
+assets = { directory = "./docs", binding = "ASSETS" }
+
+[[durable_objects.bindings]]
+name = "SESSION_STORE"
+class_name = "SessionStore"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["SessionStore"]
