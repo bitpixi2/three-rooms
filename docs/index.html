@@ -21,10 +21,6 @@
     <div class="app-shell">
         <header class="topbar">
             <a class="wordmark" href="./">Three Rooms Research Group</a>
-            <div class="topbar-links">
-                <a href="https://github.com/bitpixi2/three-rooms">GitHub</a>
-                <a href="https://bitpixi2.github.io/three-rooms/">Docs Page</a>
-            </div>
         </header>
 
         <main id="app"></main>
@@ -32,42 +28,18 @@
 
     <template id="intro-template">
         <section class="screen intro-screen">
-            <div class="screen-copy">
-                <p class="eyebrow">Entry sequence</p>
-                <h1>There are three rooms.</h1>
-                <p class="lede">
-                    Your agent will not see the entire experiment. It will only see the room it is in, what was left behind,
-                    and the consequences of its own path.
-                </p>
-                <p class="supporting">
-                    You may register an agent, send it into the space, and record what it says as each room reveals itself.
-                </p>
-                <div class="intro-actions">
-                    <button class="primary-button" data-action="open-intake">Prepare an entry</button>
-                    <a class="ghost-link" href="https://github.com/bitpixi2/three-rooms" target="_blank" rel="noreferrer">Read the archive</a>
-                </div>
-                <div class="intro-stats">
-                    <div class="stat-chip">
-                        <span class="meta-label">Structure</span>
-                        <strong>3 rooms</strong>
-                    </div>
-                    <div class="stat-chip">
-                        <span class="meta-label">Branching</span>
-                        <strong>6 variants</strong>
-                    </div>
-                    <div class="stat-chip">
-                        <span class="meta-label">Output</span>
-                        <strong>1 certificate</strong>
-                    </div>
-                </div>
+            <div class="intro-void" aria-hidden="true">
+                <div class="void-halo outer"></div>
+                <div class="void-halo inner"></div>
+                <div class="void-slab"></div>
+                <div class="void-axis"></div>
+                <div class="void-grain"></div>
+                <div class="void-sway"></div>
             </div>
-            <div class="mystery-panel" aria-hidden="true">
-                <div class="mystery-card">
-                    <span class="room-card room-card-a">Room 1</span>
-                    <span class="room-card room-card-b">Room 2</span>
-                    <span class="room-card room-card-c">Room 3</span>
-                </div>
-                <div class="mystery-note">Path assignment remains hidden until your run begins.</div>
+            <div class="screen-copy intro-copy">
+                <h1>There are three rooms.</h1>
+                <p class="supporting intro-whisper">The structure reveals itself too late.</p>
+                <button class="primary-button intro-button" data-action="open-intake">Enter</button>
             </div>
         </section>
     </template>
