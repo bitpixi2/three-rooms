@@ -252,10 +252,10 @@
         const whisper = node.querySelector('[data-bind="intro-whisper"]');
         const introVoid = node.querySelector(".intro-void");
         const whisperDefault = whisper?.textContent || "";
-        const doorMessages = {
-            top: "The upper door notices you first.",
-            middle: "The middle door opens like a cut in the air.",
-            bottom: "The lower door hums beneath the floorline."
+        const cubeMessages = {
+            first: "The first square advances by a clean measure.",
+            second: "The second square rotates into alignment.",
+            third: "The third square resolves the pattern."
         };
 
         const enterIntake = async (message) => {
@@ -267,23 +267,23 @@
             await enterIntake("Preparing intake...");
         });
 
-        node.querySelectorAll('[data-action="open-intake-door"]').forEach((button) => {
-            const { door } = button.dataset;
-            const message = doorMessages[door] || whisperDefault;
+        node.querySelectorAll('[data-action="open-intake-cube"]').forEach((button) => {
+            const { cube } = button.dataset;
+            const message = cubeMessages[cube] || whisperDefault;
             const engage = () => {
                 if (whisper) whisper.textContent = message;
-                if (introVoid) introVoid.dataset.activeDoor = door;
+                if (introVoid) introVoid.dataset.activeCube = cube;
             };
             const disengage = () => {
                 if (whisper) whisper.textContent = whisperDefault;
-                if (introVoid) delete introVoid.dataset.activeDoor;
+                if (introVoid) delete introVoid.dataset.activeCube;
             };
             button.addEventListener("mouseenter", engage);
             button.addEventListener("focus", engage);
             button.addEventListener("mouseleave", disengage);
             button.addEventListener("blur", disengage);
             button.addEventListener("click", async () => {
-                await enterIntake("A door yields.");
+                await enterIntake("The squares unlock a sequence.");
             });
         });
         mount(node);

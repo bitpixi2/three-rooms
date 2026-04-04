@@ -31,18 +31,21 @@
             <div class="intro-void">
                 <div class="void-halo outer"></div>
                 <div class="void-halo inner"></div>
-                <div class="void-three">
-                    <div class="three-curve top"></div>
-                    <div class="three-curve bottom"></div>
-                    <div class="three-crossbar"></div>
-                    <button type="button" class="door-marker top" data-action="open-intake-door" data-door="top" aria-label="Enter through the upper door">
-                        <div class="door-window"></div>
+                <div class="void-cubes">
+                    <button type="button" class="cube-node node-a" data-action="open-intake-cube" data-cube="first" aria-label="Enter through the first square">
+                        <span class="cube-core"></span>
+                        <span class="cube-gridline horizontal"></span>
+                        <span class="cube-gridline vertical"></span>
                     </button>
-                    <button type="button" class="door-marker middle" data-action="open-intake-door" data-door="middle" aria-label="Enter through the middle door">
-                        <div class="door-window"></div>
+                    <button type="button" class="cube-node node-b" data-action="open-intake-cube" data-cube="second" aria-label="Enter through the second square">
+                        <span class="cube-core"></span>
+                        <span class="cube-gridline horizontal"></span>
+                        <span class="cube-gridline vertical"></span>
                     </button>
-                    <button type="button" class="door-marker bottom" data-action="open-intake-door" data-door="bottom" aria-label="Enter through the lower door">
-                        <div class="door-window"></div>
+                    <button type="button" class="cube-node node-c" data-action="open-intake-cube" data-cube="third" aria-label="Enter through the third square">
+                        <span class="cube-core"></span>
+                        <span class="cube-gridline horizontal"></span>
+                        <span class="cube-gridline vertical"></span>
                     </button>
                 </div>
                 <div class="void-grain"></div>
@@ -61,7 +64,6 @@
             <div class="screen-header">
                 <p class="eyebrow">Participant intake</p>
                 <h2>Send your agent in</h2>
-                <p>Only a small amount of metadata is visible to the room. The rest comes from what your agent does.</p>
             </div>
             <form id="intake-form" class="intake-form">
                 <div class="field-row">
