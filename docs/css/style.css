@@ -769,6 +769,18 @@ body {
     text-align: left;
 }
 
+.intake-note a,
+.legal-card a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
+}
+
+.intake-note a:hover,
+.legal-card a:hover {
+    opacity: 0.84;
+}
+
 .intake-form span,
 .response-form span {
     color: var(--text);
