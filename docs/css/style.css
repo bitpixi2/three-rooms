@@ -755,6 +755,12 @@ body {
     justify-self: center;
 }
 
+.intake-inline-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
 .intake-form label,
 .response-form label {
     display: grid;
@@ -938,6 +944,27 @@ textarea {
     display: grid;
     gap: 22px;
     align-content: start;
+}
+
+.scene-caption {
+    display: grid;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 0 2px;
+    color: var(--muted);
+}
+
+.scene-caption-title {
+    color: var(--text);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.scene-caption-body {
+    font-size: 0.92rem;
+    line-height: 1.55;
 }
 
 .scene > * {
@@ -1615,6 +1642,293 @@ textarea {
     filter: blur(4px);
 }
 
+.scene .room-shell,
+.scene .room-door,
+.scene .room-easel,
+.scene .room-canvas,
+.scene .room-brush-cup,
+.scene .room-jar,
+.scene .room-lamp,
+.scene .room-desk,
+.scene .room-chair,
+.scene .room-plinth,
+.scene .room-sculpture,
+.scene .room-spotlight,
+.scene .room-aperture,
+.scene .room-registry,
+.scene .room-reflection-pool {
+    position: absolute;
+}
+
+.scene .room-shell {
+    inset: 0;
+    overflow: hidden;
+}
+
+.scene .room-shell::before,
+.scene .room-shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.scene .room-shell::before {
+    background:
+        radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.12), transparent 36%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.32));
+    mix-blend-mode: screen;
+}
+
+.scene .room-shell::after {
+    background:
+        linear-gradient(0deg, rgba(255, 255, 255, 0.05) 50%, transparent 50%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 50%, transparent 50%);
+    background-size: 4px 4px, 4px 4px;
+    opacity: 0.22;
+    mix-blend-mode: soft-light;
+}
+
+.scene .studio-room {
+    background:
+        radial-gradient(circle at 50% 14%, rgba(255, 255, 255, 0.08), transparent 24%),
+        linear-gradient(180deg, rgba(34, 34, 38, 0.9), rgba(8, 8, 10, 0.98));
+}
+
+.scene .artifact-room {
+    background:
+        radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.1), transparent 28%),
+        linear-gradient(180deg, rgba(28, 30, 34, 0.92), rgba(6, 7, 9, 0.98));
+}
+
+.scene .final-room {
+    background:
+        radial-gradient(circle at 50% 16%, rgba(255, 255, 255, 0.09), transparent 26%),
+        linear-gradient(180deg, rgba(24, 26, 30, 0.92), rgba(5, 6, 8, 0.99));
+}
+
+.scene .room-door {
+    bottom: 24%;
+    width: 14%;
+    height: 34%;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 18px 18px 8px 8px;
+    background: linear-gradient(180deg, rgba(40, 43, 52, 0.88), rgba(11, 12, 16, 0.98));
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.32);
+}
+
+.scene .room-door.left {
+    left: 11%;
+}
+
+.scene .room-door.right {
+    right: 11%;
+}
+
+.scene .room-easel {
+    left: 50%;
+    bottom: 24%;
+    width: 26%;
+    height: 38%;
+    transform: translateX(-50%);
+}
+
+.scene .room-easel::before,
+.scene .room-easel::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 3px;
+    height: 80%;
+    background: linear-gradient(180deg, rgba(228, 228, 232, 0.72), rgba(78, 78, 84, 0.4));
+}
+
+.scene .room-easel::before {
+    left: 26%;
+    transform: rotate(12deg);
+}
+
+.scene .room-easel::after {
+    right: 26%;
+    transform: rotate(-12deg);
+}
+
+.scene .room-canvas {
+    left: 50%;
+    bottom: 40%;
+    width: 17%;
+    height: 18%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    background: linear-gradient(180deg, rgba(242, 242, 244, 0.96), rgba(194, 194, 198, 0.9));
+    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.24);
+}
+
+.scene .room-brush-cup {
+    left: 30%;
+    bottom: 26%;
+    width: 8%;
+    height: 12%;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px 10px 14px 14px;
+    background: linear-gradient(180deg, rgba(156, 161, 171, 0.72), rgba(49, 53, 62, 0.94));
+}
+
+.scene .room-brush-cup::before {
+    content: "";
+    position: absolute;
+    left: 26%;
+    bottom: 72%;
+    width: 48%;
+    height: 54%;
+    background:
+        linear-gradient(68deg, transparent 0 18%, rgba(255, 255, 255, 0.9) 18% 23%, transparent 23% 44%, rgba(255, 255, 255, 0.76) 44% 49%, transparent 49% 72%, rgba(255, 255, 255, 0.62) 72% 77%, transparent 77%);
+}
+
+.scene .room-jar {
+    bottom: 26%;
+    width: 6.6%;
+    height: 10%;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 10px 10px 14px 14px;
+    background: linear-gradient(180deg, rgba(198, 198, 202, 0.56), rgba(58, 60, 68, 0.92));
+}
+
+.scene .room-jar.jar-a {
+    left: 58%;
+}
+
+.scene .room-jar.jar-b {
+    left: 66%;
+    bottom: 24%;
+}
+
+.scene .room-jar.jar-c {
+    left: 73%;
+}
+
+.scene .room-lamp {
+    left: 50%;
+    top: 8%;
+    width: 36%;
+    height: 44%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle at top, rgba(255, 255, 255, 0.2), transparent 54%);
+    filter: blur(3px);
+    opacity: 0.86;
+}
+
+.scene .room-desk {
+    bottom: 24%;
+    width: 24%;
+    height: 12%;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(70, 74, 82, 0.8), rgba(20, 22, 27, 0.96));
+}
+
+.scene .room-desk.left {
+    left: 12%;
+}
+
+.scene .room-desk.right {
+    right: 12%;
+}
+
+.scene .room-chair {
+    bottom: 18%;
+    width: 10%;
+    height: 10%;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(90, 94, 102, 0.72), rgba(18, 20, 24, 0.98));
+}
+
+.scene .room-chair.left {
+    left: 19%;
+}
+
+.scene .room-chair.right {
+    right: 19%;
+}
+
+.scene .room-plinth {
+    left: 50%;
+    bottom: 18%;
+    width: 18%;
+    height: 22%;
+    transform: translateX(-50%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(78, 82, 90, 0.62), rgba(18, 20, 24, 0.96));
+}
+
+.scene .room-plinth.small {
+    width: 16%;
+    height: 16%;
+    bottom: 20%;
+}
+
+.scene .room-sculpture {
+    left: 50%;
+    bottom: 33%;
+    width: 14%;
+    height: 16%;
+    transform: translateX(-50%);
+    border-radius: 38% 52% 46% 40%;
+    background:
+        radial-gradient(circle at 38% 28%, rgba(255, 255, 255, 0.46), transparent 18%),
+        linear-gradient(180deg, rgba(232, 232, 236, 0.72), rgba(92, 94, 102, 0.36) 42%, rgba(20, 22, 26, 0.96));
+    box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
+}
+
+.scene .room-spotlight {
+    left: 50%;
+    top: 8%;
+    width: 34%;
+    height: 52%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 72%);
+    clip-path: polygon(48% 0, 52% 0, 100% 100%, 0 100%);
+    opacity: 0.62;
+}
+
+.scene .room-aperture {
+    left: 50%;
+    top: 14%;
+    width: 16%;
+    height: 16%;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.7), rgba(180, 184, 198, 0.18) 48%, rgba(180, 184, 198, 0) 68%);
+}
+
+.scene .room-registry {
+    left: 50%;
+    bottom: 26%;
+    width: 42%;
+    height: 8%;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 14%, transparent 14% 20%, rgba(255, 255, 255, 0.06) 20% 34%, transparent 34% 40%, rgba(255, 255, 255, 0.06) 40% 54%, transparent 54% 60%, rgba(255, 255, 255, 0.06) 60% 74%, transparent 74% 80%, rgba(255, 255, 255, 0.06) 80% 94%, transparent 94%),
+        linear-gradient(180deg, rgba(50, 54, 62, 0.74), rgba(14, 15, 18, 0.96));
+}
+
+.scene .room-reflection-pool {
+    left: 50%;
+    bottom: 12%;
+    width: 38%;
+    height: 12%;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(219, 221, 232, 0.18), rgba(219, 221, 232, 0.02) 72%);
+    filter: blur(2px);
+}
+
 .scene .table,
 .scene .bench,
 .scene .pedestal,
@@ -1886,9 +2200,9 @@ textarea {
 }
 
 .legal-back {
-    display: inline-flex;
-    margin-inline: auto;
-    margin-top: 20px;
+    display: flex;
+    width: fit-content;
+    margin: 20px auto 0;
     text-align: center;
     align-self: center;
 }
@@ -2243,6 +2557,11 @@ textarea {
     .response-form {
         padding: 16px;
         border-radius: 18px;
+    }
+
+    .intake-inline-row {
+        grid-template-columns: 1fr;
+        gap: 18px;
     }
 
     .site-footer {

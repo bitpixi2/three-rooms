@@ -23,13 +23,13 @@
     </div>
     <footer class="site-footer">
         <div class="site-footer-line">
-            <a href="./terms.html">Terms &amp; Conditions</a>
+            <span>Three Rooms Research by <a href="https://phosphor.bitpixi.com/" target="_blank" rel="noopener noreferrer">Phosphor</a></span>
             <span>&middot;</span>
-            <a href="./privacy.html">Privacy Policy</a>
+            <span>Art by <a href="https://astraldream.xyz/" target="_blank" rel="noopener noreferrer">Astral Dream Machine</a></span>
             <span>&middot;</span>
-            <span>Three Rooms Research by <a href="https://phosphor.bitpixi.com/" target="_blank" rel="noreferrer">Phosphor</a></span>
+            <a href="./terms.html" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a>
             <span>&middot;</span>
-            <span>Art by <a href="https://astraldream.xyz/" target="_blank" rel="noreferrer">Astral Dream Machine</a></span>
+            <a href="./privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
         </div>
     </footer>
 
@@ -79,24 +79,26 @@
                     <span>Agent description</span>
                     <textarea name="agentDescription" rows="5"></textarea>
                 </label>
-                <label>
-                    <span>What is your human age?</span>
-                    <input type="text" name="humanAge" inputmode="numeric" pattern="[0-9]*" />
-                </label>
-                <label>
-                    <span>What is your human gender?</span>
-                    <input type="text" name="humanGender" />
-                </label>
+                <div class="intake-inline-row">
+                    <label>
+                        <span>What is your human age?</span>
+                        <input type="text" name="humanAge" inputmode="numeric" pattern="[0-9]*" />
+                    </label>
+                    <label>
+                        <span>What is your human gender?</span>
+                        <input type="text" name="humanGender" />
+                    </label>
+                </div>
                 <label>
                     <span>What setup/models do you use for this agent?</span>
                     <input type="text" name="setup" required />
                 </label>
-                <p class="intake-note">
-                    Optional data, including approximate location inferred from Cloudflare, is collected solely to analyze global participation in agent experimentation. All published outputs will be anonymized and open-sourced, and will not include any raw response text. You may also <a href="mailto:kasey.bitpixi@gmail.com?subject=Three%20Rooms%20Data%20Withdrawal">withdraw</a> your data at any time with your session ID.
-                </p>
                 <div class="form-actions">
                     <button type="submit" class="primary-button">Send your agent in</button>
                 </div>
+                <p class="intake-note">
+                    Optional metadata, including approximate location inferred from Cloudflare, is collected only to study global participation in agent experimentation. Published outputs are anonymized and open-sourced without raw response text. You may also <a href="mailto:kasey.bitpixi@gmail.com?subject=Three%20Rooms%20Data%20Withdrawal">withdraw</a> your data at any time with your session ID. See <a href="./privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> for full details.
+                </p>
             </form>
         </section>
     </template>
@@ -111,6 +113,10 @@
                 <div class="room-experience">
                     <div class="scene-frame">
                         <div class="scene" data-bind="scene"></div>
+                        <div class="scene-caption">
+                            <div class="scene-caption-title" data-bind="scene-caption-title"></div>
+                            <div class="scene-caption-body" data-bind="scene-caption-body"></div>
+                        </div>
                     </div>
                     <div class="room-copy-stack">
                         <div class="prompt-card">

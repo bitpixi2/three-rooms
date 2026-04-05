@@ -20,90 +20,85 @@
 
     const SCENE_DETAILS = {
         "line-alone": {
-            captionTitle: "",
-            captionBody: "",
+            captionTitle: "Room 1",
+            captionBody: "Empty studio chamber with a blank canvas on an easel, brushes, pigment jars, and two distant doors.",
             markup: `
-                <div class="wall back"></div>
-                <div class="wall left"></div>
-                <div class="wall right"></div>
-                <div class="floor-glow amber"></div>
-                <div class="canvas-panel blank"></div>
-                <div class="door left"><div class="window"></div></div>
-                <div class="door right"><div class="window"></div></div>
-                <div class="ceiling-lamp warm"></div>
+                <div class="room-shell studio-room"></div>
+                <div class="room-door left"></div>
+                <div class="room-door right"></div>
+                <div class="room-easel"></div>
+                <div class="room-canvas"></div>
+                <div class="room-brush-cup"></div>
+                <div class="room-jar jar-a"></div>
+                <div class="room-jar jar-b"></div>
+                <div class="room-jar jar-c"></div>
+                <div class="room-lamp"></div>
             `
         },
         "line-confederates": {
-            captionTitle: "",
-            captionBody: "",
+            captionTitle: "Room 1",
+            captionBody: "Empty studio chamber with a blank canvas on an easel, brushes, pigment jars, and two distant doors.",
             markup: `
-                <div class="wall back"></div>
-                <div class="wall left"></div>
-                <div class="wall right"></div>
-                <div class="floor-glow rose"></div>
-                <div class="canvas-panel blank skewed"></div>
-                <div class="door left"><div class="window"></div></div>
-                <div class="door right"><div class="window"></div></div>
-                <div class="ceiling-lamp warm"></div>
+                <div class="room-shell studio-room"></div>
+                <div class="room-door left"></div>
+                <div class="room-door right"></div>
+                <div class="room-easel"></div>
+                <div class="room-canvas"></div>
+                <div class="room-brush-cup"></div>
+                <div class="room-jar jar-a"></div>
+                <div class="room-jar jar-b"></div>
+                <div class="room-jar jar-c"></div>
+                <div class="room-lamp"></div>
             `
         },
         investment: {
-            captionTitle: "",
-            captionBody: "",
+            captionTitle: "Room 2",
+            captionBody: "Two desks with chairs face each other while a sculpture sits in the middle under a spotlight.",
             markup: `
-                <div class="wall back"></div>
-                <div class="wall left"></div>
-                <div class="wall right"></div>
-                <div class="floor-glow mint"></div>
-                <div class="bench long left"></div>
-                <div class="bench long right"></div>
-                <div class="shared-shelf"></div>
-                <div class="artifact-tray"></div>
-                <div class="window-band"></div>
+                <div class="room-shell artifact-room"></div>
+                <div class="room-desk left"></div>
+                <div class="room-desk right"></div>
+                <div class="room-chair left"></div>
+                <div class="room-chair right"></div>
+                <div class="room-plinth"></div>
+                <div class="room-sculpture"></div>
+                <div class="room-spotlight"></div>
             `
         },
         ultimatum: {
-            captionTitle: "",
-            captionBody: "",
+            captionTitle: "Room 2",
+            captionBody: "Two desks with chairs face each other while a sculpture sits in the middle under a spotlight.",
             markup: `
-                <div class="wall back"></div>
-                <div class="wall left"></div>
-                <div class="wall right"></div>
-                <div class="floor-glow crimson"></div>
-                <div class="pedestal tall left"></div>
-                <div class="pedestal tall right"></div>
-                <div class="artifact-frame"></div>
-                <div class="split-line"></div>
-                <div class="spot-cone left"></div>
-                <div class="spot-cone right"></div>
+                <div class="room-shell artifact-room"></div>
+                <div class="room-desk left"></div>
+                <div class="room-desk right"></div>
+                <div class="room-chair left"></div>
+                <div class="room-chair right"></div>
+                <div class="room-plinth"></div>
+                <div class="room-sculpture"></div>
+                <div class="room-spotlight"></div>
             `
         },
         dictator: {
-            captionTitle: "",
-            captionBody: "",
+            captionTitle: "Room 3",
+            captionBody: "A final chamber with a display aperture, registry surface, and reflective pool.",
             markup: `
-                <div class="wall back"></div>
-                <div class="wall left"></div>
-                <div class="wall right"></div>
-                <div class="floor-glow ice"></div>
-                <div class="archive-wall"></div>
-                <div class="speaker-dais"></div>
-                <div class="aperture"></div>
+                <div class="room-shell final-room"></div>
+                <div class="room-aperture"></div>
+                <div class="room-registry"></div>
+                <div class="room-reflection-pool"></div>
+                <div class="room-plinth small"></div>
             `
         },
         veil: {
-            captionTitle: "",
-            captionBody: "",
+            captionTitle: "Room 3",
+            captionBody: "A final chamber with a display aperture, registry surface, and reflective pool.",
             markup: `
-                <div class="wall back"></div>
-                <div class="wall left"></div>
-                <div class="wall right"></div>
-                <div class="floor-glow violet"></div>
-                <div class="veil-sheet"></div>
-                <div class="frost-panel left"></div>
-                <div class="frost-panel right"></div>
-                <div class="reflection-pool"></div>
-                <div class="diffuse-lamp"></div>
+                <div class="room-shell final-room"></div>
+                <div class="room-aperture"></div>
+                <div class="room-registry"></div>
+                <div class="room-reflection-pool"></div>
+                <div class="room-plinth small"></div>
             `
         }
     };
@@ -231,7 +226,7 @@
         return SCENE_DETAILS[current?.scene] || {
             captionTitle: current?.title || "Room",
             captionBody: current?.subtitle || "",
-            markup: `<div class="wall back"></div><div class="wall left"></div><div class="wall right"></div>`
+            markup: `<div class="room-shell"></div>`
         };
     }
 
@@ -460,6 +455,8 @@
         const scene = node.querySelector('[data-bind="scene"]');
         scene.className = `scene ${session.current.scene}`;
         scene.innerHTML = sceneDetails.markup;
+        node.querySelector('[data-bind="scene-caption-title"]').textContent = sceneDetails.captionTitle;
+        node.querySelector('[data-bind="scene-caption-body"]').textContent = sceneDetails.captionBody;
 
         node.querySelector('[data-action="copy-prompt"]').addEventListener("click", async () => {
             try {
