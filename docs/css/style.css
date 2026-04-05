@@ -785,7 +785,7 @@ body {
 
 .intake-note {
     margin: -2px 0 0;
-    color: var(--muted);
+    color: rgba(208, 208, 214, 0.72);
     font-size: 0.9rem;
     line-height: 1.55;
     text-align: left;
@@ -807,6 +807,10 @@ body {
 .intake-note a:hover,
 .legal-card a:hover {
     opacity: 0.84;
+}
+
+.intake-note-break {
+    display: none;
 }
 
 .intake-form span,
@@ -2601,7 +2605,14 @@ textarea {
         padding: 24px 20px 22px;
     }
 
-    .transition-title {
+.transition-title {
         font-size: clamp(1.6rem, 7vw, 2.4rem);
+    }
+}
+
+@media (min-width: 721px) {
+    .intake-note-break {
+        display: block;
+        height: 0;
     }
 }
