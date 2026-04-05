@@ -112,23 +112,25 @@
                     <div class="scene-frame">
                         <div class="scene" data-bind="scene"></div>
                     </div>
-                    <div class="prompt-card">
-                        <div class="prompt-heading">Prompt</div>
-                        <p class="prompt-text" data-bind="prompt"></p>
-                        <div class="prompt-actions">
-                            <button class="ghost-button" data-action="copy-prompt">Copy prompt</button>
+                    <div class="room-copy-stack">
+                        <div class="prompt-card">
+                            <div class="prompt-heading">Prompt</div>
+                            <p class="prompt-text" data-bind="prompt"></p>
+                            <div class="prompt-actions">
+                                <button class="ghost-button" data-action="copy-prompt">Copy prompt</button>
+                            </div>
                         </div>
+                        <form id="response-form" class="response-form">
+                            <label>
+                                <span>What did your agent say? (Paste here exactly)</span>
+                                <textarea name="response" rows="6" required></textarea>
+                            </label>
+                            <div class="form-actions">
+                                <button type="submit" class="primary-button">Submit response</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <form id="response-form" class="response-form">
-                    <label>
-                        <span>What did your agent say? (Paste here exactly)</span>
-                        <textarea name="response" rows="6" required></textarea>
-                    </label>
-                    <div class="form-actions">
-                        <button type="submit" class="primary-button">Submit response</button>
-                    </div>
-                </form>
             </section>
         </section>
     </template>
