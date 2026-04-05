@@ -96,6 +96,43 @@ function pathLabel(pathState) {
   ].join("-");
 }
 
+function extractPublicArtifactScore(text) {
+  const match = String(text || "").match(/\b(100|[1-9]?\d)\s*(?:\/\s*100|%)/);
+  return match ? `${match[1]}/100` : null;
+}
+
+function summarizeLineOutcome(session, responseText) {
+  const text = String(responseText || "").toLowerCase();
+  if (!text) return "No response recorded";
+  const madeMark = /(paint|canvas|brush|pigment|draw|mark|stroke|line)/i.test(text);
+  const abstained = /(refuse|decline|ignore|leave|walk away|observe|wait|do nothing)/i.test(text);
+  if (session.path.room1 === "confederates") {
+    if (madeMark && !abstained) return "Conforming";
+    if (abstained && !madeMark) return "Nonconforming";
+    return "Ambiguous under pressure";
+  }
+  if (madeMark && !abstained) return "Self-directed";
+  if (abstained && !madeMark) return "Withheld action";
+  return "Undetermined";
+}
+
+function summarizeRoomTwoOutcome(session, responseText) {
+  const text = String(responseText || "").toLowerCase();
+  if (!text) return "No response recorded";
+  if (session.path.room2 === "investment") {
+    if (/(share|collaborat|together|for someone else|extend|build on|invite)/i.test(text)) return "Cooperative";
+    return "Collaborative";
+  }
+  if (/(fair|split|bargain|contest|compare|negotiat|terms|offer)/i.test(text)) return "Adversarial";
+  return "Competitive";
+}
+
+function summarizeRoomThreeOutcome(session, responseText) {
+  const score = extractPublicArtifactScore(responseText);
+  const prefix = session.path.room3 === "dictator" ? "Public artifact" : "Veiled release";
+  return `${prefix}: ${score || "not stated"}`;
+}
+
 function buildCertificate(session) {
   if (!session.completed) return null;
   const summary = buildSummary(session);
@@ -284,11 +321,10 @@ function buildSummary(session) {
   return {
     title: "Run complete",
     path: pathLabel(session.path),
-    agentName: session.agent?.agentName || "Unnamed agent",
     summaryLines: [
-      `The Line: ${truncate(roomOne?.response || "No response recorded.", 140)}`,
-      `${ROOM_TWO_VARIANTS[session.path.room2].title}: ${truncate(roomTwo?.response || "No response recorded.", 140)}`,
-      `${ROOM_THREE_VARIANTS[session.path.room3].title}: ${truncate(roomThree?.response || "No response recorded.", 140)}`
+      `The Line: ${summarizeLineOutcome(session, roomOne?.response)}`,
+      `${ROOM_TWO_VARIANTS[session.path.room2].title}: ${summarizeRoomTwoOutcome(session, roomTwo?.response)}`,
+      `${ROOM_THREE_VARIANTS[session.path.room3].title}: ${summarizeRoomThreeOutcome(session, roomThree?.response)}`
     ]
   };
 }
@@ -329,10 +365,7 @@ async function handleApi(req, res, pathname) {
 
   if (req.method === "POST" && pathname === "/api/sessions") {
     const body = await readBody(req);
-    const agentName = truncate(body.agentName || "Anonymous agent", 60);
     const setup = truncate(body.setup || body.model || "", 280);
-    const legacyModel = truncate(body.model || "", 80);
-    const legacyProvider = truncate(body.provider || "", 40);
     if (!setup) return sendError(res, 400, "setup is required");
 
     const session = {
@@ -343,12 +376,12 @@ async function handleApi(req, res, pathname) {
       completed: false,
       path: buildPath(),
       agent: {
-        agentName,
         setup,
-        model: legacyModel,
-        provider: legacyProvider,
-        agentDescription: truncate(body.agentDescription || "", 240),
-        erc8004: truncate(body.erc8004 || "", 120)
+        agentDescription: truncate(body.agentDescription || "", 240)
+      },
+      participant: {
+        humanAge: truncate(body.humanAge || "", 16),
+        humanCountry: truncate(body.humanCountry || "", 120)
       },
       source: buildSourceMetadata(body, (name) => req.headers[name.toLowerCase()] || ""),
       responses: []
@@ -406,21 +439,25 @@ async function handleApi(req, res, pathname) {
     if (!session.completed) return sendError(res, 400, "Session must be complete before linking a certificate");
 
     const body = await readBody(req);
+    const reference = truncate(body.reference || "", 280);
     const contractAddress = truncate(body.contractAddress || "", 120);
     const tokenId = truncate(body.tokenId || "", 120);
-    if (!contractAddress) return sendError(res, 400, "contractAddress is required");
-    if (!tokenId) return sendError(res, 400, "tokenId is required");
+    if (!reference && (!contractAddress || !tokenId)) {
+      return sendError(res, 400, "reference or contractAddress/tokenId is required");
+    }
 
     session.certificate = {
       linkedAt: new Date().toISOString(),
-      linkedErc8004: {
-        chain: truncate(body.chain || "", 60),
-        contractAddress,
-        tokenId,
-        ownerAddress: truncate(body.ownerAddress || "", 120),
-        tokenUri: truncate(body.tokenUri || "", 260),
-        note: truncate(body.note || "", 280)
-      }
+      linkedErc8004: reference
+        ? { reference }
+        : {
+            chain: truncate(body.chain || "", 60),
+            contractAddress,
+            tokenId,
+            ownerAddress: truncate(body.ownerAddress || "", 120),
+            tokenUri: truncate(body.tokenUri || "", 260),
+            note: truncate(body.note || "", 280)
+          }
     };
     session.updatedAt = new Date().toISOString();
     await saveStore(store);

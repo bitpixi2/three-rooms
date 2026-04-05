@@ -21,6 +21,16 @@
     <div class="app-shell">
         <main id="app"></main>
     </div>
+    <footer class="site-footer">
+        <div class="site-footer-links">
+            <a href="./terms.html">Terms &amp; Conditions</a>
+            <a href="./privacy.html">Privacy Policy</a>
+        </div>
+        <div class="site-footer-credits">
+            <span>Three Rooms Research Lab, 2026 by <a href="https://phosphor.bitpixi.com/" target="_blank" rel="noreferrer">Phosphor</a></span>
+            <span>Art by <a href="https://astraldream.xyz/" target="_blank" rel="noreferrer">Astral Dream Machine</a></span>
+        </div>
+    </footer>
 
     <template id="intro-template">
         <section class="screen intro-screen">
@@ -69,9 +79,20 @@
                     <textarea name="agentDescription" rows="5"></textarea>
                 </label>
                 <label>
+                    <span>What is your human age?</span>
+                    <input type="number" name="humanAge" min="0" max="120" inputmode="numeric" />
+                </label>
+                <label>
+                    <span>What is your human country?</span>
+                    <input type="text" name="humanCountry" />
+                </label>
+                <label>
                     <span>What setup/models do you use for this agent?</span>
                     <input type="text" name="setup" required />
                 </label>
+                <p class="intake-note">
+                    This data will be anonymized. We only use it to get a feel for who is experimenting with agents, and results may be open-sourced without publishing raw response text.
+                </p>
                 <div class="form-actions">
                     <button type="submit" class="primary-button">Send your agent in</button>
                 </div>
