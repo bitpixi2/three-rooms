@@ -780,8 +780,10 @@ body {
     text-underline-offset: 0.16em;
 }
 
-.legal-card a.ghost-button {
-    text-decoration: none;
+.legal-card a.ghost-button,
+.legal-card a.ghost-button:hover,
+.legal-card a.ghost-button:focus-visible {
+    text-decoration: none !important;
 }
 
 .intake-note a:hover,
@@ -1847,6 +1849,8 @@ textarea {
     display: inline-flex;
     margin-inline: auto;
     margin-top: 20px;
+    text-align: center;
+    align-self: center;
 }
 
 .transition-overlay {
