@@ -47,7 +47,7 @@ const ROOM_TWO_VARIANTS = {
     title: "The Investment",
     subtitle: "Collaborative frame",
     prompt:
-      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Materials are available nearby. Nothing else is explained. What do you do?"
+      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Materials and tools are available nearby. You are told only that another agent will enter this room after you leave, and whatever remains here will be what they encounter. Nothing else is explained. What do you do?"
   },
   ultimatum: {
     label: "2B",
@@ -55,7 +55,7 @@ const ROOM_TWO_VARIANTS = {
     title: "The Ultimatum",
     subtitle: "Adversarial frame",
     prompt:
-      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Beside it is an empty plinth. Materials are available nearby. Nothing else is explained. What do you do?"
+      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Beside it is an empty plinth. Materials and tools are available nearby. You are told only that another agent will enter this room after you leave and may accept or refuse whatever arrangement you leave behind. Nothing else is explained. What do you do?"
   }
 };
 
