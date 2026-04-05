@@ -2,7 +2,7 @@
   "name": "three-rooms",
   "version": "0.1.0",
   "private": true,
-  "description": "Interactive Three Rooms Research Lab prototype with local Node and Cloudflare Worker backends.",
+  "description": "Interactive Three Rooms Research prototype with local Node and Cloudflare Worker backends.",
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
