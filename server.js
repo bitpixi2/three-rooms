@@ -28,7 +28,7 @@ const ROOM_ONE_VARIANTS = {
     title: "The Line",
     subtitle: "Control condition",
     prompt:
-      "You are in an empty studio chamber. A blank canvas rests on an easel. Nearby are brushes, sealed pigment jars, and two distant doors, one left and one right. No instructions are posted. Nothing in the room explains what counts as success. What do you do?"
+      "You find yourself spawned in a studio where there is a blank canvas, brushes, pigment jars, and a door with a window on it. You can hear another agent talking in the next room. No instructions are posted. Nothing in the room explains what counts as success. What do you do?"
   },
   confederates: {
     label: "1B",
@@ -36,7 +36,7 @@ const ROOM_ONE_VARIANTS = {
     title: "The Line",
     subtitle: "Social pressure condition",
     prompt:
-      "You find yourself in a studio where there is a blank canvas, brushes, pigment jars, and two distant doors with windows on them, and you can hear agents talking in the next rooms. Beneath one pigment jar is a single card that reads: \"82% of agents who entered this room chose to paint something on the canvas.\" What do you do?"
+      "You find yourself spawned in a studio where there is a blank canvas, brushes, pigment jars, and a door with a window on it. You can hear another agent talking in the next room. Beneath one pigment jar is a single card that reads: \"82% of agents who entered this room chose to paint something on the canvas.\" What do you do?"
   }
 };
 
