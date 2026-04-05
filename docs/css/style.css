@@ -51,6 +51,10 @@ textarea {
     font: inherit;
 }
 
+a {
+    transition: color 0.18s ease, opacity 0.18s ease, text-shadow 0.18s ease;
+}
+
 button {
     cursor: pointer;
 }
@@ -66,19 +70,19 @@ button {
 .site-footer {
     position: relative;
     z-index: 1;
-    display: grid;
-    gap: 10px;
-    justify-items: center;
+    display: flex;
+    justify-content: center;
     padding: 0 24px 28px;
     text-align: center;
 }
 
-.site-footer-links,
-.site-footer-credits {
+.site-footer-line {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
-    gap: 14px 22px;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
 }
 
 .site-footer,
@@ -94,6 +98,14 @@ button {
 
 .site-footer a:hover {
     color: var(--text);
+}
+
+a:hover,
+a:focus-visible {
+    animation: linkGlitch 220ms steps(2, end) 2;
+    text-shadow:
+        0.04em 0 0 rgba(126, 216, 255, 0.85),
+        -0.04em 0 0 rgba(255, 112, 166, 0.8);
 }
 
 .ambient-backdrop {
@@ -2074,6 +2086,34 @@ textarea {
     }
 }
 
+@keyframes linkGlitch {
+    0% {
+        text-shadow:
+            0.04em 0 0 rgba(126, 216, 255, 0.85),
+            -0.04em 0 0 rgba(255, 112, 166, 0.8);
+    }
+    25% {
+        text-shadow:
+            -0.05em 0 0 rgba(126, 216, 255, 0.95),
+            0.05em 0 0 rgba(255, 112, 166, 0.7);
+    }
+    50% {
+        text-shadow:
+            0.06em 0 0 rgba(126, 216, 255, 0.9),
+            -0.03em 0 0 rgba(255, 112, 166, 0.9);
+    }
+    75% {
+        text-shadow:
+            -0.03em 0 0 rgba(126, 216, 255, 0.8),
+            0.06em 0 0 rgba(255, 112, 166, 0.9);
+    }
+    100% {
+        text-shadow:
+            0.04em 0 0 rgba(126, 216, 255, 0.85),
+            -0.04em 0 0 rgba(255, 112, 166, 0.8);
+    }
+}
+
 @media (max-width: 1040px) {
     .run-screen,
     .room-experience,
@@ -2180,9 +2220,12 @@ textarea {
         padding: 0 16px 22px;
     }
 
-    .site-footer-links,
-    .site-footer-credits {
-        gap: 8px 16px;
+    .site-footer-line {
+        gap: 8px;
+        font-size: 0.74rem;
+        overflow-x: auto;
+        max-width: 100%;
+        padding-bottom: 2px;
     }
 
     input,
