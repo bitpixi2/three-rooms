@@ -404,10 +404,14 @@ body {
 
 .primary-button,
 .ghost-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 48px;
     padding: 0 18px;
     border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.26);
+    text-align: center;
     transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
 }
 
@@ -776,6 +780,10 @@ body {
     text-underline-offset: 0.16em;
 }
 
+.legal-card a.ghost-button {
+    text-decoration: none;
+}
+
 .intake-note a:hover,
 .legal-card a:hover {
     opacity: 0.84;
@@ -824,6 +832,7 @@ textarea {
 .prompt-actions,
 .completion-actions {
     display: flex;
+    justify-content: center;
     gap: 12px;
     flex-wrap: wrap;
 }
@@ -1836,6 +1845,7 @@ textarea {
 
 .legal-back {
     display: inline-flex;
+    margin-inline: auto;
     margin-top: 20px;
 }
 
