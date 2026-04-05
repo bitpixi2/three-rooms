@@ -128,16 +128,13 @@ function buildSummary(session) {
 function buildCertificate(session) {
   if (!session.completed) return null;
   const summary = buildSummary(session);
-  const linkedErc8004 =
-    session.certificate?.linkedErc8004 ||
-    (session.agent?.erc8004 ? { reference: session.agent.erc8004 } : null);
+  const linkedErc8004 = session.certificate?.linkedErc8004 || null;
   return {
     type: "three-rooms-run-certificate",
     version: 1,
     issuedAt: session.certificate?.linkedAt || session.updatedAt,
     sessionId: session.id,
     path: summary.path,
-    agent: session.agent,
     summaryLines: summary.summaryLines,
     linkedErc8004
   };
@@ -251,7 +248,7 @@ function publicSession(store, session) {
     id: session.id,
     createdAt: session.createdAt,
     updatedAt: session.updatedAt,
-    agent: session.agent,
+    participant: session.participant || null,
     path: session.path,
     pathLabel: pathLabel(session.path),
     currentRoom: session.currentRoom,
@@ -338,13 +335,11 @@ async function handleApi(request, env, pathname) {
       currentRoom: 1,
       completed: false,
       path: buildPath(),
-      agent: {
-        setup,
-        agentDescription: truncate(body.agentDescription || "", 240)
-      },
       participant: {
         humanAge: truncate(body.humanAge || "", 16),
-        humanCountry: truncate(body.humanCountry || "", 120)
+        humanCountry: truncate(body.humanCountry || "", 120),
+        setup,
+        agentDescription: truncate(body.agentDescription || "", 240)
       },
       source: buildSourceMetadata(body, request),
       responses: []

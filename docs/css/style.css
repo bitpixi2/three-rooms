@@ -842,66 +842,10 @@ textarea {
 
 .stage-header {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     gap: 18px;
     padding: 0;
-}
-
-.stage-chrome {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 18px;
-    padding: 0;
-}
-
-.stage-progress {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.stage-dot {
-    width: 38px;
-    height: 38px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.24);
-    background: rgba(255, 255, 255, 0.08);
-    color: var(--ice);
-    display: grid;
-    place-items: center;
-    font-size: 0.86rem;
-    transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-}
-
-.stage-dot.is-complete {
-    background: linear-gradient(135deg, rgba(144, 213, 191, 0.26), rgba(144, 213, 191, 0.08));
-    color: var(--text);
-    border-color: rgba(144, 213, 191, 0.34);
-}
-
-.stage-dot.is-active {
-    background: linear-gradient(135deg, rgba(198, 216, 233, 0.3), rgba(210, 162, 184, 0.16));
-    color: var(--text);
-    border-color: rgba(198, 216, 233, 0.42);
-    box-shadow: 0 0 0 8px rgba(198, 216, 233, 0.06);
-    transform: scale(1.06);
-}
-
-.stage-variant-chip {
-    border-radius: 999px;
-    padding: 10px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.08);
-    color: var(--ice);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-size: 0.72rem;
-}
-
-.run-stage h1 {
-    font-size: clamp(2.4rem, 4vw, 4rem);
 }
 
 .session-id {
@@ -1758,7 +1702,7 @@ textarea {
 .prompt-card {
     position: relative;
     overflow: hidden;
-    width: min(100%, 780px);
+    width: 100%;
     padding: 20px;
     box-shadow: var(--glow-soft);
 }
@@ -1777,7 +1721,7 @@ textarea {
 }
 
 .response-form {
-    width: min(100%, 780px);
+    width: 100%;
     padding: 0;
 }
 
@@ -2149,22 +2093,6 @@ textarea {
 
     .room-experience {
         padding: 0;
-    }
-
-    .stage-chrome {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .stage-progress {
-        gap: 10px;
-    }
-
-    .stage-dot {
-        width: 34px;
-        height: 34px;
-        font-size: 0.8rem;
     }
 
     .scene-frame,

@@ -235,14 +235,6 @@
         };
     }
 
-    function buildStageProgress(roomNumber) {
-        return [1, 2, 3].map((room) => `
-            <div class="stage-dot ${room === roomNumber ? "is-active" : room < roomNumber ? "is-complete" : ""}">
-                <span>${room}</span>
-            </div>
-        `).join("");
-    }
-
     async function playTransition(message, duration = 950) {
         if (!transitionOverlay || !transitionTitle) return;
         transitionTitle.textContent = message;
@@ -461,8 +453,6 @@
 
         const node = cloneTemplate("run");
         node.querySelector('[data-bind="room-label"]').textContent = `Room ${session.current.room} of 3`;
-        node.querySelector('[data-bind="room-title"]').textContent = session.current.title;
-        node.querySelector('[data-bind="stage-progress"]').innerHTML = buildStageProgress(session.current.room);
         node.querySelector('[data-bind="prompt"]').textContent = session.current.prompt;
         node.querySelector('[data-bind="session-id"]').textContent = session.id;
 
