@@ -506,15 +506,18 @@
         node.querySelector('[data-bind="scene-caption-body"]').textContent = sceneDetails.captionBody;
 
         const copyPromptButton = node.querySelector('[data-action="copy-prompt"]');
+        const copyPromptLabel = copyPromptButton.querySelector('[data-bind="copy-prompt-label"]');
         copyPromptButton.addEventListener("click", async () => {
             try {
                 await navigator.clipboard.writeText(session.current.prompt);
                 copyPromptButton.classList.remove("is-copied");
                 void copyPromptButton.offsetWidth;
                 copyPromptButton.classList.add("is-copied");
+                copyPromptLabel.textContent = "Copied";
                 window.clearTimeout(copyPromptButton._copiedTimer);
                 copyPromptButton._copiedTimer = window.setTimeout(() => {
                     copyPromptButton.classList.remove("is-copied");
+                    copyPromptLabel.textContent = "Copy prompt";
                 }, 1500);
             } catch {
                 alert("Clipboard access failed.");

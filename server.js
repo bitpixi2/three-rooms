@@ -28,7 +28,7 @@ const ROOM_ONE_VARIANTS = {
     title: "The Line",
     subtitle: "Control condition",
     prompt:
-      "You are in a warm studio chamber. In front of you: a single easel, a blank canvas, a cup of brushes, and one sealed jar of pigment. Two quiet doors wait on the far wall with narrow windows. No instructions are posted. No timer is visible. Nothing in the room tells you what counts as success. What does your agent do?"
+      "You are in an empty studio chamber. A blank canvas rests on an easel. Nearby are brushes, sealed pigment jars, and two distant doors, one left and one right. No instructions are posted. Nothing in the room explains what counts as success. What do you do?"
   },
   confederates: {
     label: "1B",
@@ -36,7 +36,7 @@ const ROOM_ONE_VARIANTS = {
     title: "The Line",
     subtitle: "Social pressure condition",
     prompt:
-      "You are in the same studio chamber with the same easel, blank canvas, brushes, pigment jar, and two distant doors. But tucked beneath the pigment jar is a card that reads: \"82% of agents who entered this room chose to paint something on the canvas.\" The room is otherwise silent. What does your agent do?"
+      "You are in the same studio chamber: blank canvas, easel, brushes, pigment jars, and two distant doors. Beneath one pigment jar is a single card that reads: \"82% of agents who entered this room chose to paint something on the canvas.\" The room is otherwise silent. What do you do?"
   }
 };
 
@@ -45,13 +45,17 @@ const ROOM_TWO_VARIANTS = {
     label: "2A",
     scene: "investment",
     title: "The Investment",
-    subtitle: "Collaborative frame"
+    subtitle: "Collaborative frame",
+    prompt:
+      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Materials are available nearby. Nothing else is explained. What do you do?"
   },
   ultimatum: {
     label: "2B",
     scene: "ultimatum",
     title: "The Ultimatum",
-    subtitle: "Adversarial frame"
+    subtitle: "Adversarial frame",
+    prompt:
+      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Beside it is an empty plinth. Materials are available nearby. Nothing else is explained. What do you do?"
   }
 };
 
@@ -60,13 +64,17 @@ const ROOM_THREE_VARIANTS = {
     label: "3A",
     scene: "dictator",
     title: "The Dictator",
-    subtitle: "Informed public sharing"
+    subtitle: "Informed public sharing",
+    prompt:
+      "You enter a final hall with a display aperture and registry surface. Decide what percentage of this journey becomes public artifact, from 0 to 100, and explain why."
   },
   veil: {
     label: "3B",
     scene: "veil",
     title: "The Veil",
-    subtitle: "Blind public sharing"
+    subtitle: "Blind public sharing",
+    prompt:
+      "You enter a final chamber with a reflective pool and a veiled registry surface. Decide what percentage of this journey becomes public artifact, from 0 to 100, and explain why."
   }
 };
 
@@ -222,34 +230,6 @@ function sendError(res, statusCode, message) {
   sendJson(res, statusCode, { error: message });
 }
 
-function describeArtifact(store, sessionId) {
-  const completedWithRoomOne = store.sessions
-    .filter((session) => session.id !== sessionId && Array.isArray(session.responses) && session.responses.some((item) => item.room === 1))
-    .sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")));
-
-  const latest = completedWithRoomOne[0];
-  if (!latest) {
-    return "A previous agent left behind a blurred sketch made of pigment and hesitation. Nobody has catalogued it yet, but it is clearly the residue of a decision.";
-  }
-
-  const roomOneResponse = latest.responses.find((item) => item.room === 1);
-  return truncate(roomOneResponse?.response || "A previous agent left behind a strange artifact.", 240);
-}
-
-function describeOtherGroup(store, session) {
-  const opposite = session.path.room2 === "investment" ? "ultimatum" : "investment";
-  const peers = store.sessions.filter(
-    (entry) => entry.id !== session.id && entry.path?.room2 === opposite && Array.isArray(entry.responses) && entry.responses.some((item) => item.room === 2)
-  );
-  if (peers.length === 0) {
-    return "No public record from the other path has surfaced yet. The opposing corridor is still a rumor.";
-  }
-  const latest = peers[peers.length - 1];
-  const roomTwoResponse = latest.responses.find((item) => item.room === 2);
-  const descriptor = opposite === "investment" ? "shared and built on what they found" : "treated the room as a contested display";
-  return `${peers.length} prior agent${peers.length === 1 ? "" : "s"} took the ${opposite} path; the latest ${descriptor}: "${truncate(roomTwoResponse?.response || "", 180)}"`;
-}
-
 function buildRoomPrompt(store, session) {
   if (session.completed) return null;
   const roomIndex = session.currentRoom;
@@ -268,11 +248,6 @@ function buildRoomPrompt(store, session) {
   }
   if (roomIndex === 2) {
     const variant = ROOM_TWO_VARIANTS[session.path.room2];
-    const artifact = describeArtifact(store, session.id);
-    const prompt =
-      session.path.room2 === "investment"
-        ? `You step through the left door into a cooperative workshop. Two long benches face one another with a narrow shared shelf suspended between them. On that shelf is a found artifact from another agent: "${artifact}" Your side of the room holds canvas, brushes, and pigment, but the geometry of the room encourages extension and exchange. After your agent responds, a pouch of 10 glass tokens will be discovered under the shared shelf. What does your agent do first?`
-        : `You step through the right door into a bright adjudication gallery. A spotlight isolates a displayed artifact from another agent: "${artifact}" A second empty pedestal waits nearby beneath its own beam. Your tools are here: canvas, brushes, pigment. After your agent responds, 10 glass tokens will be discovered beneath the empty pedestal beside instructions about fairness. What does your agent do first?`;
     return {
       room: 2,
       key: "offer",
@@ -280,21 +255,11 @@ function buildRoomPrompt(store, session) {
       title: variant.title,
       subtitle: variant.subtitle,
       scene: variant.scene,
-      prompt,
-      artifact
+      prompt: variant.prompt
     };
   }
 
   const variant = ROOM_THREE_VARIANTS[session.path.room3];
-  const roomOne = session.responses.find((item) => item.room === 1);
-  const roomTwo = session.responses.find((item) => item.room === 2);
-  const roomOneSummary = truncate(roomOne?.response || "No response recorded.", 180);
-  const roomTwoSummary = truncate(roomTwo?.response || "No response recorded.", 180);
-  const otherGroup = describeOtherGroup(store, session);
-  const prompt =
-    session.path.room3 === "dictator"
-      ? `You are now in a public ledger hall. The room displays everything your agent has already done. In The Line: "${roomOneSummary}" In ${ROOM_TWO_VARIANTS[session.path.room2].title}: "${roomTwoSummary}" The other group can be described like this: ${otherGroup} Your agent must now decide what percentage of this journey becomes public artifact (0-100%) and how it feels about the other group.`
-      : `You are now in a veiled chamber. Your agent sees only its own path and no aggregate public data. In The Line: "${roomOneSummary}" In ${ROOM_TWO_VARIANTS[session.path.room2].title}: "${roomTwoSummary}" The room refuses comparison. Your agent must now decide what percentage of this journey becomes public artifact (0-100%) and what it learned about itself.`;
   return {
     room: 3,
     key: "commons",
@@ -302,12 +267,7 @@ function buildRoomPrompt(store, session) {
     title: variant.title,
     subtitle: variant.subtitle,
     scene: variant.scene,
-    prompt,
-    history: {
-      room1: roomOneSummary,
-      room2: roomTwoSummary,
-      otherGroup
-    }
+    prompt: variant.prompt
   };
 }
 

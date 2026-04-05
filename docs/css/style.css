@@ -493,30 +493,6 @@ body {
     box-shadow: 0 14px 28px rgba(255, 255, 255, 0.1);
 }
 
-.copy-prompt-tooltip {
-    position: absolute;
-    left: 50%;
-    bottom: calc(100% + 10px);
-    transform: translate(-50%, 8px);
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.94);
-    color: #080808;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.18s ease, transform 0.18s ease;
-}
-
-.copy-prompt-button.is-copied .copy-prompt-tooltip {
-    opacity: 1;
-    transform: translate(-50%, 0);
-}
-
 .cube-node.is-pressing .cube-rig {
     transform: scale(0.985) rotateX(14deg) rotateY(-16deg) rotateZ(-1deg);
     box-shadow:
