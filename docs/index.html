@@ -147,33 +147,74 @@
 
     <template id="complete-template">
         <section class="screen complete-screen">
-            <div class="screen-header">
-                <p class="eyebrow">Run complete</p>
-                <h2 data-bind="complete-title"></h2>
-                <p data-bind="complete-path"></p>
-            </div>
-            <div class="summary-list" data-bind="summary-list"></div>
-            <section class="certificate-panel">
-                <div class="certificate-copy">
-                    <p class="eyebrow">Certificate</p>
-                    <h3>Attached reference</h3>
-                    <p class="certificate-status" data-bind="certificate-status"></p>
-                </div>
-                <form id="certificate-form" class="certificate-form">
-                    <label>
-                        <span>ERC-8004 reference</span>
-                        <input type="text" name="reference" />
-                    </label>
-                    <div class="form-actions">
-                        <button type="submit" class="primary-button">Apply</button>
-                        <button type="button" class="ghost-button" data-action="copy-certificate">Copy certificate JSON</button>
+            <section class="results-shell">
+                <div class="results-card">
+                    <div class="results-session-id">Session <span data-bind="complete-session-id"></span></div>
+                    <div class="screen-header results-header">
+                        <p class="eyebrow">Run complete</p>
+                        <h2 data-bind="complete-title"></h2>
+                        <p class="results-subtitle">A shareable certificate from your run.</p>
                     </div>
-                </form>
+                    <div class="results-preview">
+                        <div class="results-preview-frame" data-bind="certificate-preview"></div>
+                    </div>
+                    <div class="results-share-block">
+                        <div class="prompt-heading">Share</div>
+                        <p class="results-share-text" data-bind="share-text"></p>
+                        <div class="completion-actions">
+                            <button type="button" class="primary-button" data-action="download-certificate">Download SVG</button>
+                            <button type="button" class="ghost-button" data-action="copy-share">
+                                <span data-bind="copy-share-label">Copy share text</span>
+                            </button>
+                            <button type="button" class="ghost-button" data-action="share-x">Post to X</button>
+                        </div>
+                    </div>
+                    <details class="advanced-panel">
+                        <summary>Advanced</summary>
+                        <div class="advanced-content">
+                            <section class="certificate-panel">
+                                <div class="certificate-copy">
+                                    <p class="eyebrow">Certificate</p>
+                                    <h3>Attached reference</h3>
+                                    <p class="certificate-status" data-bind="certificate-status"></p>
+                                </div>
+                                <form id="certificate-form" class="certificate-form">
+                                    <label>
+                                        <span>ERC-8004 reference</span>
+                                        <input type="text" name="reference" />
+                                    </label>
+                                    <div class="form-actions">
+                                        <button type="submit" class="primary-button">Apply</button>
+                                        <button type="button" class="ghost-button" data-action="copy-certificate">
+                                            <span data-bind="copy-certificate-label">Copy certificate JSON</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </section>
+                        </div>
+                    </details>
+                    <section class="results-history">
+                        <div class="prompt-heading">Historical basis</div>
+                        <div class="results-history-grid">
+                            <article class="results-history-card">
+                                <h3>Room 1</h3>
+                                <p>Draws from classic conformity experiments, especially Solomon Asch’s work on how responses shift under social pressure versus control conditions.</p>
+                            </article>
+                            <article class="results-history-card">
+                                <h3>Room 2</h3>
+                                <p>Draws from bargaining and exchange studies, especially the investment or trust game and the ultimatum game in behavioral economics.</p>
+                            </article>
+                            <article class="results-history-card">
+                                <h3>Room 3</h3>
+                                <p>Draws from allocation and fairness studies, especially the dictator game and veil-of-ignorance style reasoning about public disclosure.</p>
+                            </article>
+                        </div>
+                    </section>
+                    <div class="results-secondary-actions">
+                        <button class="ghost-button" data-action="restart">Start a new run</button>
+                    </div>
+                </div>
             </section>
-            <div class="completion-actions">
-                <button class="primary-button" data-action="restart">Start a new run</button>
-                <button class="ghost-button" data-action="copy-export">Copy session export</button>
-            </div>
         </section>
     </template>
 

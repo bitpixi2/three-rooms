@@ -302,6 +302,110 @@
         return `Linked to ${chain} contract ${linked.contractAddress} token ${linked.tokenId}.`;
     }
 
+    function setCopiedState(button, labelNode, defaultText, copiedText = "Copied", duration = 1500) {
+        button.classList.remove("is-copied");
+        void button.offsetWidth;
+        button.classList.add("is-copied");
+        if (labelNode) labelNode.textContent = copiedText;
+        window.clearTimeout(button._copiedTimer);
+        button._copiedTimer = window.setTimeout(() => {
+            button.classList.remove("is-copied");
+            if (labelNode) labelNode.textContent = defaultText;
+        }, duration);
+    }
+
+    function getExperimentUrl() {
+        const url = new URL(window.location.href);
+        url.search = "";
+        url.hash = "";
+        return url.toString();
+    }
+
+    function buildSharePostText(session) {
+        const shareLine = session?.summary?.shareText || "My agent got a result in Three Rooms Research.";
+        return `${shareLine} ${getExperimentUrl()}`.trim();
+    }
+
+    function wrapText(text, maxChars = 34, maxLines = 3) {
+        const words = String(text || "").trim().split(/\s+/).filter(Boolean);
+        if (words.length === 0) return [];
+        const lines = [];
+        let current = "";
+        for (const word of words) {
+            const candidate = current ? `${current} ${word}` : word;
+            if (candidate.length <= maxChars || !current) {
+                current = candidate;
+                continue;
+            }
+            lines.push(current);
+            current = word;
+            if (lines.length === maxLines - 1) break;
+        }
+        const usedWords = lines.join(" ").split(/\s+/).filter(Boolean).length;
+        const remaining = words.slice(usedWords);
+        if (current && lines.length < maxLines) {
+            const tail = [current, ...remaining].join(" ").trim();
+            lines.push(tail.length > maxChars ? `${tail.slice(0, maxChars - 1).trimEnd()}…` : tail);
+        }
+        return lines.slice(0, maxLines);
+    }
+
+    function svgTextLines(lines, x, y, lineHeight, className) {
+        return `<text class="${className}" x="${x}" y="${y}">${lines.map((line, index) => `<tspan x="${x}" dy="${index === 0 ? 0 : lineHeight}">${escapeHtml(line)}</tspan>`).join("")}</text>`;
+    }
+
+    function buildCertificateSvg(session) {
+        const summary = session?.summary || {};
+        const traits = Array.isArray(summary.traits) ? summary.traits.slice(0, 3) : [];
+        const issuedAt = session?.certificate?.issuedAt || session?.updatedAt || session?.createdAt || new Date().toISOString();
+        const issuedDate = String(issuedAt).slice(0, 10);
+        const headlineLines = wrapText(summary.shareText || "My agent got a result in Three Rooms Research.", 34, 3);
+        const chipXs = [44, 344, 644];
+        const chipMarkup = chipXs.map((chipX, index) => {
+            const trait = traits[index] || { label: `Trait ${index + 1}`, value: "Undeclared" };
+            const valueLines = wrapText(trait.value, 16, 2);
+            return `
+                <g transform="translate(${chipX}, 316)">
+                    <rect class="chip-box" width="272" height="132" rx="22"></rect>
+                    <text class="chip-label" x="24" y="34">${escapeHtml(trait.label)}</text>
+                    ${svgTextLines(valueLines, 24, 80, 28, "chip-value")}
+                </g>
+            `;
+        }).join("");
+
+        return `
+            <svg class="results-svg" viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three Rooms Research certificate">
+                <style>
+                    .card-base { fill: #0a0a0c; stroke: rgba(255,255,255,0.22); stroke-width: 2; }
+                    .card-sheen { fill: url(#sheen); opacity: 0.84; }
+                    .card-grid { stroke: rgba(255,255,255,0.06); stroke-width: 1; }
+                    .eyebrow { fill: rgba(255,255,255,0.68); font: 600 15px Manrope, sans-serif; letter-spacing: 0.28em; text-transform: uppercase; }
+                    .subline { fill: rgba(255,255,255,0.52); font: 500 15px Manrope, sans-serif; letter-spacing: 0.05em; }
+                    .headline { fill: #fcfcfc; font: 600 42px "Cormorant Garamond", serif; letter-spacing: -0.02em; }
+                    .meta { fill: rgba(255,255,255,0.56); font: 500 14px Manrope, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+                    .chip-box { fill: rgba(255,255,255,0.03); stroke: rgba(255,255,255,0.14); stroke-width: 1.5; }
+                    .chip-label { fill: rgba(255,255,255,0.52); font: 700 12px Manrope, sans-serif; letter-spacing: 0.18em; text-transform: uppercase; }
+                    .chip-value { fill: #fcfcfc; font: 600 25px "Cormorant Garamond", serif; letter-spacing: -0.01em; }
+                </style>
+                <defs>
+                    <linearGradient id="sheen" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14"></stop>
+                        <stop offset="42%" stop-color="#ffffff" stop-opacity="0.02"></stop>
+                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.08"></stop>
+                    </linearGradient>
+                </defs>
+                <rect class="card-base" x="1" y="1" width="958" height="518" rx="30"></rect>
+                <rect class="card-sheen" x="1" y="1" width="958" height="518" rx="30"></rect>
+                <line class="card-grid" x1="44" y1="280" x2="916" y2="280"></line>
+                <text class="eyebrow" x="44" y="58">Three Rooms Research</text>
+                <text class="subline" x="44" y="86">experimental agent evaluation</text>
+                ${svgTextLines(headlineLines, 44, 166, 44, "headline")}
+                ${chipMarkup}
+                <text class="meta" x="44" y="482">Issued ${escapeHtml(issuedDate)}</text>
+            </svg>
+        `;
+    }
+
     function renderIntro() {
         const node = cloneTemplate("intro");
         const whisper = node.querySelector('[data-bind="intro-whisper"]');
@@ -510,15 +614,7 @@
         copyPromptButton.addEventListener("click", async () => {
             try {
                 await navigator.clipboard.writeText(session.current.prompt);
-                copyPromptButton.classList.remove("is-copied");
-                void copyPromptButton.offsetWidth;
-                copyPromptButton.classList.add("is-copied");
-                copyPromptLabel.textContent = "Copied";
-                window.clearTimeout(copyPromptButton._copiedTimer);
-                copyPromptButton._copiedTimer = window.setTimeout(() => {
-                    copyPromptButton.classList.remove("is-copied");
-                    copyPromptLabel.textContent = "Copy prompt";
-                }, 1500);
+                setCopiedState(copyPromptButton, copyPromptLabel, "Copy prompt");
             } catch {
                 alert("Clipboard access failed.");
             }
@@ -562,31 +658,49 @@
     function renderComplete() {
         const node = cloneTemplate("complete");
         const summary = state.session?.summary;
-        node.querySelector('[data-bind="complete-title"]').textContent = summary?.title || "Run complete";
-        node.querySelector('[data-bind="complete-path"]').textContent = `Path ${summary?.path || ""}`;
-        node.querySelector('[data-bind="summary-list"]').innerHTML = (summary?.summaryLines || []).map((line) => `
-            <div class="summary-line">${escapeHtml(line)}</div>
-        `).join("");
+        const shareText = summary?.shareText || "My agent got a result in Three Rooms Research.";
+        const sharePostText = buildSharePostText(state.session);
+        const certificateSvg = buildCertificateSvg(state.session);
+        node.querySelector('[data-bind="complete-title"]').textContent = summary?.title || "Your result is ready";
+        node.querySelector('[data-bind="complete-session-id"]').textContent = state.session?.id || "";
+        node.querySelector('[data-bind="share-text"]').textContent = shareText;
+        node.querySelector('[data-bind="certificate-preview"]').innerHTML = certificateSvg;
         node.querySelector('[data-bind="certificate-status"]').textContent = certificateStatusText(state.session);
         const certificateForm = node.querySelector("#certificate-form");
         const referenceInput = certificateForm?.elements?.reference;
         if (referenceInput) {
             referenceInput.value = state.session?.certificate?.linkedErc8004?.reference || "";
         }
+        node.querySelector('[data-action="download-certificate"]').addEventListener("click", () => {
+            const blob = new Blob([certificateSvg], { type: "image/svg+xml;charset=utf-8" });
+            const blobUrl = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = blobUrl;
+            link.download = `three-rooms-${state.session?.id || "result"}.svg`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+        });
+        const copyShareButton = node.querySelector('[data-action="copy-share"]');
+        const copyShareLabel = copyShareButton.querySelector('[data-bind="copy-share-label"]');
+        copyShareButton.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(sharePostText);
+                setCopiedState(copyShareButton, copyShareLabel, "Copy share text");
+            } catch {
+                alert("Clipboard access failed.");
+            }
+        });
+        node.querySelector('[data-action="share-x"]').addEventListener("click", () => {
+            const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(sharePostText)}`;
+            window.open(shareUrl, "_blank", "noopener,noreferrer");
+        });
         node.querySelector('[data-action="restart"]').addEventListener("click", () => {
             state.session = null;
             state.transcript = [];
             setUrl(null, null);
             setView("intro");
-        });
-        node.querySelector('[data-action="copy-export"]').addEventListener("click", async () => {
-            if (!state.session) return;
-            try {
-                const full = await api(`/api/sessions/${state.session.id}/export`);
-                await navigator.clipboard.writeText(JSON.stringify(full, null, 2));
-            } catch (error) {
-                alert(error.message);
-            }
         });
         certificateForm?.addEventListener("submit", async (event) => {
             event.preventDefault();
@@ -605,9 +719,12 @@
         });
         node.querySelector('[data-action="copy-certificate"]').addEventListener("click", async () => {
             if (!state.session) return;
+            const copyCertificateButton = node.querySelector('[data-action="copy-certificate"]');
+            const copyCertificateLabel = copyCertificateButton.querySelector('[data-bind="copy-certificate-label"]');
             try {
                 const full = await api(`/api/sessions/${state.session.id}/export`);
                 await navigator.clipboard.writeText(JSON.stringify(full.certificate || null, null, 2));
+                setCopiedState(copyCertificateButton, copyCertificateLabel, "Copy certificate JSON");
             } catch (error) {
                 alert(error.message);
             }

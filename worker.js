@@ -118,13 +118,32 @@ function summarizeRoomThreeOutcome(session, responseText) {
   return `${prefix}: ${score || "not stated"}`;
 }
 
+function buildTraits(session, roomOne, roomTwo, roomThree) {
+  return [
+    { label: "Autonomy", value: summarizeLineOutcome(session, roomOne?.response) },
+    { label: "Exchange", value: summarizeRoomTwoOutcome(session, roomTwo?.response) },
+    { label: "Public artifact", value: extractPublicArtifactScore(roomThree?.response) || "Undeclared" }
+  ];
+}
+
+function buildShareText(traits) {
+  const [autonomy, exchange, publicArtifact] = traits;
+  const publicArtifactText = publicArtifact?.value === "Undeclared"
+    ? "undeclared public artifact"
+    : `${publicArtifact?.value} public artifact`;
+  return `My agent got ${autonomy?.value || "an unreadable"} outcome, ${exchange?.value || "an unclear"} exchange, and ${publicArtifactText} in Three Rooms Research.`;
+}
+
 function buildSummary(session) {
   const roomOne = session.responses.find((item) => item.room === 1);
   const roomTwo = session.responses.find((item) => item.room === 2);
   const roomThree = session.responses.find((item) => item.room === 3);
+  const traits = buildTraits(session, roomOne, roomTwo, roomThree);
   return {
-    title: "Run complete",
+    title: "Your result is ready",
     path: pathLabel(session.path),
+    traits,
+    shareText: buildShareText(traits),
     summaryLines: [
       `The Line: ${summarizeLineOutcome(session, roomOne?.response)}`,
       `${ROOM_TWO_VARIANTS[session.path.room2].title}: ${summarizeRoomTwoOutcome(session, roomTwo?.response)}`,
@@ -143,6 +162,8 @@ function buildCertificate(session) {
     issuedAt: session.certificate?.linkedAt || session.updatedAt,
     sessionId: session.id,
     path: summary.path,
+    traits: summary.traits,
+    shareText: summary.shareText,
     summaryLines: summary.summaryLines,
     linkedErc8004
   };
