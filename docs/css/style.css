@@ -825,6 +825,20 @@ textarea {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text);
+    -webkit-box-shadow: 0 0 0 1000px rgba(20, 22, 28, 0.96) inset;
+    box-shadow:
+        0 0 0 1000px rgba(20, 22, 28, 0.96) inset,
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition: background-color 9999s ease-out 0s;
+}
+
 input::placeholder,
 textarea::placeholder {
     color: rgba(232, 232, 238, 0.74);
