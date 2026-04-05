@@ -215,8 +215,55 @@
         return templates[name].content.firstElementChild.cloneNode(true);
     }
 
+    function triggerHapticFeedback() {
+        try {
+            if (window.matchMedia?.("(pointer: coarse)")?.matches && navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+        } catch {
+            // Ignore unsupported haptics APIs.
+        }
+    }
+
+    function flashButtonState(button) {
+        button.classList.remove("is-pressed");
+        void button.offsetWidth;
+        button.classList.add("is-pressed");
+        window.clearTimeout(button._pressTimer);
+        button._pressTimer = window.setTimeout(() => {
+            button.classList.remove("is-pressed");
+        }, 240);
+    }
+
+    function enhanceButtonFeedback(root) {
+        root.querySelectorAll("button.primary-button, button.ghost-button, button.cube-node").forEach((button) => {
+            if (button.dataset.feedbackBound === "true") return;
+            button.dataset.feedbackBound = "true";
+
+            const pressIn = () => {
+                button.classList.add("is-pressing");
+            };
+
+            const pressOut = () => {
+                button.classList.remove("is-pressing");
+            };
+
+            button.addEventListener("pointerdown", pressIn, { passive: true });
+            button.addEventListener("pointerup", pressOut);
+            button.addEventListener("pointercancel", pressOut);
+            button.addEventListener("pointerleave", pressOut);
+            button.addEventListener("blur", pressOut);
+            button.addEventListener("click", () => {
+                if (button.dataset.suppressClick === "true") return;
+                triggerHapticFeedback();
+                flashButtonState(button);
+            });
+        });
+    }
+
     function mount(node) {
         app.replaceChildren(node);
+        enhanceButtonFeedback(node);
         window.requestAnimationFrame(() => {
             node.classList.add("is-mounted");
         });
@@ -458,9 +505,17 @@
         node.querySelector('[data-bind="scene-caption-title"]').textContent = sceneDetails.captionTitle;
         node.querySelector('[data-bind="scene-caption-body"]').textContent = sceneDetails.captionBody;
 
-        node.querySelector('[data-action="copy-prompt"]').addEventListener("click", async () => {
+        const copyPromptButton = node.querySelector('[data-action="copy-prompt"]');
+        copyPromptButton.addEventListener("click", async () => {
             try {
                 await navigator.clipboard.writeText(session.current.prompt);
+                copyPromptButton.classList.remove("is-copied");
+                void copyPromptButton.offsetWidth;
+                copyPromptButton.classList.add("is-copied");
+                window.clearTimeout(copyPromptButton._copiedTimer);
+                copyPromptButton._copiedTimer = window.setTimeout(() => {
+                    copyPromptButton.classList.remove("is-copied");
+                }, 1500);
             } catch {
                 alert("Clipboard access failed.");
             }

@@ -125,7 +125,10 @@
                             <div class="prompt-heading">Prompt</div>
                             <p class="prompt-text" data-bind="prompt"></p>
                             <div class="prompt-actions">
-                                <button class="ghost-button" data-action="copy-prompt">Copy prompt</button>
+                                <button type="button" class="ghost-button copy-prompt-button" data-action="copy-prompt">
+                                    <span>Copy prompt</span>
+                                    <span class="copy-prompt-tooltip" aria-hidden="true">Copied</span>
+                                </button>
                             </div>
                         </div>
                         <form id="response-form" class="response-form">

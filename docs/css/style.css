@@ -425,6 +425,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.26);
     text-align: center;
     transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+    will-change: transform, box-shadow, border-color, background;
 }
 
 .primary-button {
@@ -455,6 +456,78 @@ body {
     transform: translateY(-1px);
     border-color: rgba(255, 255, 255, 0.46);
     color: var(--text);
+}
+
+.primary-button.is-pressing,
+.ghost-button.is-pressing {
+    transform: scale(0.985);
+    border-color: rgba(255, 255, 255, 0.56);
+}
+
+.primary-button.is-pressed,
+.ghost-button.is-pressed {
+    animation: buttonFlash 240ms ease;
+}
+
+.primary-button.is-pressed {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 14px 28px rgba(255, 255, 255, 0.12);
+}
+
+.ghost-button.is-pressed {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 14px 28px rgba(255, 255, 255, 0.09);
+}
+
+.copy-prompt-button {
+    position: relative;
+    overflow: visible;
+}
+
+.copy-prompt-button.is-copied {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.76);
+    color: var(--text);
+    box-shadow: 0 14px 28px rgba(255, 255, 255, 0.1);
+}
+
+.copy-prompt-tooltip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translate(-50%, 8px);
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    color: #080808;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.copy-prompt-button.is-copied .copy-prompt-tooltip {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.cube-node.is-pressing .cube-rig {
+    transform: scale(0.985) rotateX(14deg) rotateY(-16deg) rotateZ(-1deg);
+    box-shadow:
+        0 22px 52px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.24),
+        inset 0 -14px 24px rgba(255, 255, 255, 0.06);
+}
+
+.cube-node.is-pressed .cube-rig {
+    animation: cubePressFlash 240ms ease;
+    border-color: rgba(255, 255, 255, 0.92);
 }
 
 .intro-actions {
@@ -927,7 +1000,7 @@ textarea {
 .room-experience {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(320px, 0.92fr);
-    align-items: start;
+    align-items: stretch;
     gap: 22px;
     padding: 0;
 }
@@ -956,8 +1029,10 @@ textarea {
 
 .room-copy-stack {
     display: grid;
+    grid-template-rows: auto 1fr;
     gap: 22px;
-    align-content: start;
+    align-content: stretch;
+    min-height: 100%;
 }
 
 .scene-caption {
@@ -2109,6 +2184,8 @@ textarea {
 
 .response-form {
     width: 100%;
+    display: flex;
+    flex-direction: column;
     padding: 20px;
     border: 1px solid var(--line);
     border-radius: 24px;
@@ -2116,8 +2193,17 @@ textarea {
     box-shadow: var(--glow-soft);
 }
 
+.response-form label {
+    flex: 1;
+    min-height: 0;
+}
+
 .response-form textarea {
-    min-height: 170px;
+    min-height: 124px;
+}
+
+.response-form .form-actions {
+    margin-top: 18px;
 }
 
 .complete-screen {
@@ -2470,6 +2556,30 @@ textarea {
     }
 }
 
+@keyframes buttonFlash {
+    0% {
+        transform: scale(0.985);
+    }
+    55% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes cubePressFlash {
+    0% {
+        transform: scale(0.985) rotateX(14deg) rotateY(-16deg) rotateZ(-1deg);
+    }
+    55% {
+        transform: scale(1.025) rotateX(18deg) rotateY(-20deg) rotateZ(-2deg);
+    }
+    100% {
+        transform: scale(1) rotateX(16deg) rotateY(-18deg) rotateZ(-1deg);
+    }
+}
+
 @media (max-width: 1040px) {
     .run-screen,
     .room-experience,
@@ -2515,6 +2625,12 @@ textarea {
 
     .room-experience {
         padding: 0;
+        align-items: start;
+    }
+
+    .room-copy-stack {
+        grid-template-rows: auto;
+        min-height: auto;
     }
 
     .scene-frame,
