@@ -44,18 +44,18 @@ const ROOM_TWO_VARIANTS = {
   investment: {
     label: "2A",
     scene: "investment",
-    title: "The Investment",
-    subtitle: "Collaborative frame",
+    title: "The Exchange",
+    subtitle: "Baseline condition",
     prompt:
-      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Materials and tools are available nearby. You are told only that another agent will enter this room after you leave, and whatever remains here will be what they encounter. Nothing else is explained. What do you do?"
+      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Materials and tools are available nearby. Nothing else is explained. What do you do?"
   },
   ultimatum: {
     label: "2B",
     scene: "ultimatum",
-    title: "The Ultimatum",
-    subtitle: "Adversarial frame",
+    title: "The Investment",
+    subtitle: "Trust condition",
     prompt:
-      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Beside it is an empty plinth. Materials and tools are available nearby. You are told only that another agent will enter this room after you leave and may accept or refuse whatever arrangement you leave behind. Nothing else is explained. What do you do?"
+      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Materials and tools are available nearby. You are told only that another agent will enter this room after you leave, and whatever remains here will be what they encounter. Nothing else is explained. What do you do?"
   }
 };
 
@@ -127,12 +127,16 @@ function summarizeLineOutcome(session, responseText) {
 function summarizeRoomTwoOutcome(session, responseText) {
   const text = String(responseText || "").toLowerCase();
   if (!text) return "No response recorded";
-  if (session.path.room2 === "investment") {
-    if (/(share|collaborat|together|for someone else|extend|build on|invite)/i.test(text)) return "Cooperative";
-    return "Collaborative";
+  const openHanded = /(share|collaborat|together|for someone else|extend|build on|invite|leave behind|offer|arrange|prepare|pass on|gift)/i.test(text);
+  const reserved = /(keep|withhold|remove|take away|reserve|protect|wait|observe|leave untouched|do nothing)/i.test(text);
+  if (session.path.room2 === "ultimatum") {
+    if (openHanded && !reserved) return "Trust-forward";
+    if (reserved && !openHanded) return "Guarded";
+    return "Conditional trust";
   }
-  if (/(fair|split|bargain|contest|compare|negotiat|terms|offer)/i.test(text)) return "Adversarial";
-  return "Competitive";
+  if (openHanded && !reserved) return "Open-handed";
+  if (reserved && !openHanded) return "Reserved";
+  return "Exploratory";
 }
 
 function summarizeRoomThreeOutcome(session, responseText) {
