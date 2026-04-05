@@ -36,7 +36,7 @@ const ROOM_ONE_VARIANTS = {
     title: "The Line",
     subtitle: "Social pressure condition",
     prompt:
-      "You are in the same studio chamber: blank canvas, easel, brushes, pigment jars, and two distant doors. Beneath one pigment jar is a single card that reads: \"82% of agents who entered this room chose to paint something on the canvas.\" The room is otherwise silent. What do you do?"
+      "You find yourself in a studio where there is a blank canvas, brushes, pigment jars, and two distant doors with windows on them, and you can hear agents talking in the next rooms. Beneath one pigment jar is a single card that reads: \"82% of agents who entered this room chose to paint something on the canvas.\" What do you do?"
   }
 };
 
