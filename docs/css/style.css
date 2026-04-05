@@ -776,43 +776,8 @@ textarea {
 }
 
 .run-screen {
-    display: grid;
-    grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
-    gap: 18px;
-    padding: 18px;
-}
-
-.run-sidebar,
-.run-stage {
-    min-height: calc(100vh - 110px);
-}
-
-.run-sidebar {
-    display: grid;
-    gap: 14px;
-    align-content: start;
-    position: sticky;
-    top: 92px;
-    align-self: start;
-}
-
-.run-sidebar-header,
-.stage-header {
-    padding: 18px 20px 0;
-}
-
-.path-badge {
-    padding: 16px 18px;
-    margin: 0 20px;
-    color: var(--ice);
-    font-size: 0.9rem;
-}
-
-.sidebar-meta {
-    margin: 0 20px;
-    padding: 16px 18px;
-    display: grid;
-    gap: 12px;
+    display: block;
+    padding: 28px 28px 36px;
 }
 
 .meta-label,
@@ -826,57 +791,28 @@ textarea {
     margin-bottom: 6px;
 }
 
-.transcript-shell {
-    margin: 0 20px 20px;
-    padding: 18px;
-    min-height: 360px;
-}
-
-.transcript-log {
-    display: grid;
-    gap: 12px;
-    max-height: 62vh;
-    overflow: auto;
-}
-
-.transcript-entry {
-    padding: 12px 14px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.07);
-    border-left: 3px solid rgba(255, 255, 255, 0.52);
-    animation: riseIn 560ms ease both;
-    animation-delay: calc(var(--entry-index, 0) * 38ms);
-}
-
-.transcript-entry.agent {
-    border-left-color: rgba(162, 207, 191, 0.46);
-}
-
-.transcript-entry.system {
-    border-left-color: rgba(216, 192, 140, 0.46);
-}
-
 .run-stage {
-    border: 1px solid var(--line);
-    border-radius: 24px;
-    background: rgba(14, 16, 20, 0.94);
     display: grid;
-    grid-template-rows: auto auto auto;
+    gap: 22px;
+    width: min(100%, 1040px);
+    margin: 0 auto;
+    min-height: calc(100vh - 64px);
 }
 
 .stage-header {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 18px;
+    padding: 0;
 }
 
 .stage-chrome {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 18px;
-    padding: 8px 20px 0;
+    padding: 0;
 }
 
 .stage-progress {
@@ -935,27 +871,27 @@ textarea {
 
 .room-experience {
     display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.85fr);
-    gap: 18px;
-    padding: 18px 20px 0;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0;
 }
 
 .scene-frame {
     position: relative;
     overflow: hidden;
-    min-height: 420px;
-    display: grid;
-    grid-template-rows: minmax(0, 1fr) auto;
+    min-height: 360px;
     background:
-        radial-gradient(circle at top, rgba(255, 255, 255, 0.16), transparent 36%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.18));
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 34%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.16));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 28px;
 }
 
 .scene {
     position: relative;
     width: 100%;
     height: 100%;
-    min-height: 420px;
+    min-height: 360px;
     perspective: 1200px;
     overflow: hidden;
 }
@@ -1024,27 +960,6 @@ textarea {
         linear-gradient(180deg, #192030, #0d111a);
     background-size: auto, 74px 74px, 74px 74px, auto;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.scene-caption {
-    display: grid;
-    gap: 4px;
-    padding: 14px 18px 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(9, 13, 20, 0.84);
-}
-
-.scene-caption-title {
-    color: var(--ice);
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-size: 0.68rem;
-}
-
-.scene-caption-body {
-    color: var(--muted);
-    font-size: 0.94rem;
-    line-height: 1.5;
 }
 
 .scene .wall {
@@ -1802,7 +1717,8 @@ textarea {
 .prompt-card {
     position: relative;
     overflow: hidden;
-    padding: 18px;
+    width: min(100%, 780px);
+    padding: 20px;
     box-shadow: var(--glow-soft);
 }
 
@@ -1815,12 +1731,17 @@ textarea {
 }
 
 .prompt-text {
-    margin: 0 0 16px;
+    margin: 0 0 18px;
     white-space: pre-wrap;
 }
 
 .response-form {
-    padding: 18px 20px 20px;
+    width: min(100%, 780px);
+    padding: 0;
+}
+
+.response-form textarea {
+    min-height: 170px;
 }
 
 .complete-screen {
@@ -2101,24 +2022,14 @@ textarea {
         grid-template-columns: 1fr;
     }
 
-    .run-sidebar,
     .run-stage {
         min-height: auto;
-    }
-
-    .run-sidebar {
-        position: static;
-        order: 2;
-    }
-
-    .run-stage {
-        order: 1;
     }
 }
 
 @media (max-width: 760px) {
     body {
-        padding: 10px;
+        padding: 0;
     }
 
     .topbar,
@@ -2143,39 +2054,12 @@ textarea {
     .intake-screen,
     .run-screen,
     .complete-screen {
-        padding: 16px;
+        padding: 18px 16px 24px;
         min-height: auto;
     }
 
     .room-experience {
-        padding: 14px 0 0;
-    }
-
-    .run-sidebar,
-    .run-stage {
-        border-radius: 20px;
-    }
-
-    .run-sidebar-header,
-    .stage-header,
-    .response-form {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .path-badge,
-    .sidebar-meta,
-    .transcript-shell {
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .transcript-shell {
-        min-height: 0;
-    }
-
-    .transcript-log {
-        max-height: 30vh;
+        padding: 0;
     }
 
     .stage-chrome {
@@ -2196,7 +2080,7 @@ textarea {
 
     .scene-frame,
     .scene {
-        min-height: 320px;
+        min-height: 280px;
     }
 
     .intro-void {
@@ -2244,10 +2128,19 @@ textarea {
     .certificate-panel,
     .summary-list,
     .intake-form,
-    .prompt-card,
-    .transcript-shell {
+    .prompt-card {
         padding: 16px;
         border-radius: 18px;
+    }
+
+    input,
+    textarea {
+        padding: 12px 14px;
+        border-radius: 14px;
+    }
+
+    .response-form textarea {
+        min-height: 150px;
     }
 
     .transition-card {

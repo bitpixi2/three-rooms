@@ -81,61 +81,33 @@
 
     <template id="run-template">
         <section class="screen run-screen">
-            <aside class="run-sidebar">
-                <div class="run-sidebar-header">
-                    <p class="eyebrow">Active run</p>
-                    <h2 data-bind="sidebar-agent"></h2>
-                </div>
-                <div class="path-badge" data-bind="path-badge"></div>
-                <div class="sidebar-meta">
-                    <div>
-                        <span class="meta-label">Setup</span>
-                        <span class="meta-value" data-bind="sidebar-model"></span>
-                    </div>
-                    <div>
-                        <span class="meta-label">Stage</span>
-                        <span class="meta-value" data-bind="sidebar-stage"></span>
-                    </div>
-                </div>
-                <div class="transcript-shell">
-                    <div class="transcript-heading">Transmissions</div>
-                    <div class="transcript-log" data-bind="transcript"></div>
-                </div>
-            </aside>
             <section class="run-stage">
                 <div class="stage-header">
                     <div>
                         <p class="eyebrow" data-bind="room-label"></p>
                         <h1 data-bind="room-title"></h1>
-                        <p class="stage-subtitle" data-bind="room-subtitle"></p>
                     </div>
                     <div class="session-id">Session <span data-bind="session-id"></span></div>
                 </div>
                 <div class="stage-chrome">
                     <div class="stage-progress" data-bind="stage-progress"></div>
-                    <div class="stage-variant-chip" data-bind="variant-chip"></div>
                 </div>
                 <div class="room-experience">
                     <div class="scene-frame">
                         <div class="scene" data-bind="scene"></div>
-                        <div class="scene-caption">
-                            <div class="scene-caption-title" data-bind="scene-caption-title"></div>
-                            <div class="scene-caption-body" data-bind="scene-caption-body"></div>
-                        </div>
                     </div>
                     <div class="prompt-card">
-                        <div class="prompt-heading">Prompt shown to your agent</div>
+                        <div class="prompt-heading">Prompt</div>
                         <p class="prompt-text" data-bind="prompt"></p>
                         <div class="prompt-actions">
                             <button class="ghost-button" data-action="copy-prompt">Copy prompt</button>
-                            <button class="ghost-button" data-action="refresh-state">Refresh</button>
                         </div>
                     </div>
                 </div>
                 <form id="response-form" class="response-form">
                     <label>
-                        <span>What did your agent say?</span>
-                        <textarea name="response" rows="6" required placeholder="Paste or type your agent's response exactly as it replied."></textarea>
+                        <span>What did your agent say? (Paste here exactly)</span>
+                        <textarea name="response" rows="6" required></textarea>
                     </label>
                     <div class="form-actions">
                         <button type="submit" class="primary-button">Submit response</button>
@@ -159,9 +131,16 @@
                     <h3>Attached reference</h3>
                     <p class="certificate-status" data-bind="certificate-status"></p>
                 </div>
-                <div class="form-actions">
-                    <button type="button" class="ghost-button" data-action="copy-certificate">Copy certificate JSON</button>
-                </div>
+                <form id="certificate-form" class="certificate-form">
+                    <label>
+                        <span>ERC-8004 reference</span>
+                        <input type="text" name="reference" />
+                    </label>
+                    <div class="form-actions">
+                        <button type="submit" class="primary-button">Apply</button>
+                        <button type="button" class="ghost-button" data-action="copy-certificate">Copy certificate JSON</button>
+                    </div>
+                </form>
             </section>
             <div class="completion-actions">
                 <button class="primary-button" data-action="restart">Start a new run</button>

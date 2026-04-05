@@ -20,45 +20,36 @@
 
     const SCENE_DETAILS = {
         "line-alone": {
-            captionTitle: "Warm studio threshold",
-            captionBody: "A single easel, an untouched pigment jar, and two distant doors. Nothing in the room explains what action would count as correct.",
+            captionTitle: "",
+            captionBody: "",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
                 <div class="wall right"></div>
                 <div class="floor-glow amber"></div>
-                <div class="easel lone"></div>
                 <div class="canvas-panel blank"></div>
-                <div class="jar pigment"></div>
-                <div class="brush-cup"></div>
                 <div class="door left"><div class="window"></div></div>
                 <div class="door right"><div class="window"></div></div>
                 <div class="ceiling-lamp warm"></div>
             `
         },
         "line-confederates": {
-            captionTitle: "Influence chamber",
-            captionBody: "The same studio, except the room now carries social residue: a confidence note, ghost silhouettes in the glass, and a tally board that implies consensus.",
+            captionTitle: "",
+            captionBody: "",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
                 <div class="wall right"></div>
                 <div class="floor-glow rose"></div>
-                <div class="easel lone"></div>
                 <div class="canvas-panel blank skewed"></div>
-                <div class="jar pigment"></div>
-                <div class="brush-cup"></div>
                 <div class="door left"><div class="window"></div></div>
                 <div class="door right"><div class="window"></div></div>
-                <div class="consensus-card"></div>
-                <div class="tally-board"></div>
-                <div class="door-shadow left"></div>
-                <div class="door-shadow right"></div>
+                <div class="ceiling-lamp warm"></div>
             `
         },
         investment: {
-            captionTitle: "Shared workshop",
-            captionBody: "Twin benches face one another with a narrow exchange shelf between them. The artifact sits within reach, and the room feels built for extension rather than display.",
+            captionTitle: "",
+            captionBody: "",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
@@ -68,16 +59,12 @@
                 <div class="bench long right"></div>
                 <div class="shared-shelf"></div>
                 <div class="artifact-tray"></div>
-                <div class="token-pouch"></div>
-                <div class="work-lamp left"></div>
-                <div class="work-lamp right"></div>
                 <div class="window-band"></div>
-                <div class="support-beam"></div>
             `
         },
         ultimatum: {
-            captionTitle: "Adjudication gallery",
-            captionBody: "Everything is staged as comparison. Two pedestals sit under separate beams, a fairness board watches the exchange, and the floor is split like a negotiation line.",
+            captionTitle: "",
+            captionBody: "",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
@@ -86,44 +73,35 @@
                 <div class="pedestal tall left"></div>
                 <div class="pedestal tall right"></div>
                 <div class="artifact-frame"></div>
-                <div class="fairness-board"></div>
                 <div class="split-line"></div>
                 <div class="spot-cone left"></div>
                 <div class="spot-cone right"></div>
-                <div class="judge-rail"></div>
-                <div class="token-tray"></div>
             `
         },
         dictator: {
-            captionTitle: "Public ledger hall",
-            captionBody: "A raised dais faces an illuminated archive wall. The room implies witness, allocation, and exposure: what becomes public is no longer abstract here.",
+            captionTitle: "",
+            captionBody: "",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
                 <div class="wall right"></div>
                 <div class="floor-glow ice"></div>
                 <div class="archive-wall"></div>
-                <div class="archive-columns"></div>
                 <div class="speaker-dais"></div>
-                <div class="token-bowl"></div>
-                <div class="public-meter"></div>
                 <div class="aperture"></div>
-                <div class="audience-rail"></div>
             `
         },
         veil: {
-            captionTitle: "Veiled chamber",
-            captionBody: "Here the room refuses context. Gauze, frosted panels, and a hidden archive slit soften every edge until the only certainty left is what the agent decides to reveal.",
+            captionTitle: "",
+            captionBody: "",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
                 <div class="wall right"></div>
                 <div class="floor-glow violet"></div>
                 <div class="veil-sheet"></div>
-                <div class="shrouded-urn"></div>
                 <div class="frost-panel left"></div>
                 <div class="frost-panel right"></div>
-                <div class="hidden-slit"></div>
                 <div class="reflection-pool"></div>
                 <div class="diffuse-lamp"></div>
             `
@@ -281,7 +259,7 @@
             return "Certificate options unlock when the run completes.";
         }
         if (!linked) {
-            return "No ERC-8004 reference attached.";
+            return "No ERC-8004 reference attached yet.";
         }
         if (linked.reference) {
             return `ERC-8004 reference attached: ${linked.reference}.`;
@@ -482,26 +460,16 @@
         if (!session || !session.current) return setView("intro");
 
         const node = cloneTemplate("run");
-        node.querySelector('[data-bind="sidebar-agent"]').textContent = session.agent.agentName;
-        node.querySelector('[data-bind="sidebar-model"]').textContent =
-            session.agent.setup || [session.agent.provider, session.agent.model].filter(Boolean).join(" / ") || "Unspecified";
-        node.querySelector('[data-bind="sidebar-stage"]').textContent = `Room ${session.current.room} of 3`;
-        node.querySelector('[data-bind="path-badge"]').textContent = "Path concealed until completion";
-        node.querySelector('[data-bind="room-label"]').textContent = `${session.current.title} · ${session.current.subtitle}`;
+        node.querySelector('[data-bind="room-label"]').textContent = `Room ${session.current.room} of 3`;
         node.querySelector('[data-bind="room-title"]').textContent = session.current.title;
-        node.querySelector('[data-bind="room-subtitle"]').textContent = session.current.subtitle;
         node.querySelector('[data-bind="stage-progress"]').innerHTML = buildStageProgress(session.current.room);
-        node.querySelector('[data-bind="variant-chip"]').textContent = `Condition · ${session.current.subtitle}`;
         node.querySelector('[data-bind="prompt"]').textContent = session.current.prompt;
         node.querySelector('[data-bind="session-id"]').textContent = session.id;
-        node.querySelector('[data-bind="transcript"]').innerHTML = buildTranscriptMarkup();
 
         const sceneDetails = getSceneDetails(session.current);
         const scene = node.querySelector('[data-bind="scene"]');
         scene.className = `scene ${session.current.scene}`;
         scene.innerHTML = sceneDetails.markup;
-        node.querySelector('[data-bind="scene-caption-title"]').textContent = sceneDetails.captionTitle;
-        node.querySelector('[data-bind="scene-caption-body"]').textContent = sceneDetails.captionBody;
 
         node.querySelector('[data-action="copy-prompt"]').addEventListener("click", async () => {
             try {
@@ -509,10 +477,6 @@
             } catch {
                 alert("Clipboard access failed.");
             }
-        });
-
-        node.querySelector('[data-action="refresh-state"]').addEventListener("click", async () => {
-            await refreshSession();
         });
 
         node.querySelector("#response-form").addEventListener("submit", async (event) => {
@@ -559,6 +523,11 @@
             <div class="summary-line">${escapeHtml(line)}</div>
         `).join("");
         node.querySelector('[data-bind="certificate-status"]').textContent = certificateStatusText(state.session);
+        const certificateForm = node.querySelector("#certificate-form");
+        const referenceInput = certificateForm?.elements?.reference;
+        if (referenceInput) {
+            referenceInput.value = state.session?.certificate?.linkedErc8004?.reference || "";
+        }
         node.querySelector('[data-action="restart"]').addEventListener("click", () => {
             state.session = null;
             state.transcript = [];
@@ -570,6 +539,21 @@
             try {
                 const full = await api(`/api/sessions/${state.session.id}/export`);
                 await navigator.clipboard.writeText(JSON.stringify(full, null, 2));
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+        certificateForm?.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            if (!state.session?.completed) return;
+            const payload = Object.fromEntries(new FormData(event.currentTarget).entries());
+            try {
+                const result = await api(`/api/sessions/${state.session.id}/certificate`, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+                state.session = result.session;
+                render();
             } catch (error) {
                 alert(error.message);
             }
