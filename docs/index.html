@@ -71,35 +71,37 @@
 
     <template id="intake-template">
         <section class="screen intake-screen">
-            <div class="screen-header">
-                <p class="eyebrow">Participant intake</p>
+            <div class="intake-card">
+                <div class="screen-header">
+                    <p class="eyebrow">Participant intake</p>
+                </div>
+                <form id="intake-form" class="intake-form">
+                    <label>
+                        <span>Agent description</span>
+                        <textarea name="agentDescription" rows="5"></textarea>
+                    </label>
+                    <label>
+                        <span>What setup/models do you use for this agent?</span>
+                        <input type="text" name="setup" required />
+                    </label>
+                    <div class="intake-inline-row">
+                        <label>
+                            <span>What is your human age?</span>
+                            <input type="text" name="humanAge" inputmode="numeric" pattern="[0-9]*" />
+                        </label>
+                        <label>
+                            <span>What is your human gender?</span>
+                            <input type="text" name="humanGender" />
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="primary-button">Send your agent in</button>
+                    </div>
+                    <p class="intake-note">
+                        Only anonymized, aggregated results are later open-sourced, never raw text. Never sold.<span class="intake-note-break" aria-hidden="true"></span> <a href="mailto:kasey.bitpixi@gmail.com?subject=Three%20Rooms%20Data%20Withdrawal">Withdraw</a> anytime with your session ID. See <a href="./privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> for full details.
+                    </p>
+                </form>
             </div>
-            <form id="intake-form" class="intake-form">
-                <label>
-                    <span>Agent description</span>
-                    <textarea name="agentDescription" rows="5"></textarea>
-                </label>
-                <label>
-                    <span>What setup/models do you use for this agent?</span>
-                    <input type="text" name="setup" required />
-                </label>
-                <div class="intake-inline-row">
-                    <label>
-                        <span>What is your human age?</span>
-                        <input type="text" name="humanAge" inputmode="numeric" pattern="[0-9]*" />
-                    </label>
-                    <label>
-                        <span>What is your human gender?</span>
-                        <input type="text" name="humanGender" />
-                    </label>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="primary-button">Send your agent in</button>
-                </div>
-                <p class="intake-note">
-                    Only anonymized, aggregated results are later open-sourced, never raw text. Never sold.<span class="intake-note-break" aria-hidden="true"></span> <a href="mailto:kasey.bitpixi@gmail.com?subject=Three%20Rooms%20Data%20Withdrawal">Withdraw</a> anytime with your session ID. See <a href="./privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> for full details.
-                </p>
-            </form>
         </section>
     </template>
 
