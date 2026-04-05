@@ -374,7 +374,7 @@ async function handleApi(req, res, pathname) {
       path: buildPath(),
       participant: {
         humanAge: truncate(body.humanAge || "", 16),
-        humanCountry: truncate(body.humanCountry || "", 120),
+        humanGender: truncate(body.humanGender || "", 120),
         setup,
         agentDescription: truncate(body.agentDescription || "", 240)
       },
