@@ -1158,23 +1158,23 @@ textarea {
 }
 
 .scene.investment {
-    --scene-wall: #1f322c;
-    --scene-wall-alt: #111d19;
+    --scene-wall: #23322d;
+    --scene-wall-alt: #121b18;
 }
 
 .scene.ultimatum {
-    --scene-wall: #372429;
-    --scene-wall-alt: #1c1216;
+    --scene-wall: #1d3430;
+    --scene-wall-alt: #0f1e1b;
 }
 
 .scene.dictator {
-    --scene-wall: #22313d;
-    --scene-wall-alt: #121a23;
+    --scene-wall: #243443;
+    --scene-wall-alt: #131c25;
 }
 
 .scene.veil {
-    --scene-wall: #241f35;
-    --scene-wall-alt: #120f1d;
+    --scene-wall: #2b2937;
+    --scene-wall-alt: #15131d;
 }
 
 .scene .floor-glow {

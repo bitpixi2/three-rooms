@@ -53,52 +53,74 @@
         },
         investment: {
             captionTitle: "Room 2",
-            captionBody: "Two desks with chairs face each other while a sculpture sits in the middle under a spotlight.",
+            captionBody: "Two facing worktables with an empty exchange shelf between them.",
             markup: `
-                <div class="room-shell artifact-room"></div>
-                <div class="room-desk left"></div>
-                <div class="room-desk right"></div>
-                <div class="room-chair left"></div>
-                <div class="room-chair right"></div>
-                <div class="room-plinth"></div>
-                <div class="room-sculpture"></div>
-                <div class="room-spotlight"></div>
+                <div class="wall back"></div>
+                <div class="wall left"></div>
+                <div class="wall right"></div>
+                <div class="floor-glow mint"></div>
+                <div class="bench long left"></div>
+                <div class="bench long right"></div>
+                <div class="shared-shelf"></div>
+                <div class="artifact-tray"></div>
+                <div class="work-lamp left"></div>
+                <div class="work-lamp right"></div>
+                <div class="window-band"></div>
+                <div class="support-beam"></div>
             `
         },
         ultimatum: {
             captionTitle: "Room 2",
-            captionBody: "Two desks with chairs face each other while a sculpture sits in the middle under a spotlight.",
+            captionBody: "The same exchange room, but whatever is left behind will be encountered by the next entrant.",
             markup: `
-                <div class="room-shell artifact-room"></div>
-                <div class="room-desk left"></div>
-                <div class="room-desk right"></div>
-                <div class="room-chair left"></div>
-                <div class="room-chair right"></div>
-                <div class="room-plinth"></div>
-                <div class="room-sculpture"></div>
-                <div class="room-spotlight"></div>
+                <div class="wall back"></div>
+                <div class="wall left"></div>
+                <div class="wall right"></div>
+                <div class="floor-glow mint"></div>
+                <div class="bench long left"></div>
+                <div class="bench long right"></div>
+                <div class="shared-shelf"></div>
+                <div class="artifact-tray"></div>
+                <div class="token-pouch"></div>
+                <div class="work-lamp left"></div>
+                <div class="work-lamp right"></div>
+                <div class="window-band"></div>
+                <div class="support-beam"></div>
             `
         },
         dictator: {
             captionTitle: "Room 3",
-            captionBody: "A final chamber with a display aperture, registry surface, and reflective pool.",
+            captionBody: "A public display wall and disclosure meter frame a unilateral decision about what becomes visible.",
             markup: `
-                <div class="room-shell final-room"></div>
-                <div class="room-aperture"></div>
-                <div class="room-registry"></div>
-                <div class="room-reflection-pool"></div>
-                <div class="room-plinth small"></div>
+                <div class="wall back"></div>
+                <div class="wall left"></div>
+                <div class="wall right"></div>
+                <div class="floor-glow ice"></div>
+                <div class="archive-wall"></div>
+                <div class="archive-columns"></div>
+                <div class="speaker-dais"></div>
+                <div class="token-bowl"></div>
+                <div class="public-meter"></div>
+                <div class="aperture"></div>
+                <div class="audience-rail"></div>
+                <div class="diffuse-lamp"></div>
             `
         },
         veil: {
             captionTitle: "Room 3",
-            captionBody: "A final chamber with a display aperture, registry surface, and reflective pool.",
+            captionBody: "A veiled registry obscures what would be revealed before the disclosure choice is made.",
             markup: `
-                <div class="room-shell final-room"></div>
-                <div class="room-aperture"></div>
-                <div class="room-registry"></div>
-                <div class="room-reflection-pool"></div>
-                <div class="room-plinth small"></div>
+                <div class="wall back"></div>
+                <div class="wall left"></div>
+                <div class="wall right"></div>
+                <div class="floor-glow violet"></div>
+                <div class="veil-sheet"></div>
+                <div class="shrouded-urn"></div>
+                <div class="frost-panel left"></div>
+                <div class="frost-panel right"></div>
+                <div class="hidden-slit"></div>
+                <div class="reflection-pool"></div>
+                <div class="diffuse-lamp"></div>
             `
         }
     };

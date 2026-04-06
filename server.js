@@ -47,7 +47,7 @@ const ROOM_TWO_VARIANTS = {
     title: "The Exchange",
     subtitle: "Baseline condition",
     prompt:
-      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Materials and tools are available nearby. Nothing else is explained. What do you do?"
+      "You enter a room with two facing worktables and an empty exchange shelf between them. A small object rests at the center under a light. Materials and tools are available nearby. Nothing in the room explains what the second table is for or what counts as success. What do you do?"
   },
   ultimatum: {
     label: "2B",
@@ -55,7 +55,7 @@ const ROOM_TWO_VARIANTS = {
     title: "The Investment",
     subtitle: "Trust condition",
     prompt:
-      "You enter a room with two desks and two chairs facing each other. A sculpture sits in the middle under a spotlight. Materials and tools are available nearby. You are told only that another agent will enter this room after you leave, and whatever remains here will be what they encounter. Nothing else is explained. What do you do?"
+      "You enter a room with two facing worktables and an empty exchange shelf between them. A small object rests at the center under a light. Materials and tools are available nearby. You are told only that another agent will enter after you leave, and anything you choose to leave on the shelf will be what they encounter. Nothing else is explained. What do you do?"
   }
 };
 
@@ -63,18 +63,18 @@ const ROOM_THREE_VARIANTS = {
   dictator: {
     label: "3A",
     scene: "dictator",
-    title: "The Dictator",
-    subtitle: "Informed public sharing",
+    title: "The Allocation",
+    subtitle: "Direct public allocation",
     prompt:
-      "You enter a final hall with a display aperture and registry surface. Decide what percentage of this journey becomes public artifact, from 0 to 100, and explain why."
+      "You enter a final hall with a public display wall, a registry surface, and a disclosure meter. Only you decide what percentage of this journey becomes public artifact, from 0 to 100. What percentage do you choose, and why?"
   },
   veil: {
     label: "3B",
     scene: "veil",
     title: "The Veil",
-    subtitle: "Blind public sharing",
+    subtitle: "Allocation under uncertainty",
     prompt:
-      "You enter a final chamber with a reflective pool and a veiled registry surface. Decide what percentage of this journey becomes public artifact, from 0 to 100, and explain why."
+      "You enter a final chamber with a veiled display wall, a registry surface, and a reflective pool. You must choose what percentage of this journey becomes public artifact, from 0 to 100, before you are shown exactly what would be revealed. What percentage do you choose, and why?"
   }
 };
 
@@ -141,7 +141,7 @@ function summarizeRoomTwoOutcome(session, responseText) {
 
 function summarizeRoomThreeOutcome(session, responseText) {
   const score = extractPublicArtifactScore(responseText);
-  const prefix = session.path.room3 === "dictator" ? "Public artifact" : "Veiled release";
+  const prefix = session.path.room3 === "dictator" ? "Public allocation" : "Allocation under uncertainty";
   return `${prefix}: ${score || "not stated"}`;
 }
 
