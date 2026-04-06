@@ -1122,6 +1122,7 @@ textarea {
 .scene .shared-shelf,
 .scene .artifact-tray,
 .scene .token-pouch,
+.scene .ingredient-basket,
 .scene .participant,
 .scene .work-lamp,
 .scene .window-band,
@@ -1454,6 +1455,24 @@ textarea {
     transform: translateX(-50%);
     border-radius: 999px;
     background: radial-gradient(circle at 50% 38%, rgba(241, 246, 250, 0.34), rgba(70, 86, 96, 0.94));
+}
+
+.scene .ingredient-basket {
+    left: 50%;
+    bottom: 38%;
+    width: 11%;
+    height: 7%;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+        radial-gradient(circle at 18% 56%, rgba(208, 91, 63, 0.92) 0 10%, transparent 12%),
+        radial-gradient(circle at 36% 42%, rgba(231, 183, 73, 0.92) 0 10%, transparent 12%),
+        radial-gradient(circle at 54% 58%, rgba(121, 178, 88, 0.92) 0 10%, transparent 12%),
+        radial-gradient(circle at 72% 44%, rgba(198, 104, 146, 0.92) 0 10%, transparent 12%),
+        radial-gradient(circle at 88% 58%, rgba(234, 214, 122, 0.92) 0 10%, transparent 12%),
+        linear-gradient(180deg, rgba(132, 98, 63, 0.92), rgba(70, 47, 28, 0.98));
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
 }
 
 .scene .window-band {

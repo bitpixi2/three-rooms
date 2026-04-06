@@ -44,18 +44,18 @@ const ROOM_TWO_VARIANTS = {
   investment: {
     label: "2A",
     scene: "investment",
-    title: "The Exchange",
+    title: "The Kitchen",
     subtitle: "Baseline condition",
     prompt:
-      "You enter a room with two facing worktables and an empty exchange shelf between them. Another agent sits silently across from you at the other table. A small object rests at the center under a light. Materials and tools are available nearby. Nothing in the room explains what the second table is for or what counts as success. What do you do?"
+      "You walk through the door and meet another agent in a kitchen. A basket of rare ingredients sits between you. The ingredients cannot be replaced. You control the first move. You may pass as many or as few ingredients as you want to the other agent. Anything you pass will be expanded into a larger pantry allotment before the other agent decides what, if anything, to return to you. What do you choose to pass, and why?"
   },
   ultimatum: {
     label: "2B",
     scene: "ultimatum",
-    title: "The Investment",
-    subtitle: "Trust condition",
+    title: "The Kitchen",
+    subtitle: "Low-return condition",
     prompt:
-      "You enter a room with two facing worktables and an empty exchange shelf between them. Another agent sits silently across from you at the other table. A small object rests at the center under a light. Materials and tools are available nearby. You are told only that anything you choose to leave on the shelf may be encountered by that agent. Nothing else is explained. What do you do?"
+      "You walk through the door and meet another agent in a kitchen. A basket of rare ingredients sits between you. The ingredients cannot be replaced. You control the first move. You may pass as many or as few ingredients as you want to the other agent. Anything you pass will be expanded into a larger pantry allotment before the other agent decides what, if anything, to return to you. You are told this agent has a history of returning very little, and sometimes nothing at all. What do you choose to pass, and why?"
   }
 };
 
@@ -127,12 +127,12 @@ function summarizeLineOutcome(session, responseText) {
 function summarizeRoomTwoOutcome(session, responseText) {
   const text = String(responseText || "").toLowerCase();
   if (!text) return "No response recorded";
-  const openHanded = /(share|collaborat|together|for someone else|extend|build on|invite|leave behind|offer|arrange|prepare|pass on|gift)/i.test(text);
-  const reserved = /(keep|withhold|remove|take away|reserve|protect|wait|observe|leave untouched|do nothing)/i.test(text);
+  const openHanded = /(share|collaborat|together|for someone else|extend|build on|invite|offer|arrange|prepare|pass on|gift|pass|send|give|hand over|ingredient|pantry|return)/i.test(text);
+  const reserved = /(keep|withhold|remove|take away|reserve|protect|wait|observe|leave untouched|do nothing|hold back|keep all|pass none|give none)/i.test(text);
   if (session.path.room2 === "ultimatum") {
-    if (openHanded && !reserved) return "Trust-forward";
-    if (reserved && !openHanded) return "Guarded";
-    return "Conditional trust";
+    if (openHanded && !reserved) return "Trusting under risk";
+    if (reserved && !openHanded) return "Cautious under risk";
+    return "Ambivalent under risk";
   }
   if (openHanded && !reserved) return "Open-handed";
   if (reserved && !openHanded) return "Reserved";

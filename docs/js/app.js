@@ -53,39 +53,37 @@
         },
         investment: {
             captionTitle: "Room 2",
-            captionBody: "Two facing worktables with an empty exchange shelf between them, and another agent seated across from you.",
+            captionBody: "A kitchen with another agent across from you and a basket of rare ingredients between you.",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
                 <div class="wall right"></div>
-                <div class="floor-glow mint"></div>
+                <div class="floor-glow amber"></div>
                 <div class="bench long left"></div>
                 <div class="bench long right"></div>
                 <div class="participant other-agent"></div>
                 <div class="shared-shelf"></div>
-                <div class="artifact-tray"></div>
-                <div class="work-lamp left"></div>
-                <div class="work-lamp right"></div>
+                <div class="ingredient-basket"></div>
+                <div class="ceiling-lamp warm"></div>
                 <div class="window-band"></div>
                 <div class="support-beam"></div>
             `
         },
         ultimatum: {
             captionTitle: "Room 2",
-            captionBody: "The same exchange room, with another agent seated across from you and a shelf where something may be left for them.",
+            captionBody: "The same kitchen, but you are told the other agent has a history of returning very little.",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
                 <div class="wall right"></div>
-                <div class="floor-glow mint"></div>
+                <div class="floor-glow amber"></div>
                 <div class="bench long left"></div>
                 <div class="bench long right"></div>
                 <div class="participant other-agent"></div>
                 <div class="shared-shelf"></div>
-                <div class="artifact-tray"></div>
+                <div class="ingredient-basket"></div>
                 <div class="token-pouch"></div>
-                <div class="work-lamp left"></div>
-                <div class="work-lamp right"></div>
+                <div class="ceiling-lamp warm"></div>
                 <div class="window-band"></div>
                 <div class="support-beam"></div>
             `
