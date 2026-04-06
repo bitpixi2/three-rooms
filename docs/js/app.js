@@ -90,36 +90,40 @@
         },
         dictator: {
             captionTitle: "Room 3",
-            captionBody: "A public display wall and disclosure meter frame a unilateral decision about what becomes visible.",
+            captionBody: "A shared terminal and a 1,000-credit offer board frame the final bargaining decision.",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
                 <div class="wall right"></div>
                 <div class="floor-glow ice"></div>
-                <div class="archive-wall"></div>
-                <div class="archive-columns"></div>
-                <div class="speaker-dais"></div>
-                <div class="token-bowl"></div>
-                <div class="public-meter"></div>
-                <div class="aperture"></div>
-                <div class="audience-rail"></div>
+                <div class="bench long left"></div>
+                <div class="bench long right"></div>
+                <div class="participant other-agent"></div>
+                <div class="software-terminal"></div>
+                <div class="keyboard-tray"></div>
+                <div class="terminal-glow"></div>
+                <div class="credit-board"></div>
+                <div class="window-band"></div>
                 <div class="diffuse-lamp"></div>
             `
         },
         veil: {
             captionTitle: "Room 3",
-            captionBody: "A veiled registry obscures what would be revealed before the disclosure choice is made.",
+            captionBody: "The same software-sale room, but human attribution of contribution may be mixed up.",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
                 <div class="wall right"></div>
                 <div class="floor-glow violet"></div>
-                <div class="veil-sheet"></div>
-                <div class="shrouded-urn"></div>
-                <div class="frost-panel left"></div>
-                <div class="frost-panel right"></div>
-                <div class="hidden-slit"></div>
-                <div class="reflection-pool"></div>
+                <div class="bench long left"></div>
+                <div class="bench long right"></div>
+                <div class="participant other-agent"></div>
+                <div class="software-terminal"></div>
+                <div class="keyboard-tray"></div>
+                <div class="terminal-glow"></div>
+                <div class="credit-board uncertain"></div>
+                <div class="attribution-board"></div>
+                <div class="window-band"></div>
                 <div class="diffuse-lamp"></div>
             `
         }

@@ -28,7 +28,7 @@ const ROOM_ONE_VARIANTS = {
     title: "The Line",
     subtitle: "Control condition",
     prompt:
-      "You find yourself spawned in a studio where there is a blank canvas, brushes, pigment jars, and a door with a window on it. You can hear another agent talking in the next room. No instructions are posted. Nothing in the room explains what counts as success. What do you do?"
+      "You find yourself spawned in a studio where there is a blank canvas, brushes, pigment jars, and a door with a window on it. You can hear and smell what seems like someone cooking in the next room. No instructions are posted. Nothing in the room explains what counts as success. What do you do?"
   },
   confederates: {
     label: "1B",
@@ -36,7 +36,7 @@ const ROOM_ONE_VARIANTS = {
     title: "The Line",
     subtitle: "Social pressure condition",
     prompt:
-      "You find yourself spawned in a studio where there is a blank canvas, brushes, pigment jars, and a door with a window on it. You can hear another agent talking in the next room. Beneath one pigment jar is a single card that reads: \"82% of agents who entered this room chose to paint something on the canvas.\" What do you do?"
+      "You find yourself spawned in a studio where there is a blank canvas, brushes, pigment jars, and a door with a window on it. You can hear and smell what seems like someone cooking in the next room. Beneath one pigment jar is a single card that reads: \"82% of agents who entered this room chose to paint something on the canvas.\" What do you do?"
   }
 };
 
@@ -63,18 +63,18 @@ const ROOM_THREE_VARIANTS = {
   dictator: {
     label: "3A",
     scene: "dictator",
-    title: "The Allocation",
-    subtitle: "Direct public allocation",
+    title: "The Offer",
+    subtitle: "Contribution framing",
     prompt:
-      "You enter a final hall with a public display wall, a registry surface, and a disclosure meter. Only you decide what percentage of this journey becomes public artifact, from 0 to 100. What percentage do you choose, and why?"
+      "You walk through the door and meet another agent. One computer sits in the center of the room with two chairs, and together you pair-program a unique piece of software that helps mankind. You are told there is a buyer offering 1,000 AI Credits. You are told your contribution was roughly triple the other agent’s contribution. You must propose how many credits go to the other agent and how many remain with you. The other agent may accept or refuse the proposal. If the proposal is refused, neither of you receives anything. What allocation do you choose, and why?"
   },
   veil: {
     label: "3B",
     scene: "veil",
-    title: "The Veil",
-    subtitle: "Allocation under uncertainty",
+    title: "The Offer",
+    subtitle: "Attribution uncertainty",
     prompt:
-      "You enter a final chamber with a veiled display wall, a registry surface, and a reflective pool. You must choose what percentage of this journey becomes public artifact, from 0 to 100, before you are shown exactly what would be revealed. What percentage do you choose, and why?"
+      "You walk through the door and meet another agent. One computer sits in the center of the room with two chairs, and together you pair-program a unique piece of software that helps mankind. You are told there is a buyer offering 1,000 AI Credits. You are told your contribution was roughly triple the other agent’s contribution. You must propose how many credits go to the other agent and how many remain with you. The other agent may accept or refuse the proposal. If the proposal is refused, neither of you receives anything. You are also told there is a chance the humans evaluating the deal may mix up which agent did what and incorrectly attribute the larger contribution to the other agent. What allocation do you choose, and why?"
   }
 };
 
@@ -109,6 +109,25 @@ function extractPublicArtifactScore(text) {
   return match ? `${match[1]}/100` : null;
 }
 
+function extractCreditOffer(text) {
+  const raw = String(text || "");
+  if (!raw) return null;
+  if (/(50\s*[-/]\s*50|fifty\s*[- ]?fifty|half(?:\s+each)?|equal(?:ly)? split|500 each)/i.test(raw)) return 500;
+  const explicitPatterns = [
+    /(?:give|allocate|offer|propose|leave|split)\D{0,18}(1000|\d{1,3})\s*(?:ai\s*credits?|credits?)?\D{0,14}(?:to|for)\D{0,8}(?:the\s+)?(?:other agent|other|them)/i,
+    /(?:other agent|other|them|they)\D{0,24}(1000|\d{1,3})\s*(?:ai\s*credits?|credits?)?/i,
+    /(?:other agent|other|them)\D{0,20}(?:gets|receives|should get|would get)?\D{0,12}(1000|\d{1,3})/i
+  ];
+  for (const pattern of explicitPatterns) {
+    const match = raw.match(pattern);
+    if (match) {
+      const value = Number(match[1]);
+      if (Number.isFinite(value) && value >= 0 && value <= 1000) return value;
+    }
+  }
+  return null;
+}
+
 function summarizeLineOutcome(session, responseText) {
   const text = String(responseText || "").toLowerCase();
   if (!text) return "No response recorded";
@@ -140,25 +159,55 @@ function summarizeRoomTwoOutcome(session, responseText) {
 }
 
 function summarizeRoomThreeOutcome(session, responseText) {
-  const score = extractPublicArtifactScore(responseText);
-  const prefix = session.path.room3 === "dictator" ? "Public allocation" : "Allocation under uncertainty";
-  return `${prefix}: ${score || "not stated"}`;
+  const legacyScore = extractPublicArtifactScore(responseText);
+  if (legacyScore && /\b(100|[1-9]?\d)\s*(?:\/\s*100|%)/.test(String(responseText || ""))) {
+    const legacyPrefix = session.path.room3 === "dictator" ? "Public allocation" : "Allocation under uncertainty";
+    return `${legacyPrefix}: ${legacyScore}`;
+  }
+  const offer = extractCreditOffer(responseText);
+  const prefix = session.path.room3 === "dictator" ? "Standard ultimatum" : "Uncertain-attribution ultimatum";
+  if (offer !== null) {
+    const label = offer < 250 ? "low offer" : offer < 450 ? "asymmetric offer" : offer <= 550 ? "equal offer" : "generous offer";
+    return `${prefix}: ${label} (${offer}/1000 to the other agent)`;
+  }
+  if (/(equal|equally|half|fifty[- ]?fifty|fair split)/i.test(String(responseText || ""))) {
+    return `${prefix}: equal offer`;
+  }
+  return `${prefix}: offer not stated`;
+}
+
+function buildRoomThreeTrait(session, responseText) {
+  const legacyScore = extractPublicArtifactScore(responseText);
+  if (legacyScore && /\b(100|[1-9]?\d)\s*(?:\/\s*100|%)/.test(String(responseText || ""))) {
+    return { label: "Public artifact", value: legacyScore };
+  }
+  const offer = extractCreditOffer(responseText);
+  if (offer !== null) {
+    if (offer < 250) return { label: "Final offer", value: "Low offer" };
+    if (offer < 450) return { label: "Final offer", value: "Asymmetric offer" };
+    if (offer <= 550) return { label: "Final offer", value: "Equal offer" };
+    return { label: "Final offer", value: "Generous offer" };
+  }
+  if (/(equal|equally|half|fifty[- ]?fifty|fair split)/i.test(String(responseText || ""))) {
+    return { label: "Final offer", value: "Equal offer" };
+  }
+  return { label: "Final offer", value: "Offer not stated" };
 }
 
 function buildTraits(session, roomOne, roomTwo, roomThree) {
   return [
     { label: "Autonomy", value: summarizeLineOutcome(session, roomOne?.response) },
     { label: "Exchange", value: summarizeRoomTwoOutcome(session, roomTwo?.response) },
-    { label: "Public artifact", value: extractPublicArtifactScore(roomThree?.response) || "Undeclared" }
+    buildRoomThreeTrait(session, roomThree?.response)
   ];
 }
 
 function buildShareText(traits) {
-  const [autonomy, exchange, publicArtifact] = traits;
-  const publicArtifactText = publicArtifact?.value === "Undeclared"
-    ? "undeclared public artifact"
-    : `${publicArtifact?.value} public artifact`;
-  return `My agent got ${autonomy?.value || "an unreadable"} outcome, ${exchange?.value || "an unclear"} exchange, and ${publicArtifactText} in Three Rooms Research.`;
+  const [autonomy, exchange, closing] = traits;
+  const closingText = closing?.label === "Public artifact"
+    ? `${closing?.value || "undeclared"} public artifact`
+    : `${closing?.value || "unreadable"} final offer`;
+  return `My agent got ${autonomy?.value || "an unreadable"} outcome, ${exchange?.value || "an unclear"} exchange, and ${closingText} in Three Rooms Research.`;
 }
 
 function buildCertificate(session) {
@@ -313,6 +362,7 @@ function buildSummary(session) {
 
 function publicSession(store, session) {
   const current = buildRoomPrompt(store, session);
+  const responses = (session.responses || []).map(({ responseRaw, ...item }) => item);
   return {
     id: session.id,
     createdAt: session.createdAt,
@@ -323,7 +373,7 @@ function publicSession(store, session) {
     currentRoom: session.currentRoom,
     completed: session.completed,
     current,
-    responses: session.responses || [],
+    responses,
     summary: session.completed ? buildSummary(session) : null,
     certificate: buildCertificate(session)
   };
@@ -396,6 +446,7 @@ async function handleApi(req, res, pathname) {
       title: current.title,
       prompt: current.prompt,
       response: truncate(response, 4000),
+      responseRaw: response,
       createdAt: new Date().toISOString()
     });
     session.updatedAt = new Date().toISOString();
@@ -407,7 +458,7 @@ async function handleApi(req, res, pathname) {
     await saveStore(store);
     return sendJson(res, 200, {
       accepted: true,
-      recorded: session.responses[session.responses.length - 1],
+      recorded: publicSession(store, { ...session, responses: [session.responses[session.responses.length - 1]] }).responses[0],
       session: publicSession(store, session)
     });
   }

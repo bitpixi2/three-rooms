@@ -1124,6 +1124,11 @@ textarea {
 .scene .token-pouch,
 .scene .ingredient-basket,
 .scene .participant,
+.scene .software-terminal,
+.scene .keyboard-tray,
+.scene .terminal-glow,
+.scene .credit-board,
+.scene .attribution-board,
 .scene .work-lamp,
 .scene .window-band,
 .scene .support-beam,
@@ -1473,6 +1478,104 @@ textarea {
         radial-gradient(circle at 88% 58%, rgba(234, 214, 122, 0.92) 0 10%, transparent 12%),
         linear-gradient(180deg, rgba(132, 98, 63, 0.92), rgba(70, 47, 28, 0.98));
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
+}
+
+.scene .software-terminal {
+    left: 50%;
+    bottom: 35%;
+    width: 18%;
+    height: 13%;
+    transform: translateX(-50%);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background:
+        linear-gradient(180deg, rgba(186, 237, 255, 0.16), rgba(28, 55, 70, 0.92)),
+        linear-gradient(180deg, rgba(19, 26, 34, 0.96), rgba(8, 12, 18, 0.98));
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26);
+}
+
+.scene .software-terminal::before {
+    content: "";
+    position: absolute;
+    inset: 16% 14%;
+    border-radius: 10px;
+    background:
+        linear-gradient(180deg, rgba(76, 224, 201, 0.18), rgba(76, 224, 201, 0.02)),
+        linear-gradient(0deg, rgba(120, 236, 255, 0.15) 0 8%, transparent 8% 24%, rgba(120, 236, 255, 0.12) 24% 32%, transparent 32% 48%, rgba(120, 236, 255, 0.12) 48% 56%, transparent 56% 72%, rgba(120, 236, 255, 0.08) 72% 80%, transparent 80%);
+}
+
+.scene .keyboard-tray {
+    left: 50%;
+    bottom: 30%;
+    width: 15%;
+    height: 4%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(180deg, rgba(72, 92, 109, 0.82), rgba(20, 29, 39, 0.96));
+}
+
+.scene .terminal-glow {
+    left: 50%;
+    bottom: 31%;
+    width: 28%;
+    height: 14%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(126, 233, 255, 0.24), rgba(126, 233, 255, 0) 72%);
+    filter: blur(8px);
+}
+
+.scene .credit-board {
+    right: 12%;
+    top: 16%;
+    width: 18%;
+    height: 16%;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(180deg, rgba(114, 176, 230, 0.18), rgba(30, 52, 70, 0.16));
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.scene .credit-board::before {
+    content: "1000";
+    position: absolute;
+    inset: 20% 0 auto;
+    text-align: center;
+    color: rgba(233, 245, 255, 0.82);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+}
+
+.scene .credit-board::after {
+    content: "";
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    bottom: 22%;
+    height: 12%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(135, 218, 255, 0.18), rgba(135, 218, 255, 0.48), rgba(135, 218, 255, 0.18));
+}
+
+.scene .credit-board.uncertain::after {
+    background:
+        linear-gradient(90deg, rgba(135, 218, 255, 0.18), rgba(135, 218, 255, 0.48), rgba(135, 218, 255, 0.18)),
+        linear-gradient(90deg, transparent 0 34%, rgba(255, 184, 206, 0.42) 34% 52%, transparent 52%);
+}
+
+.scene .attribution-board {
+    left: 12%;
+    top: 16%;
+    width: 14%;
+    height: 16%;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+        radial-gradient(circle at 34% 34%, rgba(255, 255, 255, 0.16) 0 10%, transparent 12%),
+        radial-gradient(circle at 66% 34%, rgba(255, 255, 255, 0.16) 0 10%, transparent 12%),
+        linear-gradient(90deg, transparent 0 28%, rgba(255, 255, 255, 0.16) 28% 36%, transparent 36% 64%, rgba(255, 255, 255, 0.16) 64% 72%, transparent 72%),
+        linear-gradient(180deg, rgba(190, 163, 241, 0.16), rgba(37, 30, 56, 0.22));
 }
 
 .scene .window-band {
