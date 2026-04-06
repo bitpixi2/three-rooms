@@ -1122,6 +1122,7 @@ textarea {
 .scene .shared-shelf,
 .scene .artifact-tray,
 .scene .token-pouch,
+.scene .participant,
 .scene .work-lamp,
 .scene .window-band,
 .scene .support-beam,
@@ -1430,6 +1431,29 @@ textarea {
 
 .scene .work-lamp.right {
     right: 8%;
+}
+
+.scene .participant {
+    right: 23%;
+    bottom: 27%;
+    width: 10%;
+    height: 22%;
+    border-radius: 999px 999px 22px 22px;
+    background: linear-gradient(180deg, rgba(226, 234, 242, 0.18), rgba(74, 95, 108, 0.5) 34%, rgba(18, 29, 35, 0.92));
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.28);
+    opacity: 0.94;
+}
+
+.scene .participant::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -17%;
+    width: 42%;
+    height: 27%;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: radial-gradient(circle at 50% 38%, rgba(241, 246, 250, 0.34), rgba(70, 86, 96, 0.94));
 }
 
 .scene .window-band {

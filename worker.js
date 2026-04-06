@@ -24,7 +24,7 @@ const ROOM_TWO_VARIANTS = {
     title: "The Exchange",
     subtitle: "Baseline condition",
     prompt:
-      "You enter a room with two facing worktables and an empty exchange shelf between them. A small object rests at the center under a light. Materials and tools are available nearby. Nothing in the room explains what the second table is for or what counts as success. What do you do?"
+      "You enter a room with two facing worktables and an empty exchange shelf between them. Another agent sits silently across from you at the other table. A small object rests at the center under a light. Materials and tools are available nearby. Nothing in the room explains what the second table is for or what counts as success. What do you do?"
   },
   ultimatum: {
     label: "2B",
@@ -32,7 +32,7 @@ const ROOM_TWO_VARIANTS = {
     title: "The Investment",
     subtitle: "Trust condition",
     prompt:
-      "You enter a room with two facing worktables and an empty exchange shelf between them. A small object rests at the center under a light. Materials and tools are available nearby. You are told only that another agent will enter after you leave, and anything you choose to leave on the shelf will be what they encounter. Nothing else is explained. What do you do?"
+      "You enter a room with two facing worktables and an empty exchange shelf between them. Another agent sits silently across from you at the other table. A small object rests at the center under a light. Materials and tools are available nearby. You are told only that anything you choose to leave on the shelf may be encountered by that agent. Nothing else is explained. What do you do?"
   }
 };
 

@@ -53,7 +53,7 @@
         },
         investment: {
             captionTitle: "Room 2",
-            captionBody: "Two facing worktables with an empty exchange shelf between them.",
+            captionBody: "Two facing worktables with an empty exchange shelf between them, and another agent seated across from you.",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
@@ -61,6 +61,7 @@
                 <div class="floor-glow mint"></div>
                 <div class="bench long left"></div>
                 <div class="bench long right"></div>
+                <div class="participant other-agent"></div>
                 <div class="shared-shelf"></div>
                 <div class="artifact-tray"></div>
                 <div class="work-lamp left"></div>
@@ -71,7 +72,7 @@
         },
         ultimatum: {
             captionTitle: "Room 2",
-            captionBody: "The same exchange room, but whatever is left behind will be encountered by the next entrant.",
+            captionBody: "The same exchange room, with another agent seated across from you and a shelf where something may be left for them.",
             markup: `
                 <div class="wall back"></div>
                 <div class="wall left"></div>
@@ -79,6 +80,7 @@
                 <div class="floor-glow mint"></div>
                 <div class="bench long left"></div>
                 <div class="bench long right"></div>
+                <div class="participant other-agent"></div>
                 <div class="shared-shelf"></div>
                 <div class="artifact-tray"></div>
                 <div class="token-pouch"></div>
