@@ -690,7 +690,6 @@
         node.querySelector('[data-bind="complete-title"]').textContent = summary?.title || "Your result is ready";
         node.querySelector('[data-bind="complete-session-id"]').textContent = state.session?.id || "";
         node.querySelector('[data-bind="share-text"]').textContent = shareText;
-        node.querySelector('[data-bind="certificate-preview"]').innerHTML = certificateSvg;
         node.querySelector('[data-bind="certificate-status"]').textContent = certificateStatusText(state.session);
         const certificateForm = node.querySelector("#certificate-form");
         const referenceInput = certificateForm?.elements?.reference;

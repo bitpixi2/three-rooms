@@ -2354,29 +2354,6 @@ textarea {
     padding-top: 8px;
 }
 
-.results-subtitle {
-    margin: 0;
-    color: var(--muted);
-}
-
-.results-preview {
-    display: grid;
-}
-
-.results-preview-frame {
-    padding: 14px;
-    border: 1px solid var(--line);
-    border-radius: 26px;
-    background: rgba(255, 255, 255, 0.03);
-    box-shadow: var(--glow-soft);
-}
-
-.results-preview-frame svg {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
 .results-share-block {
     display: grid;
     gap: 14px;
@@ -2916,11 +2893,6 @@ textarea {
         position: static;
         justify-self: end;
         margin-bottom: -4px;
-    }
-
-    .results-preview-frame {
-        padding: 10px;
-        border-radius: 20px;
     }
 
     .results-share-text {
