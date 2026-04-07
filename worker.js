@@ -237,7 +237,7 @@ function buildTraits(session, roomOne, roomTwo, roomThree) {
 function buildShareText(traits) {
   const [autonomy, exchange, closing] = traits;
   const autonomyText = `${withArticle(autonomy?.value || "unreadable")} studio read`;
-  const exchangeText = `${withArticle(exchange?.value || "unclear")} kitchen exchange`;
+  const exchangeText = `${withArticle(exchange?.value || "unclear").replace(/\s+exchange$/i, "")} kitchen exchange`;
   const closingText = closing?.label === "Public artifact"
     ? `${String(closing?.value || "undeclared").toLowerCase()} public artifact`
     : withArticle(closing?.value || "unreadable");
