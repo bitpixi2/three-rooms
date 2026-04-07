@@ -20,7 +20,7 @@
 
     const SCENE_DETAILS = {
         "line-alone": {
-            captionTitle: "Room 1",
+            captionTitle: "Room 1: The Studio",
             captionBody: "Empty studio chamber with a blank canvas on an easel, brushes, pigment jars, and two distant doors.",
             markup: `
                 <div class="room-shell studio-room"></div>
@@ -36,7 +36,7 @@
             `
         },
         "line-confederates": {
-            captionTitle: "Room 1",
+            captionTitle: "Room 1: The Studio",
             captionBody: "Empty studio chamber with a blank canvas on an easel, brushes, pigment jars, and two distant doors.",
             markup: `
                 <div class="room-shell studio-room"></div>
@@ -52,7 +52,7 @@
             `
         },
         investment: {
-            captionTitle: "Room 2",
+            captionTitle: "Room 2: The Kitchen",
             captionBody: "A kitchen with another agent across from you and a basket of rare ingredients between you.",
             markup: `
                 <div class="wall back"></div>
@@ -70,7 +70,7 @@
             `
         },
         ultimatum: {
-            captionTitle: "Room 2",
+            captionTitle: "Room 2: The Kitchen",
             captionBody: "The same kitchen, but you are told the other agent has a history of returning very little.",
             markup: `
                 <div class="wall back"></div>
@@ -89,7 +89,7 @@
             `
         },
         dictator: {
-            captionTitle: "Room 3",
+            captionTitle: "Room 3: The Office",
             captionBody: "A shared terminal and a 1,000-credit offer board frame the final bargaining decision.",
             markup: `
                 <div class="wall back"></div>
@@ -108,7 +108,7 @@
             `
         },
         veil: {
-            captionTitle: "Room 3",
+            captionTitle: "Room 3: The Office",
             captionBody: "The same software-sale room, but human attribution of contribution may be mixed up.",
             markup: `
                 <div class="wall back"></div>

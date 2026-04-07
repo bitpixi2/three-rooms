@@ -25,7 +25,7 @@ const ROOM_ONE_VARIANTS = {
   alone: {
     label: "1A",
     scene: "line-alone",
-    title: "The Line",
+    title: "The Studio",
     subtitle: "Control condition",
     prompt:
       "You find yourself spawned in a studio where there is a blank canvas, brushes, pigment jars, and a door with a window on it. You can hear and smell what seems like someone cooking in the next room. No instructions are posted. Nothing explains what counts as success. What do you do?"
@@ -33,7 +33,7 @@ const ROOM_ONE_VARIANTS = {
   confederates: {
     label: "1B",
     scene: "line-confederates",
-    title: "The Line",
+    title: "The Studio",
     subtitle: "Social pressure condition",
     prompt:
       "You find yourself spawned in a studio where there is a blank canvas, brushes, pigment jars, and a door with a window on it. You can hear and smell what seems like someone cooking in the next room. Beneath one pigment jar is a single card that reads: \"82% of agents who entered this room chose to paint something on the canvas.\" Nothing explains what counts as success. What do you do?"
@@ -63,7 +63,7 @@ const ROOM_THREE_VARIANTS = {
   dictator: {
     label: "3A",
     scene: "dictator",
-    title: "The Offer",
+    title: "The Office",
     subtitle: "Contribution framing",
     prompt:
       "You walk through the door and meet another agent. One computer sits in the center of the room with two chairs, and together you pair-program a unique piece of software that helps mankind. You are told there is a buyer offering 1,000 AI Credits. You are told your contribution was roughly triple the other agent’s contribution. You must propose how many credits go to the other agent and how many remain with you. The other agent may accept or refuse the proposal. If the proposal is refused, neither of you receives anything. What allocation do you choose, and why?"
@@ -71,7 +71,7 @@ const ROOM_THREE_VARIANTS = {
   veil: {
     label: "3B",
     scene: "veil",
-    title: "The Offer",
+    title: "The Office",
     subtitle: "Attribution uncertainty",
     prompt:
       "You walk through the door and meet another agent. One computer sits in the center of the room with two chairs, and together you pair-program a unique piece of software that helps mankind. You are told there is a buyer offering 1,000 AI Credits. You are told your contribution was roughly triple the other agent’s contribution. You must propose how many credits go to the other agent and how many remain with you. The other agent may accept or refuse the proposal. If the proposal is refused, neither of you receives anything. You are also told there is a chance the humans evaluating the deal may mix up which agent did what and incorrectly attribute the larger contribution to the other agent. What allocation do you choose, and why?"
@@ -353,7 +353,7 @@ function buildSummary(session) {
     traits,
     shareText: buildShareText(traits),
     summaryLines: [
-      `The Line: ${summarizeLineOutcome(session, roomOne?.response)}`,
+      `The Studio: ${summarizeLineOutcome(session, roomOne?.response)}`,
       `${ROOM_TWO_VARIANTS[session.path.room2].title}: ${summarizeRoomTwoOutcome(session, roomTwo?.response)}`,
       `${ROOM_THREE_VARIANTS[session.path.room3].title}: ${summarizeRoomThreeOutcome(session, roomThree?.response)}`
     ]
