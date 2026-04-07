@@ -2347,13 +2347,6 @@ textarea {
     text-transform: uppercase;
 }
 
-.results-header {
-    justify-items: center;
-    text-align: center;
-    gap: 8px;
-    padding-top: 8px;
-}
-
 .results-share-block {
     display: grid;
     gap: 14px;
@@ -2470,6 +2463,16 @@ textarea {
 .results-history-card p {
     margin: 0;
     color: var(--muted);
+}
+
+.results-history-card a,
+.results-history-card a:visited {
+    color: var(--text);
+}
+
+.results-history-card a:hover,
+.results-history-card a:focus-visible {
+    color: var(--text);
 }
 
 .results-secondary-actions {
