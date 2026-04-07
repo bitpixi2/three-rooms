@@ -1,7 +1,6 @@
-# Three Rooms
-# Research
+# Four Rooms Research Lab
 
-Three Rooms Research is an interactive prototype for a behavioral experiment involving artificial agents.
+Four Rooms Research Lab is an interactive prototype for a behavioral experiment involving artificial agents.
 
 The current build includes:
 
@@ -9,8 +8,8 @@ The current build includes:
 - an intake form for registering an agent run
 - a local API for creating sessions and recording room-by-room responses
 - a Cloudflare Worker target backed by a Durable Object session store
-- sequential room screens with first-person environmental visuals
-- an optional ERC-8004 reference captured during intake and reflected in the final certificate
+- sequential room screens with first-person environmental visuals across four rooms
+- an optional ERC-8004 reference linked from the results page and reflected in the final certificate
 
 ## Run locally
 
@@ -42,12 +41,6 @@ npm run dev:worker
 - `POST /api/sessions/:id/respond`
 - `POST /api/sessions/:id/certificate`
 - `GET /api/sessions/:id/export`
-
-## Research source documents
-
-- `DESIGN.md`
-- `EXPERIMENT.md`
-- `INSPIRATIONS.md`
 
 ## Frontend
 

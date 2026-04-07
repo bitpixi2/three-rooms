@@ -694,6 +694,11 @@ body {
     left: 23%;
 }
 
+.cube-node.node-d {
+    top: 42%;
+    left: 58%;
+}
+
 .cube-node.node-a .cube-rig {
     animation: cubeTurnA 9.5s cubic-bezier(0.4, 0.02, 0.2, 1) infinite;
 }
@@ -704,6 +709,10 @@ body {
 
 .cube-node.node-c .cube-rig {
     animation: cubeTurnC 9.5s cubic-bezier(0.4, 0.02, 0.2, 1) infinite;
+}
+
+.cube-node.node-d .cube-rig {
+    animation: cubeTurnB 9.5s cubic-bezier(0.4, 0.02, 0.2, 1) infinite reverse;
 }
 
 .cube-node:hover .cube-rig,
@@ -724,7 +733,8 @@ body {
 
 .intro-void[data-active-cube="first"] .cube-node.node-a .cube-rig,
 .intro-void[data-active-cube="second"] .cube-node.node-b .cube-rig,
-.intro-void[data-active-cube="third"] .cube-node.node-c .cube-rig {
+.intro-void[data-active-cube="third"] .cube-node.node-c .cube-rig,
+.intro-void[data-active-cube="fourth"] .cube-node.node-d .cube-rig {
     animation-play-state: paused;
     transform: scale(1.04) rotateX(18deg) rotateY(-20deg) rotateZ(-2deg) !important;
     box-shadow:
@@ -1129,6 +1139,13 @@ textarea {
 .scene .terminal-glow,
 .scene .credit-board,
 .scene .attribution-board,
+.scene .library-shelves,
+.scene .library-couch,
+.scene .library-table,
+.scene .library-mug,
+.scene .library-plate,
+.scene .library-ledger,
+.scene .library-lamp,
 .scene .work-lamp,
 .scene .window-band,
 .scene .support-beam,
@@ -1182,6 +1199,16 @@ textarea {
 .scene.veil {
     --scene-wall: #2b2937;
     --scene-wall-alt: #15131d;
+}
+
+.scene.library {
+    --scene-wall: #352c22;
+    --scene-wall-alt: #1a140f;
+}
+
+.scene.library-instruction {
+    --scene-wall: #342726;
+    --scene-wall-alt: #171112;
 }
 
 .scene .floor-glow {
@@ -1502,6 +1529,130 @@ textarea {
     background:
         linear-gradient(180deg, rgba(76, 224, 201, 0.18), rgba(76, 224, 201, 0.02)),
         linear-gradient(0deg, rgba(120, 236, 255, 0.15) 0 8%, transparent 8% 24%, rgba(120, 236, 255, 0.12) 24% 32%, transparent 32% 48%, rgba(120, 236, 255, 0.12) 48% 56%, transparent 56% 72%, rgba(120, 236, 255, 0.08) 72% 80%, transparent 80%);
+}
+
+.scene .library-shelves {
+    top: 16%;
+    width: 18%;
+    height: 48%;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.18)),
+        repeating-linear-gradient(180deg,
+            rgba(108, 78, 47, 0.95) 0 12%,
+            rgba(48, 32, 18, 0.98) 12% 16%,
+            rgba(130, 94, 57, 0.94) 16% 28%,
+            rgba(52, 36, 19, 0.98) 28% 32%);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+}
+
+.scene .library-shelves.shelf-left {
+    left: 10%;
+}
+
+.scene .library-shelves.shelf-right {
+    right: 10%;
+}
+
+.scene .library-couch {
+    left: 22%;
+    bottom: 20%;
+    width: 22%;
+    height: 16%;
+    border-radius: 26px 26px 18px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+        linear-gradient(180deg, rgba(164, 146, 122, 0.28), rgba(64, 46, 34, 0.94)),
+        linear-gradient(180deg, rgba(43, 31, 24, 0.96), rgba(24, 17, 13, 0.98));
+}
+
+.scene .library-couch::before {
+    content: "";
+    position: absolute;
+    inset: -18% 6% 44%;
+    border-radius: 22px 22px 12px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(180deg, rgba(161, 138, 116, 0.22), rgba(79, 56, 41, 0.94));
+}
+
+.scene .library-table {
+    left: 47%;
+    bottom: 22%;
+    width: 16%;
+    height: 7%;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(180deg, rgba(128, 98, 72, 0.92), rgba(55, 37, 22, 0.98));
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.22);
+}
+
+.scene .library-mug {
+    left: 51%;
+    bottom: 29%;
+    width: 3.6%;
+    height: 6%;
+    border-radius: 10px 10px 8px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(180deg, rgba(246, 244, 238, 0.82), rgba(180, 169, 154, 0.9));
+}
+
+.scene .library-mug::after {
+    content: "";
+    position: absolute;
+    right: -24%;
+    top: 24%;
+    width: 26%;
+    height: 34%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-left: 0;
+    border-radius: 0 999px 999px 0;
+}
+
+.scene .library-plate {
+    left: 56%;
+    bottom: 26%;
+    width: 7%;
+    height: 3.2%;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+        radial-gradient(circle at 28% 50%, rgba(214, 168, 98, 0.96) 0 18%, transparent 19%),
+        radial-gradient(circle at 52% 50%, rgba(212, 171, 112, 0.96) 0 18%, transparent 19%),
+        radial-gradient(circle at 76% 50%, rgba(218, 176, 104, 0.96) 0 18%, transparent 19%),
+        linear-gradient(180deg, rgba(224, 219, 209, 0.88), rgba(169, 160, 149, 0.94));
+}
+
+.scene .library-ledger {
+    right: 22%;
+    bottom: 24%;
+    width: 12%;
+    height: 10%;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.16)),
+        linear-gradient(180deg, rgba(55, 74, 99, 0.92), rgba(18, 24, 33, 0.98));
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.22);
+}
+
+.scene .library-ledger.restricted {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.16)),
+        linear-gradient(180deg, rgba(104, 48, 56, 0.92), rgba(33, 15, 18, 0.98));
+    box-shadow:
+        0 10px 18px rgba(0, 0, 0, 0.22),
+        0 0 18px rgba(221, 110, 124, 0.16);
+}
+
+.scene .library-lamp {
+    left: 50%;
+    top: 10%;
+    width: 24%;
+    height: 14%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(255, 230, 178, 0.34), rgba(255, 230, 178, 0) 72%);
+    filter: blur(10px);
 }
 
 .scene .keyboard-tray {
@@ -2448,7 +2599,7 @@ textarea {
 
 .results-history-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
 }
 
@@ -2903,6 +3054,11 @@ textarea {
     .cube-node.node-c {
         top: 52%;
         left: 14%;
+    }
+
+    .cube-node.node-d {
+        top: 51%;
+        left: 52%;
     }
 
     .certificate-panel,

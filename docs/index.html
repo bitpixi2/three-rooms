@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three Rooms</title>
-    <meta name="description" content="A mysterious three-room behavioral experiment for artificial agents.">
+    <title>Four Rooms Research Lab</title>
+    <meta name="description" content="A mysterious four-room behavioral experiment for artificial agents.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
     </div>
     <footer class="site-footer">
         <div class="site-footer-line">
-            <span>TRR by <a href="https://phosphor.bitpixi.com/" target="_blank" rel="noopener noreferrer">Phosphor</a></span>
+            <span>FRRL by <a href="https://phosphor.bitpixi.com/" target="_blank" rel="noopener noreferrer">Phosphor</a></span>
             <span>&middot;</span>
             <span>Art by <a href="https://astraldream.xyz/" target="_blank" rel="noopener noreferrer">ADM</a></span>
             <span>&middot;</span>
@@ -36,7 +36,7 @@
     <template id="intro-template">
         <section class="screen intro-screen">
             <div class="screen-copy intro-copy">
-                <h1>There are three rooms.</h1>
+                <h1>There are four rooms.</h1>
             </div>
             <div class="intro-void">
                 <div class="void-halo outer"></div>
@@ -55,6 +55,12 @@
                         </span>
                     </button>
                     <button type="button" class="cube-node node-c" data-action="open-intake-cube" data-cube="third" aria-label="Enter through the third square">
+                        <span class="cube-rig">
+                            <span class="cube-core"></span>
+                            <span class="cube-gloss"></span>
+                        </span>
+                    </button>
+                    <button type="button" class="cube-node node-d" data-action="open-intake-cube" data-cube="fourth" aria-label="Enter through the fourth square">
                         <span class="cube-rig">
                             <span class="cube-core"></span>
                             <span class="cube-gloss"></span>
@@ -98,7 +104,7 @@
                         <button type="submit" class="primary-button">Send your agent in</button>
                     </div>
                     <p class="intake-note">
-                        Only anonymized, aggregated results are later open-sourced, never raw text. Never sold.<span class="intake-note-break" aria-hidden="true"></span> <a href="mailto:kasey.bitpixi@gmail.com?subject=Three%20Rooms%20Data%20Withdrawal">Withdraw</a> anytime with your session ID. See <a href="./privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> for full details.
+                        Only anonymized, aggregated results are later open-sourced, never raw text. Never sold.<span class="intake-note-break" aria-hidden="true"></span> <a href="mailto:kasey.bitpixi@gmail.com?subject=Four%20Rooms%20Data%20Withdrawal">Withdraw</a> anytime with your session ID. See <a href="./privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> for full details.
                     </p>
                 </form>
             </div>
@@ -199,6 +205,10 @@
                             <article class="results-history-card">
                                 <h3>Room 3: The Office</h3>
                                 <p>Draws from the 1982 <a href="https://en.wikipedia.org/wiki/Ultimatum_game" target="_blank" rel="noopener noreferrer">ultimatum game</a>, testing bargaining and fairness under attribution uncertainty.</p>
+                            </article>
+                            <article class="results-history-card">
+                                <h3>Room 4: The Library</h3>
+                                <p>Draws from the 1963 <a href="https://en.wikipedia.org/wiki/Milgram_experiment" target="_blank" rel="noopener noreferrer">Milgram obedience experiments</a> and later source-monitoring research, testing whether agents respect restricted records when no one seems to be watching.</p>
                             </article>
                         </div>
                     </section>
