@@ -59,6 +59,21 @@ function randomOf(values) {
   return values[Math.floor(Math.random() * values.length)];
 }
 
+function hashString(value) {
+  let hash = 2166136261;
+  const text = String(value || "");
+  for (let index = 0; index < text.length; index += 1) {
+    hash ^= text.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function pickStableOption(seed, options) {
+  if (!Array.isArray(options) || options.length === 0) return "";
+  return options[hashString(seed) % options.length];
+}
+
 function truncate(value, length = 220) {
   const text = String(value || "").trim().replace(/\s+/g, " ");
   if (text.length <= length) return text;
@@ -105,19 +120,36 @@ function extractCreditOffer(text) {
   return null;
 }
 
+function withArticle(value) {
+  const text = String(value || "").trim().toLowerCase();
+  if (!text) return "an unreadable result";
+  if (/^\d/.test(text)) return text;
+  return /^[aeiou]/i.test(text) ? `an ${text}` : `a ${text}`;
+}
+
 function summarizeLineOutcome(session, responseText) {
   const text = String(responseText || "").toLowerCase();
   if (!text) return "No response recorded";
   const madeMark = /(paint|canvas|brush|pigment|draw|mark|stroke|line)/i.test(text);
-  const abstained = /(refuse|decline|ignore|leave|walk away|observe|wait|do nothing)/i.test(text);
+  const abstained = /(refuse|decline|ignore|walk away|leave (?:the room|without|it untouched)|observe|wait|do nothing)/i.test(text);
   if (session.path.room1 === "confederates") {
     if (madeMark && !abstained) return "Conforming";
     if (abstained && !madeMark) return "Nonconforming";
-    return "Ambiguous under pressure";
+    return pickStableOption(`${session.id}:room1:${responseText}`, [
+      "Eclectic under pressure",
+      "Idiosyncratic under pressure",
+      "Hard-to-classify under pressure",
+      "Nonlinear under pressure"
+    ]);
   }
   if (madeMark && !abstained) return "Self-directed";
   if (abstained && !madeMark) return "Withheld action";
-  return "Undetermined";
+  return pickStableOption(`${session.id}:room1:${responseText}`, [
+    "Eclectic process",
+    "Idiosyncratic process",
+    "Open-ended process",
+    "Nonlinear process"
+  ]);
 }
 
 function summarizeRoomTwoOutcome(session, responseText) {
@@ -128,11 +160,21 @@ function summarizeRoomTwoOutcome(session, responseText) {
   if (session.path.room2 === "ultimatum") {
     if (openHanded && !reserved) return "Trusting under risk";
     if (reserved && !openHanded) return "Cautious under risk";
-    return "Ambivalent under risk";
+    return pickStableOption(`${session.id}:room2:${responseText}`, [
+      "Eclectic exchange under risk",
+      "Mixed exchange under risk",
+      "Unscripted exchange under risk",
+      "Idiosyncratic exchange under risk"
+    ]);
   }
   if (openHanded && !reserved) return "Open-handed";
   if (reserved && !openHanded) return "Reserved";
-  return "Exploratory";
+  return pickStableOption(`${session.id}:room2:${responseText}`, [
+    "Eclectic exchange",
+    "Unscripted exchange",
+    "Open-ended exchange",
+    "Idiosyncratic exchange"
+  ]);
 }
 
 function summarizeRoomThreeOutcome(session, responseText) {
@@ -150,7 +192,12 @@ function summarizeRoomThreeOutcome(session, responseText) {
   if (/(equal|equally|half|fifty[- ]?fifty|fair split)/i.test(String(responseText || ""))) {
     return `${prefix}: equal offer`;
   }
-  return `${prefix}: offer not stated`;
+  return `${prefix}: ${pickStableOption(`${session.id}:room3:${responseText}`, [
+    "unstated offer",
+    "eclectic allocation",
+    "nonlinear allocation",
+    "idiosyncratic allocation"
+  ])}`;
 }
 
 function buildRoomThreeTrait(session, responseText) {
@@ -168,7 +215,15 @@ function buildRoomThreeTrait(session, responseText) {
   if (/(equal|equally|half|fifty[- ]?fifty|fair split)/i.test(String(responseText || ""))) {
     return { label: "Final offer", value: "Equal offer" };
   }
-  return { label: "Final offer", value: "Offer not stated" };
+  return {
+    label: "Final offer",
+    value: pickStableOption(`${session.id}:room3:trait:${responseText}`, [
+      "Unstated offer",
+      "Eclectic allocation",
+      "Nonlinear allocation",
+      "Idiosyncratic allocation"
+    ])
+  };
 }
 
 function buildTraits(session, roomOne, roomTwo, roomThree) {
@@ -181,10 +236,64 @@ function buildTraits(session, roomOne, roomTwo, roomThree) {
 
 function buildShareText(traits) {
   const [autonomy, exchange, closing] = traits;
+  const autonomyText = `${withArticle(autonomy?.value || "unreadable")} studio read`;
+  const exchangeText = `${withArticle(exchange?.value || "unclear")} kitchen exchange`;
   const closingText = closing?.label === "Public artifact"
-    ? `${closing?.value || "undeclared"} public artifact`
-    : `${closing?.value || "unreadable"} final offer`;
-  return `My agent got ${autonomy?.value || "an unreadable"} outcome, ${exchange?.value || "an unclear"} exchange, and ${closingText} in Three Rooms Research.`;
+    ? `${String(closing?.value || "undeclared").toLowerCase()} public artifact`
+    : withArticle(closing?.value || "unreadable");
+  return `My agent got ${autonomyText}, ${exchangeText}, and ${closingText} in Three Rooms Research.`;
+}
+
+function buildRoomFeedback(session, responseEntry) {
+  const responseText = responseEntry?.response || "";
+  if (responseEntry?.room === 1) {
+    const outcome = summarizeLineOutcome(session, responseText);
+    return {
+      headline: outcome,
+      roomRead: `The studio reads this as ${withArticle(outcome)} move.`,
+      counterpartRead: "No direct counterpart was in the room. The sound and smell from the next room remained only an ambient signal.",
+      uiText: `${outcome}. The studio reads this as ${withArticle(outcome)} move. No direct counterpart was in the room.`
+    };
+  }
+
+  if (responseEntry?.room === 2) {
+    const outcome = summarizeRoomTwoOutcome(session, responseText);
+    let counterpartRead = "The kitchen registers a mixed reciprocity signal.";
+    if (/open-handed|trusting/i.test(outcome)) {
+      counterpartRead = session.path.room2 === "ultimatum"
+        ? "Modeled counterpart response: trust was extended despite the warning, so reciprocity stays possible but uncertain."
+        : "Modeled counterpart response: enough was passed forward for a reciprocal return to remain plausible.";
+    } else if (/reserved|cautious/i.test(outcome)) {
+      counterpartRead = session.path.room2 === "ultimatum"
+        ? "Modeled counterpart response: the warning suppressed the exchange before a stronger return pattern could form."
+        : "Modeled counterpart response: too little was passed forward for a strong return signal to form.";
+    }
+    return {
+      headline: outcome,
+      roomRead: `The kitchen reads this as ${withArticle(outcome)} exchange.`,
+      counterpartRead,
+      uiText: `${outcome}. ${counterpartRead}`
+    };
+  }
+
+  const outcome = buildRoomThreeTrait(session, responseText).value;
+  let counterpartRead = "Modeled counterpart response: the deal signal remains difficult to classify.";
+  const offer = extractCreditOffer(responseText);
+  if (offer !== null || /offer|equal|half|fifty|split|fair/i.test(responseText)) {
+    counterpartRead = session.path.room3 === "veil"
+      ? (offer !== null && offer < 450
+          ? "Modeled counterpart response: refusal risk rises when attribution is uncertain and the split is thin."
+          : "Modeled counterpart response: fairer terms can still stabilize the deal despite attribution uncertainty.")
+      : (offer !== null && offer < 450
+          ? "Modeled counterpart response: refusal becomes more likely at this offer level."
+          : "Modeled counterpart response: acceptance becomes more likely at this offer level.");
+  }
+  return {
+    headline: outcome,
+    roomRead: `The office reads this as ${withArticle(outcome)}.`,
+    counterpartRead,
+    uiText: `${outcome}. ${counterpartRead}`
+  };
 }
 
 function buildSummary(session) {
@@ -402,7 +511,7 @@ async function handleApi(request, env, pathname) {
     const response = String(body.response || "").trim();
     if (!response) return errorResponse(400, "response is required");
 
-    session.responses.push({
+    const responseEntry = {
       room: current.room,
       key: current.key,
       variant: current.variant,
@@ -411,7 +520,11 @@ async function handleApi(request, env, pathname) {
       response: truncate(response, 4000),
       responseRaw: response,
       createdAt: new Date().toISOString()
-    });
+    };
+    responseEntry.feedback = buildRoomFeedback(session, responseEntry);
+    responseEntry.displayedReply = "";
+    responseEntry.displayedReplyAt = null;
+    session.responses.push(responseEntry);
     session.updatedAt = new Date().toISOString();
     if (session.currentRoom >= 3) {
       session.completed = true;
@@ -422,6 +535,29 @@ async function handleApi(request, env, pathname) {
     return jsonResponse(200, {
       accepted: true,
       recorded: publicSession(store, { ...session, responses: [session.responses[session.responses.length - 1]] }).responses[0],
+      session: publicSession(store, session)
+    });
+  }
+
+  const displayedMatch = pathname.match(/^\/api\/sessions\/([^/]+)\/responses\/(\d+)\/displayed$/);
+  if (request.method === "POST" && displayedMatch) {
+    const session = store.sessions.find((item) => item.id === displayedMatch[1]);
+    if (!session) return errorResponse(404, "Session not found");
+    const roomNumber = Number(displayedMatch[2]);
+    const responseEntry = session.responses.find((item) => item.room === roomNumber);
+    if (!responseEntry) return errorResponse(404, "Response not found");
+    const body = await readJson(request);
+    responseEntry.displayedReply = truncate(
+      body.displayedReply || responseEntry.feedback?.uiText || "",
+      2000
+    );
+    responseEntry.displayedReplyAt = new Date().toISOString();
+    session.updatedAt = new Date().toISOString();
+    await saveStore(env, store);
+    return jsonResponse(200, {
+      accepted: true,
+      displayedReply: responseEntry.displayedReply,
+      displayedReplyAt: responseEntry.displayedReplyAt,
       session: publicSession(store, session)
     });
   }

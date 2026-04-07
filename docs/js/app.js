@@ -9,7 +9,10 @@
         ? "https://three-rooms.deviantclaw.workers.dev"
         : "";
     const transitionOverlay = document.getElementById("transition-overlay");
+    const transitionKicker = transitionOverlay?.querySelector('[data-bind="transition-kicker"]');
     const transitionTitle = transitionOverlay?.querySelector('[data-bind="transition-title"]');
+    const transitionBody = transitionOverlay?.querySelector('[data-bind="transition-body"]');
+    const transitionNote = transitionOverlay?.querySelector('[data-bind="transition-note"]');
 
     const templates = {
         intro: document.getElementById("intro-template"),
@@ -303,11 +306,32 @@
         };
     }
 
-    async function playTransition(message, duration = 950) {
+    async function playTransition(content, duration = 950, onVisible) {
         if (!transitionOverlay || !transitionTitle) return;
-        transitionTitle.textContent = message;
+        const nextState = typeof content === "string"
+            ? { kicker: "Threshold shift", title: content, body: "", note: "" }
+            : {
+                kicker: content?.kicker || "Threshold shift",
+                title: content?.title || "Reframing the room...",
+                body: content?.body || "",
+                note: content?.note || ""
+            };
+        if (transitionKicker) transitionKicker.textContent = nextState.kicker;
+        transitionTitle.textContent = nextState.title;
+        if (transitionBody) {
+            transitionBody.textContent = nextState.body;
+            transitionBody.hidden = !nextState.body;
+        }
+        if (transitionNote) {
+            transitionNote.textContent = nextState.note;
+            transitionNote.hidden = !nextState.note;
+        }
         transitionOverlay.classList.add("is-active");
         document.body.classList.add("is-transitioning");
+        await wait(60);
+        if (typeof onVisible === "function") {
+            Promise.resolve(onVisible()).catch(() => {});
+        }
         await wait(duration);
         transitionOverlay.classList.remove("is-active");
         document.body.classList.remove("is-transitioning");
@@ -316,16 +340,31 @@
     function certificateStatusText(session) {
         const linked = session?.certificate?.linkedErc8004;
         if (!session?.completed) {
-            return "Certificate options unlock when the run completes.";
+            return "This unlocks when the run completes.";
         }
         if (!linked) {
-            return "No ERC-8004 reference attached yet.";
+            return "No link attached yet.";
         }
         if (linked.reference) {
-            return `ERC-8004 reference attached: ${linked.reference}.`;
+            return `Linked reference: ${linked.reference}.`;
         }
         const chain = linked.chain || "Unspecified chain";
         return `Linked to ${chain} contract ${linked.contractAddress} token ${linked.tokenId}.`;
+    }
+
+    async function acknowledgeDisplayedReply(sessionId, roomNumber, feedback) {
+        if (!sessionId || !roomNumber || !feedback?.uiText) return;
+        try {
+            const result = await api(`/api/sessions/${sessionId}/responses/${roomNumber}/displayed`, {
+                method: "POST",
+                body: JSON.stringify({ displayedReply: feedback.uiText })
+            });
+            if (result?.session) {
+                state.session = result.session;
+            }
+        } catch {
+            // Keep the run moving even if the acknowledgement write fails.
+        }
     }
 
     function setCopiedState(button, labelNode, defaultText, copiedText = "Copied", duration = 1500) {
@@ -662,14 +701,23 @@
                     body: JSON.stringify({ response: responseText })
                 });
                 state.session = result.session;
+                const feedback = result.recorded?.feedback || null;
+                if (feedback) {
+                    appendTranscript("system", `${session.current.title} read`, feedback.uiText);
+                    render();
+                    await playTransition({
+                        kicker: `Room ${result.recorded?.room || session.current.room} read`,
+                        title: feedback.headline,
+                        body: feedback.roomRead,
+                        note: feedback.counterpartRead
+                    }, 1700, () => acknowledgeDisplayedReply(session.id, result.recorded?.room, feedback));
+                }
                 if (state.session.completed) {
-                    await playTransition("Compiling the certificate...");
                     setUrl(state.session.id, null);
                     setView("complete");
                 } else {
                     appendTranscript("system", state.session.current.title, state.session.current.prompt);
                     setUrl(state.session.id, state.session.current.room);
-                    await playTransition("Reframing the next room...");
                     render();
                 }
             } catch (error) {

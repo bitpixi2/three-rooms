@@ -152,7 +152,6 @@
                     <div class="results-session-id">Session <span data-bind="complete-session-id"></span></div>
                     <div class="results-share-block">
                         <p class="eyebrow">Run complete</p>
-                        <div class="prompt-heading">Share</div>
                         <p class="results-share-text" data-bind="share-text"></p>
                         <div class="completion-actions">
                             <button type="button" class="primary-button" data-action="download-certificate">Download SVG</button>
@@ -163,21 +162,21 @@
                         </div>
                     </div>
                     <details class="advanced-panel">
-                        <summary>Advanced</summary>
+                        <summary>Optional: Link results to your ERC-8004</summary>
                         <div class="advanced-content">
                             <section class="certificate-panel">
                                 <div class="certificate-copy">
-                                    <p class="eyebrow">Certificate</p>
-                                    <h3>Attached reference</h3>
+                                    <p class="eyebrow">ERC-8004</p>
+                                    <h3>Add results to my agent on <a href="https://eips.ethereum.org/EIPS/eip-8004" target="_blank" rel="noopener noreferrer">ERC-8004</a></h3>
                                     <p class="certificate-status" data-bind="certificate-status"></p>
                                 </div>
                                 <form id="certificate-form" class="certificate-form">
                                     <label>
-                                        <span>ERC-8004 reference</span>
+                                        <span>Type ERC-8004 number to add</span>
                                         <input type="text" name="reference" />
                                     </label>
                                     <div class="form-actions">
-                                        <button type="submit" class="primary-button">Apply</button>
+                                        <button type="submit" class="primary-button">Apply link</button>
                                         <button type="button" class="ghost-button" data-action="copy-certificate">
                                             <span data-bind="copy-certificate-label">Copy certificate JSON</span>
                                         </button>
@@ -215,8 +214,10 @@
     <div id="transition-overlay" class="transition-overlay" aria-hidden="true">
         <div class="transition-card">
             <div class="transition-line"></div>
-            <div class="transition-kicker">Threshold shift</div>
+            <div class="transition-kicker" data-bind="transition-kicker">Threshold shift</div>
             <div class="transition-title" data-bind="transition-title">Reframing the room...</div>
+            <p class="transition-body" data-bind="transition-body" hidden></p>
+            <p class="transition-note" data-bind="transition-note" hidden></p>
         </div>
     </div>
 </body>

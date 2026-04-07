@@ -2418,6 +2418,13 @@ textarea {
     font-size: 1.6rem;
 }
 
+.certificate-panel h3 a,
+.certificate-panel h3 a:visited,
+.certificate-panel h3 a:hover,
+.certificate-panel h3 a:focus-visible {
+    color: var(--text);
+}
+
 .certificate-panel p {
     margin: 0;
     color: var(--muted);
@@ -2585,6 +2592,25 @@ textarea {
     font-family: var(--font-display);
     font-size: clamp(2rem, 4vw, 2.8rem);
     line-height: 1.04;
+}
+
+.transition-body,
+.transition-note {
+    margin: 0;
+}
+
+.transition-body {
+    margin-top: 14px;
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.55;
+}
+
+.transition-note {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .empty-state {
