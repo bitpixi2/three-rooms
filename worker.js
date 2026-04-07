@@ -532,7 +532,7 @@ async function readJson(request) {
 }
 
 function getStoreStub(env) {
-  return env.SESSION_STORE.get(env.SESSION_STORE.idFromName("frrl-global-v1"));
+  return env.SESSION_STORE.get(env.SESSION_STORE.idFromName("frrl-global-v2"));
 }
 
 async function loadStore(env) {
