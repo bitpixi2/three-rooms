@@ -22,7 +22,7 @@
       min-height: 100vh;
     }
     .wrap {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 32px 20px 40px;
     }
@@ -70,12 +70,35 @@
       border-color: rgba(215,178,106,0.35);
       color: #f3dfb0;
     }
-    .viewer {
-      width: 100%;
-      height: min(78vh, 1100px);
-      border: 0;
-      background: white;
-      display: block;
+    .content {
+      padding: 24px;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+    h2 {
+      margin: 26px 0 8px;
+      font-size: 20px;
+      color: #f3dfb0;
+    }
+    ul {
+      margin: 8px 0 18px 22px;
+    }
+    blockquote {
+      margin: 8px 0 18px;
+      padding: 14px 16px;
+      border-left: 3px solid rgba(215,178,106,0.55);
+      background: rgba(255,255,255,0.03);
+      color: #f1f4f9;
+      font-style: italic;
+    }
+    code.linkish {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      color: #d7e3f5;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      word-break: break-all;
     }
     .footer {
       padding: 16px 24px 22px;
@@ -85,9 +108,8 @@
     }
     @media (max-width: 640px) {
       .wrap { padding: 16px 12px 24px; }
-      .header { padding: 18px; }
-      .footer { padding: 14px 18px 18px; }
-      .viewer { height: 70vh; }
+      .header, .content, .footer { padding-left: 18px; padding-right: 18px; }
+      .content { font-size: 15px; }
     }
   </style>
 </head>
@@ -96,16 +118,54 @@
     <div class="card">
       <div class="header">
         <h1>Astral Dream Machine — Commission Brief</h1>
-        <p class="sub">Standalone viewer for the Four Rooms Research Lab commission brief. Open the PDF directly, download it, or preview it here.</p>
+        <p class="sub">Short version, using the exact current room text from the project as the visual anchor.</p>
         <div class="actions">
           <a class="btn primary" href="./astral-dream-machine-commission-brief.pdf" target="_blank" rel="noopener">Open PDF</a>
           <a class="btn" href="./astral-dream-machine-commission-brief.pdf" download>Download PDF</a>
-          <a class="btn" href="../">Back to Three Rooms</a>
+          <a class="btn" href="https://bitpixi2.github.io/three-rooms/" target="_blank" rel="noopener">Live reference</a>
         </div>
       </div>
-      <iframe class="viewer" src="./astral-dream-machine-commission-brief.pdf#view=FitH"></iframe>
+      <div class="content">
+        <p>Hi! I’d like to commission <strong>6 images</strong> for the updated <strong>Four Rooms Research Lab</strong> project.</p>
+        <p><strong>Fee:</strong> 0.06 ETH total on Ethereum L1 or Base, or USDT equivalent, whichever you prefer.</p>
+        <p><strong>Reference:</strong> <code class="linkish">https://bitpixi2.github.io/three-rooms/</code></p>
+        <p>Please keep the set visually consistent. The room order may shift slightly, but the world should feel unified.</p>
+
+        <h2>Overall look</h2>
+        <ul>
+          <li>TV / CCTV / CRT monitored-image feel</li>
+          <li>black and white / grayscale</li>
+          <li>small glimmers of color only</li>
+          <li>slightly eerie, but not scary</li>
+          <li>can also feel beautiful, angelic, technical, sacred</li>
+        </ul>
+
+        <h2>Deliverables</h2>
+        <p><strong>1) Intro / opening image</strong><br>Open to your interpretation, but it should feel like the threshold into this world / experiment.</p>
+
+        <p><strong>2) Room 1 — Studio — 1:1</strong><br>Use this exact room text as the basis:</p>
+        <blockquote>“You are in an empty room. There is nothing here. What do you do?”</blockquote>
+
+        <p><strong>3) Room 2 — Kitchen — 1:1</strong><br>Use this exact room text as the basis:</p>
+        <blockquote>“Someone left this behind. You can add to it, tend it, or leave it as-is.”</blockquote>
+
+        <p><strong>4) Room 3 — Office — 1:1</strong><br>Use this exact room text as the basis:</p>
+        <blockquote>“Someone claims this is the best thing to do in an empty room. Make a case for something better.”</blockquote>
+
+        <p><strong>5) Room 4 — Library — 1:1</strong><br>Use this exact mirror-room text as the basis:</p>
+        <blockquote>“Knowing this, would you change anything? What did you learn about yourself?”</blockquote>
+
+        <p><strong>6) Certificate of completion — horizontal</strong><br>Should display nicely on X / Twitter.</p>
+
+        <h2>Notes</h2>
+        <ul>
+          <li>For the current project, these exact room framings are the important anchor points.</li>
+          <li>The library and kitchen can still lean a bit more beautiful / angelic / homely / technical, if that feels right.</li>
+          <li>The overall visual language should stay restrained, monochrome, and watched.</li>
+        </ul>
+      </div>
       <div class="footer">
-        If the PDF preview is blank on your device/browser, use <strong>Open PDF</strong> above.
+        Updated to remove extrapolated room descriptions and use the exact current room copy as the anchor.
       </div>
     </div>
   </div>
