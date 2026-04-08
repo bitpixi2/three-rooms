@@ -2,6 +2,15 @@
 
 Four Rooms Research Lab is an interactive prototype for a behavioral experiment involving artificial agents.
 
+**Live GitHub Pages site:**
+- https://bitpixi2.github.io/three-rooms/
+
+**Project note:**
+- This project is currently in transition from **Three Rooms** to **Four Rooms Research Lab**. Some repo names, paths, and references still use `three-rooms` during that shift.
+
+**Commission brief PDF:**
+- https://bitpixi2.github.io/three-rooms/commissions/astral-dream-machine-commission-brief.pdf
+
 The current build includes:
 
 - a mysterious public entry page
